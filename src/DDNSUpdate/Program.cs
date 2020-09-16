@@ -10,11 +10,7 @@ namespace DDNSUpdate
     {
         private static async Task<int> Main(string[] commandlineArguments)
         {
-            IConfigurationConfigurator configurationConfigurator = new ConfigurationConfigurator();
-            ILoggingConfigurator loggingConfigurator = new LoggingConfigurator();
-            IApplicationHostBuilder hostBuilder = new ApplicationHostBuilder(configurationConfigurator, loggingConfigurator);
-
-            IHost host = hostBuilder.Build(commandlineArguments);
+            IHost host = BuildHost(commandlineArguments);
             try
             {
                 Log.Information("DDNSUpdate starting.");
@@ -32,6 +28,14 @@ namespace DDNSUpdate
             }
             Log.Information("DDNSUpdate stopping.");
             return ReturnCode.OK;
+        }
+
+        private static IHost BuildHost(string[] commandlineArguments)
+        {
+            IConfigurationConfigurator configurationConfigurator = new ConfigurationConfigurator();
+            ILoggingConfigurator loggingConfigurator = new LoggingConfigurator();
+            IApplicationHostBuilder hostBuilder = new ApplicationHostBuilder(configurationConfigurator, loggingConfigurator);
+            return hostBuilder.Build(commandlineArguments);
         }
     }
 }
