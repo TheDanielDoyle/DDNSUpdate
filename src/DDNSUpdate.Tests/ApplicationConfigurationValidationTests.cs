@@ -1,4 +1,4 @@
-using DDNSUpdate.Application;
+using DDNSUpdate.Application.Configuration;
 using DDNSUpdate.Infrastructure.Configuration;
 using FluentValidation;
 using FluentValidation.Results;

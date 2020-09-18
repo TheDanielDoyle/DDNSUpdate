@@ -1,6 +1,6 @@
 ﻿using ServiceProfiles;
 using FluentValidation;
-using DDNSUpdate.Application;
+using DDNSUpdate.Application.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DDNSUpdate.Infrastructure.ServiceProfiles

@@ -1,7 +1,7 @@
 ﻿using DDNSUpdate.Infrastructure.Configuration;
 using FluentValidation;
 
-namespace DDNSUpdate.Application
+namespace DDNSUpdate.Application.Configuration
 {
     public class ApplicationConfigurationValidator : AbstractValidator<ApplicationConfiguration>
     {
