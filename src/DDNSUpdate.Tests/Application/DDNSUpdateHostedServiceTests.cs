@@ -18,7 +18,7 @@ namespace DDNSUpdate.Tests.Application
         {
         //Given
         IDDNSUpdateService fakeUpdateService = A.Fake<IDDNSUpdateService>();
-        A.CallTo(() => fakeUpdateService.Update()).Returns(Task.CompletedTask);
+        A.CallTo(() => fakeUpdateService.UpdateAsync()).Returns(Task.CompletedTask);
         ApplicationConfiguration config = new ApplicationConfiguration(){ UpdateInterval = TimeSpan.FromSeconds(1) };
         var optionMonitor = A.Fake<IOptionsMonitor<ApplicationConfiguration>>();
         A.CallTo(() => optionMonitor.CurrentValue).Returns(config);
@@ -29,7 +29,7 @@ namespace DDNSUpdate.Tests.Application
         Thread.Sleep(2000);
         await updateHostedService.StopAsync(new CancellationToken());
         //Then
-        A.CallTo(() => fakeUpdateService.Update()).MustHaveHappened();
+        A.CallTo(() => fakeUpdateService.UpdateAsync()).MustHaveHappened();
 
         }
     }

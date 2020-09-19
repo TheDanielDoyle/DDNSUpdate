@@ -54,7 +54,7 @@ namespace DDNSUpdate.Application
         {
             foreach(IDDNSUpdateService service in _updateServices)
             {
-                await service.Update();
+                await UpdateDDNS(service);
             }
         }
 
@@ -62,7 +62,7 @@ namespace DDNSUpdate.Application
         {
             try
             {
-                await service.Update();
+                await service.UpdateAsync();
             }
             catch
             {
