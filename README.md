@@ -1,6 +1,7 @@
 # Dynamic DNS Update
 
-An application which updates the hostnames of your choosing on a frequency, when your external/internet-facing IP address changes.
+An application which updates the DNS records in your favourite providers, when your external/internet-facing IP address changes.
+Update checks can occur on a frequency specified in configuration.
 
 ## Authors
 

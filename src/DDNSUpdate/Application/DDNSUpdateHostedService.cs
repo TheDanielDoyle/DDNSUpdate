@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using DDNSUpdate.Infrastructure.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using Serilog;
 
 namespace DDNSUpdate.Application
 {
