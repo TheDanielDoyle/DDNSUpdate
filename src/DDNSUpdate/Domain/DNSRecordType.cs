@@ -43,6 +43,5 @@ namespace DDNSUpdate.Domain
         public DNSRecordType(string value, string name) : base(name, value)
         {
         }
-
     }
 }
