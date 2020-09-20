@@ -1,4 +1,11 @@
 {
-  "ExternalAddressProviders": [ "https://bot.whatismyipaddress.com/", "https://ipv4bot.whatismyipaddress.com/" ],
-  "UpdateInterval": "0.00:00:05"
+  "ExternalAddressProviders": [
+    {
+      "Uri": "https://bot.whatismyipaddress.com/"
+    },
+    {
+      "Uri": "https://ipv4bot.whatismyipaddress.com/"
+    }
+  ],
+  "UpdateInterval": "0.00:01:00"
 }

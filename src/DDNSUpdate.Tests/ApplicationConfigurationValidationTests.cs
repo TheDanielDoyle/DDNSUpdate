@@ -14,7 +14,7 @@ namespace DDNSUpdate.Tests
     {
         [Theory]
         [ClassData(typeof(ApplicationConfigurationInvalidExternalAddressProviders))]
-        public void ExternalAddressProvidersInvalid(IList<Uri> externalAddressProviders)
+        public void ExternalAddressProvidersInvalid(IEnumerable<ExternalAddressProvider> externalAddressProviders)
         {
             IValidator<ApplicationConfiguration> validator = new ApplicationConfigurationValidator();
             ApplicationConfiguration configuration = CreateValidApplicationConfiguration();
@@ -24,7 +24,7 @@ namespace DDNSUpdate.Tests
             ValidationResult result = validator.Validate(configuration);
 
             Assert.False(result.IsValid);
-            Assert.True(result.Errors.All(m => m.ErrorMessage.Equals(ApplicationConfigurationValidator.ExternalAddressProvidersErrorMessage)));
+            Assert.True(result.Errors.All(m => !string.IsNullOrWhiteSpace(m.ErrorMessage)));
         }
 
         [Theory]
@@ -58,7 +58,10 @@ namespace DDNSUpdate.Tests
         {
             return new ApplicationConfiguration()
             {
-                ExternalAddressProviders = new List<Uri>() { new Uri("https://test.com/") },
+                ExternalAddressProviders = new List<ExternalAddressProvider>() 
+                { 
+                    new ExternalAddressProvider() { Uri = new Uri("https://test.com/") }
+                },
                 UpdateInterval = ApplicationConfiguration.MinimumUpdateInterval
             };
         }
@@ -68,7 +71,8 @@ namespace DDNSUpdate.Tests
             public IEnumerator<object[]> GetEnumerator()
             {
                 yield return new object[] { null };
-                yield return new object[] { new List<Uri>() };
+                yield return new object[] { new List<ExternalAddressProvider>() };
+                yield return new object[] { new List<ExternalAddressProvider>() { new ExternalAddressProvider() } };
             }
 
             IEnumerator IEnumerable.GetEnumerator()
