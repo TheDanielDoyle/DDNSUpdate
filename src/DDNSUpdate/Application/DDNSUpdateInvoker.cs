@@ -26,11 +26,11 @@ namespace DDNSUpdate.Application
         {
             using(IServiceScope scope = _scopeBuilder.Build())
             {
-                IExternalAddressClient externalAddressClient = (IExternalAddressClient)scope.ServiceProvider.GetService(typeof(IExternalAddressClient));
+                IExternalAddressClient externalAddressClient = GetService<IExternalAddressClient>(scope);
                 Result<IExternalAddressResponse> externalAddressResult = await externalAddressClient.GetAsync(cancellation);
                 if (externalAddressResult.IsSuccess)
                 {
-                    IEnumerable<IDDNSService> services = (IEnumerable<IDDNSService>)scope.ServiceProvider.GetService(typeof(IEnumerable<IDDNSService>));
+                    IEnumerable<IDDNSService> services = GetService<IEnumerable<IDDNSService>>(scope);
                     IEnumerable<Task> updateTasks = services.Select(async service => service.ProcessAsync(cancellation));
                     await Task.WhenAll(updateTasks).WithAggregatedExceptions();
                 }
@@ -39,6 +39,11 @@ namespace DDNSUpdate.Application
                     _logger.LogError("Cannot process DNS records - Unable to get external IP address.");
                 }
             }
+        }
+
+        private static T GetService<T>(IServiceScope scope)
+        {
+            return (T)scope.ServiceProvider.GetService(typeof(T));
         }
     }
 }
