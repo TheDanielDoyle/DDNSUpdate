@@ -9,7 +9,6 @@ namespace DDNSUpdate.Tests
 
         private FakeLogger()
         {
-
         }
 
         public IDisposable BeginScope<TState>(TState state)
