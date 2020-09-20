@@ -13,10 +13,7 @@ namespace DDNSUpdate.Application
         private readonly IValidator<ApplicationConfiguration> _applicationConfigurationValidator;
         private readonly ILogger _logger;
 
-        public ConfigurationValidator(
-            IOptionsSnapshot<ApplicationConfiguration> applicationConfiguration, 
-            IValidator<ApplicationConfiguration> applicationConfigurationValidator,
-            ILogger<ConfigurationValidator> logger)
+        public ConfigurationValidator( IOptionsSnapshot<ApplicationConfiguration> applicationConfiguration, IValidator<ApplicationConfiguration> applicationConfigurationValidator, ILogger<ConfigurationValidator> logger)
         {
             _applicationConfiguration = applicationConfiguration;
             _applicationConfigurationValidator = applicationConfigurationValidator;
@@ -42,7 +39,7 @@ namespace DDNSUpdate.Application
             LogErrors(results);
             return results;
         }
-        
+
         private IEnumerable<ValidationResult> GetValidationResults()
         {
             yield return _applicationConfigurationValidator.Validate(_applicationConfiguration.Value);
