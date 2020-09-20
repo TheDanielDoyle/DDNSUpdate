@@ -17,9 +17,9 @@ namespace DDNSUpdate.Application.Configuration
             get { return new ValidationResultCollection(this.Where(v => !v.IsValid)); }
         }
 
-        public bool IsValid 
-        { 
-            get { return this.All(v => v.IsValid); } 
+        public bool IsValid
+        {
+            get { return this.All(v => v.IsValid); }
         }
 
         public ValidationResultCollection(IEnumerable<ValidationResult> results) : base(results.ToList())

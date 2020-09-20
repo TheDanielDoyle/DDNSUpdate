@@ -10,5 +10,5 @@ namespace DDNSUpdate.Infrastructure.Configuration
         public IList<Uri> ExternalAddressProviders { get; set; } = new List<Uri>();
 
         public TimeSpan UpdateInterval { get; set; }
-    } 
+    }
 }
