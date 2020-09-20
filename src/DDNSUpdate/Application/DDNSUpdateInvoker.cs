@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DDNSUpdate.Infrastructure;
+using System;
+using DDNSUpdate.Infrastructure.Extensions;
 
 namespace DDNSUpdate.Application
 {
@@ -21,8 +23,8 @@ namespace DDNSUpdate.Application
             using(IServiceScope scope = _scopeBuilder.Build())
             {
                 IEnumerable<IDDNSService> services = (IEnumerable<IDDNSService>)scope.ServiceProvider.GetService(typeof(IEnumerable<IDDNSService>));
-                IEnumerable<Task> updateTasks = services.Select(service => service.ProcessAsync(cancellation));
-                await Task.WhenAll(updateTasks);
+                IEnumerable<Task> updateTasks = services.Select(async service => service.ProcessAsync(cancellation));
+                await Task.WhenAll(updateTasks).WithAggregatedExceptions();
             }
         }
     }
