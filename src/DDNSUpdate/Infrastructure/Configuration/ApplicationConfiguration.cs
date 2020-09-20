@@ -7,5 +7,5 @@ namespace DDNSUpdate.Infrastructure.Configuration
         public static readonly TimeSpan MinimumUpdateInterval = TimeSpan.FromMinutes(1);
 
         public TimeSpan UpdateInterval { get; set; }
-    } 
+    }
 }

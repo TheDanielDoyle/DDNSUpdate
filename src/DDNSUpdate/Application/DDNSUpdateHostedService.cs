@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using DDNSUpdate.Infrastructure.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace DDNSUpdate.Application
@@ -11,15 +11,14 @@ namespace DDNSUpdate.Application
     public class DDNSUpdateHostedService : BackgroundService
     {
         private readonly IOptionsMonitor<ApplicationConfiguration> _configuration;
-        private readonly IEnumerable<IDDNSUpdateService> _updateServices;
+        private readonly IDDNSUpdateInvoker _invoker;
+        private readonly ILogger<DDNSUpdateHostedService> _logger;
 
-        public DDNSUpdateHostedService(
-            IOptionsMonitor<ApplicationConfiguration> configuration,
-            IEnumerable<IDDNSUpdateService> updateServices
-        )
+        public DDNSUpdateHostedService(IOptionsMonitor<ApplicationConfiguration> configuration, IDDNSUpdateInvoker invoker, ILogger<DDNSUpdateHostedService> logger)
         {
             _configuration = configuration;
-            _updateServices = updateServices;
+            _invoker = invoker;
+            _logger = logger;
         }
 
         protected override async Task ExecuteAsync(CancellationToken cancellation)
@@ -28,10 +27,14 @@ namespace DDNSUpdate.Application
             {
                 try
                 {
-                    await UpdateDDNSMultiple();
+                    await _invoker.InvokeAsync(cancellation);
                 }
                 catch (TaskCanceledException)
                 {
+                }
+                catch(Exception exception)
+                {
+                    _logger.LogError(exception, exception.Message);
                 }
                 finally
                 {
@@ -46,27 +49,6 @@ namespace DDNSUpdate.Application
         private TimeSpan GetUpdateInterval()
         {
             return _configuration.CurrentValue.UpdateInterval;
-        }
-
-
-        private async Task UpdateDDNSMultiple()
-        {
-            foreach(IDDNSUpdateService service in _updateServices)
-            {
-                await UpdateDDNS(service);
-            }
-        }
-
-        private async Task UpdateDDNS(IDDNSUpdateService service)
-        {
-            try
-            {
-                await service.UpdateAsync();
-            }
-            catch
-            {
-                Log.Logger.Error("Something went wrong");
-            }
         }
     }
 }
