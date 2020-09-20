@@ -8,7 +8,7 @@ namespace DDNSUpdate.Infrastructure.ServiceProfiles
     {
         public override void Configure(IHostServiceProfileContext context)
         {
-            context.Services.AddTransient<IScopeBuilder, ScopeBuilder>();
+            context.Services.AddSingleton<IScopeBuilder, ScopeBuilder>();
             context.Services.AddSingleton<IDDNSUpdateInvoker, DDNSUpdateInvoker>();
         }
     }
