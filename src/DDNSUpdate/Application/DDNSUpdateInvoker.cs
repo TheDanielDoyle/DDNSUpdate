@@ -36,9 +36,14 @@ namespace DDNSUpdate.Application
                 }
                 else
                 {
-                    _logger.LogError("Cannot process DNS records - Unable to get external IP address.");
+                    _logger.LogError(GetExternalAddressResultErrorMessage(externalAddressResult));
                 }
             }
+        }
+
+        private string GetExternalAddressResultErrorMessage(Result<IExternalAddressResponse> externalAddressResult)
+        {
+            return externalAddressResult.Errors.FirstOrDefault()?.Message ?? ExternalAddressClient.ErrorMessage;
         }
 
         private static T GetService<T>(IServiceScope scope)

@@ -11,7 +11,7 @@ namespace DDNSUpdate.Application.ExternalAddresses
 {
     public class ExternalAddressClient : IExternalAddressClient
     {
-        public static readonly string ErrorMessage = "Unable find external IP address.";
+        public static readonly string ErrorMessage = "Cannot process DNS records - Unable to get external IP address.";
 
         private readonly IOptionsSnapshot<ApplicationConfiguration> _configuration;
         private readonly IFlurlClient _httpClient;
