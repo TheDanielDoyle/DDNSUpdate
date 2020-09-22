@@ -1,4 +1,5 @@
 using DDNSUpdate.Application;
+using DDNSUpdate.Application.Providers.DigitalOcean;
 using Microsoft.Extensions.DependencyInjection;
 using ServiceProfiles;
 
@@ -10,6 +11,8 @@ namespace DDNSUpdate.Infrastructure.ServiceProfiles
         {
             context.Services.AddSingleton<IScopeBuilder, ScopeBuilder>();
             context.Services.AddSingleton<IDDNSUpdateInvoker, DDNSUpdateInvoker>();
+
+            context.Services.AddScoped<IDDNSService, DigitalOceanDDNSService>();
         }
     }
 }
