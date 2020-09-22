@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace DDNSUpdate.Application
+namespace DDNSUpdate.Application.Configuration
 {
     public class ValidationResultCollection : ReadOnlyCollection<ValidationResult>
     {

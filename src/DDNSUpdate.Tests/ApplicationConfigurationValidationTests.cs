@@ -1,4 +1,4 @@
-using DDNSUpdate.Application;
+using DDNSUpdate.Application.Configuration;
 using DDNSUpdate.Infrastructure.Configuration;
 using FluentValidation;
 using FluentValidation.Results;
@@ -12,6 +12,21 @@ namespace DDNSUpdate.Tests
 {
     public class ApplicationConfigurationValidationTests
     {
+        [Theory]
+        [ClassData(typeof(ApplicationConfigurationInvalidExternalAddressProviders))]
+        public void ExternalAddressProvidersInvalid(IEnumerable<ExternalAddressProvider> externalAddressProviders)
+        {
+            IValidator<ApplicationConfiguration> validator = new ApplicationConfigurationValidator();
+            ApplicationConfiguration configuration = CreateValidApplicationConfiguration();
+
+            configuration.ExternalAddressProviders = externalAddressProviders;
+
+            ValidationResult result = validator.Validate(configuration);
+
+            Assert.False(result.IsValid);
+            Assert.True(result.Errors.All(m => !string.IsNullOrWhiteSpace(m.ErrorMessage)));
+        }
+
         [Theory]
         [ClassData(typeof(ApplicationConfigurationUpdateIntervalInvalidTimeSpans))]
         public void UpdateIntervalInvalid(TimeSpan updateInterval)
@@ -43,8 +58,27 @@ namespace DDNSUpdate.Tests
         {
             return new ApplicationConfiguration()
             {
+                ExternalAddressProviders = new List<ExternalAddressProvider>() 
+                { 
+                    new ExternalAddressProvider() { Uri = new Uri("https://test.com/") }
+                },
                 UpdateInterval = ApplicationConfiguration.MinimumUpdateInterval
             };
+        }
+
+        private class ApplicationConfigurationInvalidExternalAddressProviders : IEnumerable<object[]>
+        {
+            public IEnumerator<object[]> GetEnumerator()
+            {
+                yield return new object[] { null };
+                yield return new object[] { new List<ExternalAddressProvider>() };
+                yield return new object[] { new List<ExternalAddressProvider>() { new ExternalAddressProvider() } };
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
         }
 
         private class ApplicationConfigurationUpdateIntervalInvalidTimeSpans : IEnumerable<object[]>

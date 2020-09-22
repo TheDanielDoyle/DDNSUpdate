@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 
-namespace DDNSUpdate.Application
+namespace DDNSUpdate.Application.Configuration
 {
     public class ConfigurationValidator : IConfigurationValidator
     {

@@ -4,17 +4,21 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DDNSUpdate.Infrastructure;
-using System;
 using DDNSUpdate.Infrastructure.Extensions;
+using FluentResults;
+using DDNSUpdate.Application.ExternalAddresses;
+using Microsoft.Extensions.Logging;
 
 namespace DDNSUpdate.Application
 {
     public class DDNSUpdateInvoker : IDDNSUpdateInvoker
     {
+        private readonly ILogger _logger;
         private readonly IScopeBuilder _scopeBuilder;
 
-        public DDNSUpdateInvoker(IScopeBuilder scopeBuilder)
+        public DDNSUpdateInvoker(ILogger<DDNSUpdateInvoker> logger, IScopeBuilder scopeBuilder)
         {
+            _logger = logger;
             _scopeBuilder = scopeBuilder;
         }
 
@@ -22,10 +26,29 @@ namespace DDNSUpdate.Application
         {
             using(IServiceScope scope = _scopeBuilder.Build())
             {
-                IEnumerable<IDDNSService> services = (IEnumerable<IDDNSService>)scope.ServiceProvider.GetService(typeof(IEnumerable<IDDNSService>));
-                IEnumerable<Task> updateTasks = services.Select(async service => service.ProcessAsync(cancellation));
-                await Task.WhenAll(updateTasks).WithAggregatedExceptions();
+                IExternalAddressClient externalAddressClient = GetService<IExternalAddressClient>(scope);
+                Result<IExternalAddressResponse> externalAddressResult = await externalAddressClient.GetAsync(cancellation);
+                if (externalAddressResult.IsSuccess)
+                {
+                    IEnumerable<IDDNSService> services = GetService<IEnumerable<IDDNSService>>(scope);
+                    IEnumerable<Task> updateTasks = services.Select(async service => service.ProcessAsync(cancellation));
+                    await Task.WhenAll(updateTasks).WithAggregatedExceptions();
+                }
+                else
+                {
+                    _logger.LogError(GetExternalAddressResultErrorMessage(externalAddressResult));
+                }
             }
+        }
+
+        private string GetExternalAddressResultErrorMessage(Result<IExternalAddressResponse> externalAddressResult)
+        {
+            return externalAddressResult.Errors.FirstOrDefault()?.Message ?? ExternalAddressClient.ErrorMessage;
+        }
+
+        private static T GetService<T>(IServiceScope scope)
+        {
+            return (T)scope.ServiceProvider.GetService(typeof(T));
         }
     }
 }

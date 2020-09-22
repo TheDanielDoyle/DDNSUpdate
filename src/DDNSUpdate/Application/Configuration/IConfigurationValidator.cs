@@ -1,4 +1,4 @@
-﻿namespace DDNSUpdate.Application
+﻿namespace DDNSUpdate.Application.Configuration
 {
     public interface IConfigurationValidator
     {
