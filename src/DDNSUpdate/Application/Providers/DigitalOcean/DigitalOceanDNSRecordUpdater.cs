@@ -20,7 +20,7 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
             foreach (DNSRecord dnsRecord in dnsRecords)
             {
                 Result createResult = await _digitalOceanClient.UpdateDNSRecordAsync(dnsRecord, token, cancellation);
-                if (result.IsFailed)
+                if (createResult.IsFailed)
                 {
                     Result.Merge(result, createResult);
                 }
