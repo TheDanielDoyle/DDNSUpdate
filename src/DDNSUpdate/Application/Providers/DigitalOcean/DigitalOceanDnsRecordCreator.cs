@@ -5,11 +5,11 @@ using FluentResults;
 
 namespace DDNSUpdate.Application.Providers.DigitalOcean
 {
-    public class DigitalOceanDNSRecordCreater : IDigitalOceanDNSRecordCreater
+    public class DigitalOceanDnsRecordCreator : IDigitalOceanDNSRecordCreator
     {
         private readonly IDigitalOceanClient _digitalOceanClient;
 
-        public DigitalOceanDNSRecordCreater(IDigitalOceanClient digitalOceanClient)
+        public DigitalOceanDnsRecordCreator(IDigitalOceanClient digitalOceanClient)
         {
             _digitalOceanClient = digitalOceanClient;
         }

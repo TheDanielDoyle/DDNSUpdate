@@ -5,7 +5,7 @@ using FluentResults;
 
 namespace DDNSUpdate.Application.Providers.DigitalOcean
 {
-    public interface IDigitalOceanDNSRecordCreater
+    public interface IDigitalOceanDNSRecordCreator
     {
         Task<Result> CreateAsync(DNSRecordCollection dnsRecords, string token, CancellationToken cancellation);
     }
