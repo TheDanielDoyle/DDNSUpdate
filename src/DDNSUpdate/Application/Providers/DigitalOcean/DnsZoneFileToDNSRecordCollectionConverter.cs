@@ -3,7 +3,7 @@ using DnsZone;
 
 namespace DDNSUpdate.Application.Providers.DigitalOcean
 {
-    public class DnsZoneFileToDNSRecordCollectionConverter1 : IDnsZoneFileToDNSRecordCollectionConverter
+    public class DnsZoneFileToDNSRecordCollectionConverter : IDnsZoneFileToDNSRecordCollectionConverter
     {
         public DNSRecordCollection Convert(DnsZoneFile dnsZoneFile)
         {
