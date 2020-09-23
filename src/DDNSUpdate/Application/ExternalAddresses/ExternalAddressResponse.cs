@@ -1,14 +1,14 @@
-﻿using System.Net;
+﻿using DDNSUpdate.Domain;
 
 namespace DDNSUpdate.Application.ExternalAddresses
 {
     public class ExternalAddressResponse : IExternalAddressResponse
     {
-        public ExternalAddressResponse(IPAddress ipAddress)
+        public ExternalAddressResponse(ExternalAddress externalAddress)
         {
-            IPAddress = ipAddress;
+            ExternalAddress = externalAddress;
         }
 
-        public IPAddress IPAddress { get; }
+        public ExternalAddress ExternalAddress { get; }
     }
 }

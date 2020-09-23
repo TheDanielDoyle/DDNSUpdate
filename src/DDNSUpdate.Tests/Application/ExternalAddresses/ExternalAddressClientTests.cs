@@ -1,17 +1,17 @@
-﻿using DDNSUpdate.Application.ExternalAddresses;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+using DDNSUpdate.Application.ExternalAddresses;
 using DDNSUpdate.Infrastructure.Configuration;
 using FakeItEasy;
 using FluentResults;
 using Flurl.Http.Testing;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using Xunit;
 
-namespace DDNSUpdate.Tests.Application.ExternalAddress
+namespace DDNSUpdate.Tests.Application.ExternalAddresses
 {
     public class ExternalAddressClientTests : IDisposable
     {

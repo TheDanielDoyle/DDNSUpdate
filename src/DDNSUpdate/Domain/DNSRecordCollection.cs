@@ -6,8 +6,20 @@ namespace DDNSUpdate.Domain
 {
     public class DNSRecordCollection : ReadOnlyCollection<DNSRecord>
     {
+        public static DNSRecordCollection Empty;
+
+        static DNSRecordCollection()
+        {
+            Empty = new DNSRecordCollection(new DNSRecord[]{});
+        }
+
         public DNSRecordCollection(IEnumerable<DNSRecord> dnsRecords) : base(dnsRecords.ToList())
         {
+        }
+
+        public DNSRecordCollection OfRecordType(DNSRecordType dnsRecordType)
+        {
+            return new DNSRecordCollection(this.Where(r => r.Type == dnsRecordType));
         }
 
         public DNSRecordCollection WhereNew(DNSRecordCollection compareTo)
@@ -21,6 +33,21 @@ namespace DDNSUpdate.Domain
             return GetNotMatchingRecords(commonRecords, compareTo, DNSRecordEqualityComparer.Instance);
         }
 
+        public DNSRecordCollection WithUpdatedData(string data)
+        {
+            DNSRecordCollection clone = Clone(this);
+            foreach (DNSRecord dnsRecord in clone)
+            {
+                dnsRecord.Data = data;
+            }
+            return clone;
+        }
+
+        private static DNSRecordCollection Clone(DNSRecordCollection from)
+        {
+            return new DNSRecordCollection(from.Select(Map));
+        }
+
         private static DNSRecordCollection GetMatchingRecords(DNSRecordCollection compareWith, DNSRecordCollection compareTo, IEqualityComparer<DNSRecord> equalityComparer)
         {
             return new DNSRecordCollection(compareWith.Intersect(compareTo, equalityComparer));
@@ -29,6 +56,22 @@ namespace DDNSUpdate.Domain
         private static DNSRecordCollection GetNotMatchingRecords(DNSRecordCollection compareWith, DNSRecordCollection compareTo, IEqualityComparer<DNSRecord> equalityComparer)
         {
             return new DNSRecordCollection(compareTo.Where(r => !compareWith.Contains(r, equalityComparer)));
+        }
+
+        private static DNSRecord Map(DNSRecord from)
+        {
+            return new DNSRecord
+            {
+                Data = from.Data,
+                Flags = from.Flags,
+                Name = from.Name,
+                Port = from.Port,
+                Priority = from.Priority,
+                Tag = from.Tag,
+                TTL = from.TTL,
+                Type = DNSRecordType.FromValue(from.Type.Value),
+                Weight = from.Weight
+            };
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using DDNSUpdate.Domain;
 
 namespace DDNSUpdate.Application.ExternalAddresses
 {
@@ -29,7 +30,8 @@ namespace DDNSUpdate.Application.ExternalAddresses
                 Result<IPAddress> result = await GetExternalIPAddressAsync(provider, cancellation);
                 if (result.IsSuccess)
                 {
-                    return Result.Ok<IExternalAddressResponse>(new ExternalAddressResponse(result.Value));
+                    ExternalAddress externalAddress = new ExternalAddress { IPv4Address = result.Value };
+                    return Result.Ok<IExternalAddressResponse>(new ExternalAddressResponse(externalAddress));
                 }
             }
             return Result.Fail<IExternalAddressResponse>(ErrorMessage);
