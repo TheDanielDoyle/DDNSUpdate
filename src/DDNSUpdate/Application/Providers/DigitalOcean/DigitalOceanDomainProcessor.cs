@@ -11,7 +11,7 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
     {
         private readonly IDigitalOceanClient _digitalOceanClient;
         private readonly IDNSRecordCollectionExternalAddressHydrater _dnsRecordHydrater;
-        private readonly IDigitalOceanDNSRecordCreator dnsRecordCreator;
+        private readonly IDigitalOceanDNSRecordCreator _dnsRecordCreator;
         private readonly IDigitalOceanDNSRecordUpdater _dnsRecordUpdater;
         private readonly IDnsZoneFileToDNSRecordCollectionConverter _dnsZoneFileConverter;
 
@@ -19,7 +19,7 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
         {
             _digitalOceanClient = digitalOceanClient;
             _dnsRecordHydrater = dnsRecordHydrater;
-            this.dnsRecordCreator = dnsRecordCreator;
+            _dnsRecordCreator = dnsRecordCreator;
             _dnsRecordUpdater = dnsRecordUpdater;
             _dnsZoneFileConverter = dnsZoneFileConverter;
         }
@@ -35,7 +35,7 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
             DNSRecordCollection hydratedDnsRecords = _dnsRecordHydrater.Hydrate(domain.Records, externalAddress);
             DNSRecordCollection activeDnsRecords = _dnsZoneFileConverter.Convert(dnsZoneFileResult.Value);
             
-            Result create = await dnsRecordCreator.CreateAsync(activeDnsRecords.WhereNew(hydratedDnsRecords), token, cancellation);
+            Result create = await _dnsRecordCreator.CreateAsync(activeDnsRecords.WhereNew(hydratedDnsRecords), token, cancellation);
             Result update = await _dnsRecordUpdater.UpdateAsync(activeDnsRecords.WhereUpdated(hydratedDnsRecords), token, cancellation);
             return Result.Merge(create, update);
         }
