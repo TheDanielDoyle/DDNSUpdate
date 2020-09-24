@@ -12,8 +12,8 @@ namespace DDNSUpdate.Domain
         {
             Empty = new DNSRecordCollection(new DNSRecord[]{});
         }
-
-        public DNSRecordCollection(IEnumerable<DNSRecord> dnsRecords) : base(dnsRecords.ToList())
+        
+        public DNSRecordCollection(params IEnumerable<DNSRecord>[]  dnsRecords) : base(dnsRecords.SelectMany(r => r).ToList())
         {
         }
 
