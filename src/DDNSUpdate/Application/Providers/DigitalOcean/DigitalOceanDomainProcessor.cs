@@ -2,41 +2,37 @@
 using System.Threading.Tasks;
 using DDNSUpdate.Application.ExternalAddresses;
 using DDNSUpdate.Domain;
-using DnsZone;
 using FluentResults;
 
 namespace DDNSUpdate.Application.Providers.DigitalOcean
 {
     public class DigitalOceanDomainProcessor : IDigitalOceanDomainProcessor
     {
-        private readonly IDigitalOceanClient _digitalOceanClient;
         private readonly IDNSRecordCollectionExternalAddressHydrater _dnsRecordHydrater;
         private readonly IDigitalOceanDNSRecordCreator _dnsRecordCreator;
+        private readonly IDigitalOceanDNSRecordReader _dnsRecordReader;
         private readonly IDigitalOceanDNSRecordUpdater _dnsRecordUpdater;
-        private readonly IDnsZoneFileToDNSRecordCollectionConverter _dnsZoneFileConverter;
 
-        public DigitalOceanDomainProcessor(IDigitalOceanClient digitalOceanClient, IDNSRecordCollectionExternalAddressHydrater dnsRecordHydrater, IDigitalOceanDNSRecordCreator dnsRecordCreator, IDigitalOceanDNSRecordUpdater dnsRecordUpdater, IDnsZoneFileToDNSRecordCollectionConverter dnsZoneFileConverter)
+        public DigitalOceanDomainProcessor(IDNSRecordCollectionExternalAddressHydrater dnsRecordHydrater, IDigitalOceanDNSRecordCreator dnsRecordCreator, IDigitalOceanDNSRecordReader dnsRecordReader, IDigitalOceanDNSRecordUpdater dnsRecordUpdater)
         {
-            _digitalOceanClient = digitalOceanClient;
             _dnsRecordHydrater = dnsRecordHydrater;
             _dnsRecordCreator = dnsRecordCreator;
+            _dnsRecordReader = dnsRecordReader;
             _dnsRecordUpdater = dnsRecordUpdater;
-            _dnsZoneFileConverter = dnsZoneFileConverter;
         }
 
         public async Task<Result> ProcessAsync(DigitalOceanDomain domain, ExternalAddress externalAddress, string token, CancellationToken cancellation)
         {
-            Result<DnsZoneFile> dnsZoneFileResult = await _digitalOceanClient.GetDNSZoneAsync(domain, token, cancellation);
-            if (dnsZoneFileResult.IsFailed)
+            Result<DNSRecordCollection> activeDnsRecordsResult = await _dnsRecordReader.ReadAsync(domain, cancellation);
+            if (activeDnsRecordsResult.IsFailed)
             {
-                return dnsZoneFileResult;
+                return activeDnsRecordsResult;
             }
 
             DNSRecordCollection hydratedDnsRecords = _dnsRecordHydrater.Hydrate(domain.Records, externalAddress);
-            DNSRecordCollection activeDnsRecords = _dnsZoneFileConverter.Convert(dnsZoneFileResult.Value);
             
-            Result create = await _dnsRecordCreator.CreateAsync(activeDnsRecords.WhereNew(hydratedDnsRecords), token, cancellation);
-            Result update = await _dnsRecordUpdater.UpdateAsync(activeDnsRecords.WhereUpdated(hydratedDnsRecords), token, cancellation);
+            Result create = await _dnsRecordCreator.CreateAsync(activeDnsRecordsResult.Value.WhereNew(hydratedDnsRecords), token, cancellation);
+            Result update = await _dnsRecordUpdater.UpdateAsync(activeDnsRecordsResult.Value.WhereUpdated(hydratedDnsRecords), token, cancellation);
             return Result.Merge(create, update);
         }
     }

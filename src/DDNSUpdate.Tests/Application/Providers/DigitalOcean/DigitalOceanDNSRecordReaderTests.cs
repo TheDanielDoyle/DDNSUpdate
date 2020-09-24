@@ -1,6 +1,6 @@
 ﻿namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
 {
-    public class DnsZoneFileToDnsRecordCollectionConverterTests
+    public class DigitalOceanDNSRecordReaderTests
     {
     }
 }

@@ -6,6 +6,8 @@
 
         public int? Flags { get; set; }
 
+        public string? Id { get; set; }
+
         public string Name { get; set; } = default!;
 
         public int? Port { get; set; }
@@ -14,7 +16,7 @@
 
         public string? Tag { get; set; }
 
-        public int TTL { get; set; }
+        public int? TTL { get; set; }
 
         public DNSRecordType Type { get; set; } = default!;
 
