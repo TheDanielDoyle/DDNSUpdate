@@ -1,4 +1,6 @@
-﻿using DDNSUpdate.Infrastructure.Configuration;
+﻿using DDNSUpdate.Application.Providers.DigitalOcean.Configuration;
+using DDNSUpdate.Infrastructure;
+using DDNSUpdate.Infrastructure.Configuration;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
@@ -9,15 +11,13 @@ namespace DDNSUpdate.Application.Configuration
 {
     public class ConfigurationValidator : IConfigurationValidator
     {
-        private readonly IOptionsSnapshot<ApplicationConfiguration> _applicationConfiguration;
-        private readonly IValidator<ApplicationConfiguration> _applicationConfigurationValidator;
         private readonly ILogger _logger;
+        private readonly ServiceFactory _serviceFactory;
 
-        public ConfigurationValidator( IOptionsSnapshot<ApplicationConfiguration> applicationConfiguration, IValidator<ApplicationConfiguration> applicationConfigurationValidator, ILogger<ConfigurationValidator> logger)
+        public ConfigurationValidator(ServiceFactory serviceFactory, ILogger<ConfigurationValidator> logger)
         {
-            _applicationConfiguration = applicationConfiguration;
-            _applicationConfigurationValidator = applicationConfigurationValidator;
             _logger = logger;
+            _serviceFactory = serviceFactory;
         }
 
         public bool IsValid()
@@ -42,7 +42,18 @@ namespace DDNSUpdate.Application.Configuration
 
         private IEnumerable<ValidationResult> GetValidationResults()
         {
-            yield return _applicationConfigurationValidator.Validate(_applicationConfiguration.Value);
+            IValidator<ApplicationConfiguration> applicationConfigurationValidator = GetService<IValidator<ApplicationConfiguration>>();
+            IOptionsSnapshot<ApplicationConfiguration> applicationConfiguration = GetService<IOptionsSnapshot<ApplicationConfiguration>>();
+            yield return applicationConfigurationValidator.Validate(applicationConfiguration.Value);
+
+            IValidator<DigitalOceanConfiguration> digitalOceanConfigurationValidator = GetService<IValidator<DigitalOceanConfiguration>>();
+            IOptionsSnapshot<DigitalOceanConfiguration> digitalOceanConfiguration = GetService<IOptionsSnapshot<DigitalOceanConfiguration>>();
+            yield return digitalOceanConfigurationValidator.Validate(digitalOceanConfiguration.Value);
+        }
+
+        private T GetService<T>()
+        {
+            return (T)_serviceFactory(typeof(T));
         }
     }
 }

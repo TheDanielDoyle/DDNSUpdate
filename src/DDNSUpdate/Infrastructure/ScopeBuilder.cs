@@ -5,16 +5,17 @@ namespace DDNSUpdate.Infrastructure
 {
     public class ScopeBuilder : IScopeBuilder
     {
-        private readonly IServiceProvider _serviceProvider;
+        private readonly ServiceFactory _serviceFactory;
 
-        public ScopeBuilder(IServiceProvider serviceProvider)
+        public ScopeBuilder(ServiceFactory serviceFactory)
         {
-            _serviceProvider = serviceProvider;
+            _serviceFactory = serviceFactory;
         }
 
         public IServiceScope Build()
         {
-            return _serviceProvider.CreateScope();
+            IServiceProvider serviceProvider = (IServiceProvider)_serviceFactory(typeof(IServiceProvider));
+            return serviceProvider.CreateScope();
         }
     }
 }
