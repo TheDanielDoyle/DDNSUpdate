@@ -11,11 +11,12 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean.Converters
             request ??= new DigitalOceanCreateDomainRecordRequest();
             request.Data = record.Data;
             request.Flags = record.Flags;
-            request.Name = request.Name;
+            request.Name = record.Name;
             request.Port = record.Port;
             request.Priority = record.Priority;
             request.Tag = record.Tag;
             request.Ttl = record.TTL;
+            request.Type = record.Type.Value;
             request.Weight = record.Weight;
             return request;
         }
