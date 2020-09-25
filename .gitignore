@@ -348,3 +348,11 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+
+# VSCode
+.vscode/*
+*.code-workspace
+
+# Local History for Visual Studio Code
+.history/
