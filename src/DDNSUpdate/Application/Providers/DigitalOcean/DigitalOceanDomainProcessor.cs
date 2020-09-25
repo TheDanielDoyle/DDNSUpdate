@@ -31,7 +31,7 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
             }
 
             DNSRecordCollection hydratedDnsRecords = _dnsRecordHydrater.Hydrate(domain.Records, externalAddress);
-            
+
             Result create = await _dnsRecordCreator.CreateAsync(activeDnsRecordsResult.Value.WhereNew(hydratedDnsRecords), token, cancellation);
             Result update = await _dnsRecordUpdater.UpdateAsync(activeDnsRecordsResult.Value.WhereUpdated(hydratedDnsRecords), token, cancellation);
             return Result.Merge(create, update);
