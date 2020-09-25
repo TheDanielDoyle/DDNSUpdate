@@ -11,7 +11,6 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Converters
         [Fact]
         public void ReturnsNewUpdateRequestWhenNull()
         {
-            //Given
             DNSRecordToDigitalOceanUpdateDomainRecordRequestConverter converter = new DNSRecordToDigitalOceanUpdateDomainRecordRequestConverter();
 
             DNSRecord record = new DNSRecord()
@@ -26,9 +25,9 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Converters
                 Weight = 1,
                 Type = DNSRecordType.A
             };
-            //When
+
             DigitalOceanUpdateDomainRecordRequest actual = converter.Convert(record, null, ResolutionContext);
-            //Then
+
             Assert.Equal(record.Data, actual.Data);
             Assert.Equal(record.Flags, actual.Flags);
             Assert.Equal(record.Name, actual.Name);
@@ -44,7 +43,6 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Converters
         [Fact]
         public void OverwirtesUpdateDomainRecordRequestValues()
         {
-            //Given
             DNSRecordToDigitalOceanUpdateDomainRecordRequestConverter converter = new DNSRecordToDigitalOceanUpdateDomainRecordRequestConverter();
             DNSRecord record = new DNSRecord()
             {
@@ -71,9 +69,9 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Converters
                 Weight = 123,
                 Type = "Some other type"
             };
-            //When
+
             DigitalOceanUpdateDomainRecordRequest actual = converter.Convert(record, updateRecord, ResolutionContext);
-            //Then
+
             Assert.Equal(record.Data, actual.Data);
             Assert.Equal(record.Flags, actual.Flags);
             Assert.Equal(record.Name, actual.Name);
