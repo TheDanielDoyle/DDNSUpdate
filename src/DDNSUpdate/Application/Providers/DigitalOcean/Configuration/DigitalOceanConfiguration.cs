@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using DDNSUpdate.Application.Providers.DigitalOcean.Domain;
 
-namespace DDNSUpdate.Application.Providers.DigitalOcean
+namespace DDNSUpdate.Application.Providers.DigitalOcean.Configuration
 {
     public class DigitalOceanConfiguration
     {
