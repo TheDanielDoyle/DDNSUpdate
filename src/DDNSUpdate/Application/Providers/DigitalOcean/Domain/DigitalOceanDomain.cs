@@ -1,6 +1,6 @@
 ﻿using DDNSUpdate.Domain;
 
-namespace DDNSUpdate.Application.Providers.DigitalOcean
+namespace DDNSUpdate.Application.Providers.DigitalOcean.Domain
 {
     public class DigitalOceanDomain
     {

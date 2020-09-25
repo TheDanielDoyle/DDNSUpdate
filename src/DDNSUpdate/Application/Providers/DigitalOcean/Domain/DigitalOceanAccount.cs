@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DDNSUpdate.Application.Providers.DigitalOcean
+namespace DDNSUpdate.Application.Providers.DigitalOcean.Domain
 {
     public class DigitalOceanAccount
     {

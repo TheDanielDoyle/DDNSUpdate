@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using DDNSUpdate.Application.ExternalAddresses;
+using DDNSUpdate.Application.Providers.DigitalOcean.Domain;
 using DDNSUpdate.Domain;
 using FluentResults;
 
@@ -23,7 +24,7 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
 
         public async Task<Result> ProcessAsync(DigitalOceanDomain domain, ExternalAddress externalAddress, string token, CancellationToken cancellation)
         {
-            Result<DNSRecordCollection> activeDnsRecordsResult = await _dnsRecordReader.ReadAsync(domain, cancellation);
+            Result<DNSRecordCollection> activeDnsRecordsResult = await _dnsRecordReader.ReadAsync(domain, token, cancellation);
             if (activeDnsRecordsResult.IsFailed)
             {
                 return activeDnsRecordsResult;

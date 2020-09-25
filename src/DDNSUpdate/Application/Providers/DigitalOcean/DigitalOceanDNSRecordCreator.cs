@@ -25,7 +25,6 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
             IEnumerable<DigitalOceanCreateDomainRecordRequest> requests = _mapper.Map<IEnumerable<DigitalOceanCreateDomainRecordRequest>>(dnsRecords);
             foreach (DigitalOceanCreateDomainRecordRequest request in requests)
             {
-                
                 Result createResult = await _digitalOceanClient.CreateDNSRecordAsync(request, token, cancellation);
                 Result.Merge(result, createResult);
             }
