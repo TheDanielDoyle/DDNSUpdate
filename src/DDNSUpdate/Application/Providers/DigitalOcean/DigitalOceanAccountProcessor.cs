@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using DDNSUpdate.Application.Providers.DigitalOcean.Domain;
+using DDNSUpdate.Infrastructure.Extensions;
 using DDNSUpdate.Domain;
 using FluentResults;
 
@@ -20,7 +21,7 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
             Result result = Result.Ok();
             foreach (DigitalOceanDomain domain in account.Domains)
             {
-                result = Result.Merge(await _domainProcessor.ProcessAsync(domain, externalAddress, account.Token, cancellation));
+                result = result.Merge(await _domainProcessor.ProcessAsync(domain, externalAddress, account.Token, cancellation));
             }
             return result;
         }
