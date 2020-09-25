@@ -11,7 +11,9 @@ namespace DDNSUpdate.Domain
         {
         }
 
+#pragma warning disable 8765
         public override bool Equals(DNSRecord x, DNSRecord y)
+#pragma warning restore 8765
         {
             if (ReferenceEquals(x, y))
             {
