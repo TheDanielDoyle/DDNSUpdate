@@ -41,7 +41,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Converters
 
 
         [Fact]
-        public void OverwirtesDomainRecordRequestValues()
+        public void OverwirtesCreateDomainRecordRequestValues()
         {
             //Given
             DNSRecordToDigitalOceanCreateDomainRecordRequestConverter converter = new DNSRecordToDigitalOceanCreateDomainRecordRequestConverter();
