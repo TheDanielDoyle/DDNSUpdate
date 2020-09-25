@@ -12,6 +12,7 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean.Converters
             record.Data = response.Data;
             record.Flags = response.Flags;
             record.Id = response.Id.ToString();
+            record.Name = response.Name;
             record.Port = response.Port;
             record.Priority = response.Priority;
             record.Tag = response.Tag;
