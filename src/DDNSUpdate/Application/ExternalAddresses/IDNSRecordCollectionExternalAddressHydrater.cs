@@ -4,6 +4,6 @@ namespace DDNSUpdate.Application.ExternalAddresses
 {
     public interface IDNSRecordCollectionExternalAddressHydrater
     {
-        DNSRecordCollection Hydrate(DNSRecordCollection dnsRecords, ExternalAddress externalAddress);
+        DNSRecordCollection Hydrate(DNSRecordCollection dnsRecords, ExternalAddress externalAddress, DNSRecordType dnsRecordType);
     }
 }
