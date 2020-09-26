@@ -5,18 +5,20 @@ using System.Threading.Tasks;
 using DDNSUpdate.Application.Providers.DigitalOcean;
 using DDNSUpdate.Application.Providers.DigitalOcean.Configuration;
 using DDNSUpdate.Application.Providers.DigitalOcean.Domain;
+using DDNSUpdate.Domain;
+using DDNSUpdate.Tests.Helpers;
 using FakeItEasy;
 using FluentResults;
 using Xunit;
 
 namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
 {
-    public class DigitalOceanDDNSServiceTests
+    public class DigitalOceanDDNSServiceTests : TestBase
     {
         [Fact]
         public async Task ReturnsSuccessfulIfAllAccountsReturnSuccessful()
         {
-            Domain.ExternalAddress externalAddress = new Domain.ExternalAddress() { IPv4Address = IPAddress.Parse("100.100.100.100") };
+            ExternalAddress externalAddress = new ExternalAddress() { IPv4Address = IPAddress.Parse("100.100.100.100") };
 
             DigitalOceanConfiguration config = new DigitalOceanConfiguration() { Accounts = new List<DigitalOceanAccount>() { new DigitalOceanAccount(), new DigitalOceanAccount() } };
             IDigitalOceanAccountProcessor accountProcessor = A.Fake<IDigitalOceanAccountProcessor>();
@@ -33,7 +35,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
         [Fact]
         public async Task ReturnsFailureIfAnyAccountsReturnFailure()
         {
-            Domain.ExternalAddress externalAddress = new Domain.ExternalAddress() { IPv4Address = IPAddress.Parse("100.100.100.100") };
+            ExternalAddress externalAddress = new ExternalAddress() { IPv4Address = IPAddress.Parse("100.100.100.100") };
 
             DigitalOceanAccount accountOne = new DigitalOceanAccount();
             DigitalOceanAccount accountTwo = new DigitalOceanAccount();

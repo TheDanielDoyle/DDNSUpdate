@@ -6,8 +6,15 @@ using Xunit;
 
 namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Converters
 {
-    public class DigitalOceanGetDomainRecordResponseToDNSRecordConverterTests : MappingSetupBase
+    public class DigitalOceanGetDomainRecordResponseToDNSRecordConverterTests : TestBase
     {
+        private readonly MappingHelper _mappingHelper;
+
+        public DigitalOceanGetDomainRecordResponseToDNSRecordConverterTests()
+        {
+            _mappingHelper = new MappingHelper(base.AssembliesUnderTest);
+        }
+
         [Fact]
         public void ReturnsNewDNSRecordWhenPassedNull()
         {
@@ -26,7 +33,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Converters
                 Weight = 1
             };
 
-            DNSRecord actual = converter.Convert(response, null, ResolutionContext);
+            DNSRecord actual = converter.Convert(response, null, _mappingHelper.ResolutionContext);
 
             Assert.Equal(response.Data, actual.Data);
             Assert.Equal(response.Flags, actual.Flags);
@@ -71,7 +78,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Converters
                 Weight = 42
             };
 
-            DNSRecord actual = converter.Convert(response, record, ResolutionContext);
+            DNSRecord actual = converter.Convert(response, record, _mappingHelper.ResolutionContext);
 
             Assert.Equal(response.Data, actual.Data);
             Assert.Equal(response.Flags, actual.Flags);

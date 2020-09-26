@@ -1,8 +1,7 @@
-using Autofac.Core;
 using DDNSUpdate.Domain;
 using FluentValidation;
 
-namespace DDNSUpdate.Application.Configuration
+namespace DDNSUpdate.Application.Providers.DigitalOcean.Configuration
 {
     public class DigitalOceanDNSRecordValidator : AbstractValidator<DNSRecord>
     {
@@ -12,10 +11,11 @@ namespace DDNSUpdate.Application.Configuration
         public static readonly string DataErrorMessage = _propertyDisallowedMessage;
         public static readonly string FlagsErrorMessage = _propertyDisallowedMessage;
         public static readonly string IdErrorMessage = _propertyDisallowedMessage;
+        public static readonly string NameErrorMessage = "{PropertyName} must be set.";
         public static readonly string PortErrorMessage = _propertyDisallowedMessage;
         public static readonly string PriorityErrorMessage = _propertyDisallowedMessage;
         public static readonly string TagErrorMessage = _propertyDisallowedMessage;
-        public static readonly string TTLErrorMessage = $"The {{PropertyName}} must be {_ttlMinimumSeconds} seconds or greater.";
+        public static readonly string TTLErrorMessage = $"{{PropertyName}} must be {_ttlMinimumSeconds} seconds or greater.";
         public static readonly string TypeErrorMessage = "Use either A or AAA for the {PropertyName}.";
         public static readonly string WeightErrorMessage = _propertyDisallowedMessage;
 
@@ -33,8 +33,12 @@ namespace DDNSUpdate.Application.Configuration
                 .Empty()
                 .WithMessage(IdErrorMessage);
 
-            RuleFor(p => p.Port)
+            RuleFor(p => p.Name)
                 .NotEmpty()
+                .WithMessage(NameErrorMessage);
+
+            RuleFor(p => p.Port)
+                .Empty()
                 .WithMessage(PortErrorMessage);
 
             RuleFor(p => p.Priority)
@@ -51,6 +55,11 @@ namespace DDNSUpdate.Application.Configuration
 
             RuleFor(p => p.Type)
                 .NotEmpty()
+                .WithMessage(TypeErrorMessage)
+                .Must(recordtype =>
+                {
+                    return recordtype == DNSRecordType.A || recordtype == DNSRecordType.AAAA;
+                })
                 .WithMessage(TypeErrorMessage);
 
             RuleFor(p => p.Weight)

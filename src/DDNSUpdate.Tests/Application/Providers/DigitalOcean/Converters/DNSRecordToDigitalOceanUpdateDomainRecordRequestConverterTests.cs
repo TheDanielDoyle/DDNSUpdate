@@ -1,4 +1,6 @@
-﻿using DDNSUpdate.Application.Providers.DigitalOcean.Converters;
+﻿using System;
+using DDNSUpdate.Application;
+using DDNSUpdate.Application.Providers.DigitalOcean.Converters;
 using DDNSUpdate.Application.Providers.DigitalOcean.Requests;
 using DDNSUpdate.Domain;
 using DDNSUpdate.Tests.Helpers;
@@ -6,8 +8,15 @@ using Xunit;
 
 namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Converters
 {
-    public class DNSRecordToDigitalOceanUpdateDomainRecordRequestConverterTests : MappingSetupBase
+    public class DNSRecordToDigitalOceanUpdateDomainRecordRequestConverterTests : TestBase
     {
+        private readonly MappingHelper _mappingHelper;
+
+        public DNSRecordToDigitalOceanUpdateDomainRecordRequestConverterTests()
+        {
+            _mappingHelper = new MappingHelper(base.AssembliesUnderTest);
+        }
+
         [Fact]
         public void ReturnsNewUpdateRequestWhenNull()
         {
@@ -26,7 +35,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Converters
                 Type = DNSRecordType.A
             };
 
-            DigitalOceanUpdateDomainRecordRequest actual = converter.Convert(record, null, ResolutionContext);
+            DigitalOceanUpdateDomainRecordRequest actual = converter.Convert(record, null, _mappingHelper.ResolutionContext);
 
             Assert.Equal(record.Data, actual.Data);
             Assert.Equal(record.Flags, actual.Flags);
@@ -70,7 +79,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Converters
                 Type = "Some other type"
             };
 
-            DigitalOceanUpdateDomainRecordRequest actual = converter.Convert(record, updateRecord, ResolutionContext);
+            DigitalOceanUpdateDomainRecordRequest actual = converter.Convert(record, updateRecord, _mappingHelper.ResolutionContext);
 
             Assert.Equal(record.Data, actual.Data);
             Assert.Equal(record.Flags, actual.Flags);

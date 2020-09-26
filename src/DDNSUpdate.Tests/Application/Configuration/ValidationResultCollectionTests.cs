@@ -1,10 +1,10 @@
-﻿using DDNSUpdate.Application.Configuration;
-using FluentValidation.Results;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using DDNSUpdate.Application.Configuration;
+using FluentValidation.Results;
 using Xunit;
 
-namespace DDNSUpdate.Tests
+namespace DDNSUpdate.Tests.Application.Configuration
 {
     public class ValidationResultCollectionTests
     {

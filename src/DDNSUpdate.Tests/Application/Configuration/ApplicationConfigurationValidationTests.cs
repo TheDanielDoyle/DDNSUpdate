@@ -1,14 +1,14 @@
-using DDNSUpdate.Application.Configuration;
-using DDNSUpdate.Infrastructure.Configuration;
-using FluentValidation;
-using FluentValidation.Results;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DDNSUpdate.Application.Configuration;
+using DDNSUpdate.Infrastructure.Configuration;
+using FluentValidation;
+using FluentValidation.Results;
 using Xunit;
 
-namespace DDNSUpdate.Tests
+namespace DDNSUpdate.Tests.Application.Configuration
 {
     public class ApplicationConfigurationValidationTests
     {

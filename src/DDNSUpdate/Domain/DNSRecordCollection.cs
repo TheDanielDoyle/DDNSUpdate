@@ -13,7 +13,7 @@ namespace DDNSUpdate.Domain
             Empty = new DNSRecordCollection(new DNSRecord[]{});
         }
         
-        public DNSRecordCollection(params IEnumerable<DNSRecord>[]  dnsRecords) : base(dnsRecords.SelectMany(r => r).ToList())
+        public DNSRecordCollection(params IEnumerable<DNSRecord>[] dnsRecords) : base(dnsRecords.SelectMany(r => r).ToList())
         {
         }
 

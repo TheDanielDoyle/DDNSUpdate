@@ -9,11 +9,12 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using DDNSUpdate.Domain;
+using DDNSUpdate.Tests.Helpers;
 using Xunit;
 
 namespace DDNSUpdate.Tests.Application
 {
-    public class DDNSUpdateInvokerTests
+    public class DDNSUpdateInvokerTests : TestBase
     {
         [Fact]
         public async Task SingleExceptionIsCaught()

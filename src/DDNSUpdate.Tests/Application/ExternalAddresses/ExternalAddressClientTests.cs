@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using DDNSUpdate.Application.ExternalAddresses;
 using DDNSUpdate.Infrastructure.Configuration;
+using DDNSUpdate.Tests.Helpers;
 using FakeItEasy;
 using FluentResults;
 using Flurl.Http.Testing;
@@ -13,7 +14,7 @@ using Xunit;
 
 namespace DDNSUpdate.Tests.Application.ExternalAddresses
 {
-    public class ExternalAddressClientTests : IDisposable
+    public class ExternalAddressClientTests : TestBase, IDisposable
     {
         private readonly HttpClient _httpClient;
         private readonly HttpTest _httpTest;

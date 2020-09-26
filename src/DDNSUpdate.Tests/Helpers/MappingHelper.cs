@@ -1,26 +1,30 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using AutoMapper;
-using DDNSUpdate.Application.Providers.DigitalOcean;
 
 namespace DDNSUpdate.Tests.Helpers
 {
-    public class MappingSetupBase
+    internal class MappingHelper
     {
-        public IMapper AutoMapper { get; }
+        public IMapper Mapper { get; }
 
         public ResolutionContext ResolutionContext { get; }
 
-        public MappingSetupBase()
+        public MappingHelper(params Assembly[] assemblies)
         {
             MapperConfiguration config = new MapperConfiguration((cfg) =>
             {
-                cfg.AddProfile<DigitalOceanProfile>();
+                IEnumerable<Type> profileTypes = MappingProfilesFromAssemblies(assemblies);
+                foreach (Type profile in profileTypes)
+                {
+                    cfg.AddProfile(profile);
+                }
             });
 
-            AutoMapper = config.CreateMapper();
-            ResolutionContext = CreateResolutionContext(AutoMapper);
+            Mapper = config.CreateMapper();
+            ResolutionContext = CreateResolutionContext(Mapper);
         }
 
         private ResolutionContext CreateResolutionContext(IMapper mapper)
@@ -31,6 +35,11 @@ namespace DDNSUpdate.Tests.Helpers
                 .Single(c => c.GetParameters().Length == 1);
             ResolutionContext resolutionContext = (ResolutionContext)constructor.Invoke(new object[] { (Mapper)mapper });
             return resolutionContext;
+        }
+
+        private IEnumerable<Type> MappingProfilesFromAssemblies(params Assembly[] assemblies)
+        {
+            return assemblies.SelectMany(a => a.GetTypes().Where(t => typeof(Profile).IsAssignableFrom(t)));
         }
     }
 }

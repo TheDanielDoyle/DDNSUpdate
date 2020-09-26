@@ -1,6 +1,8 @@
-﻿namespace DDNSUpdate.Tests.Application.ExternalAddresses
+﻿using DDNSUpdate.Tests.Helpers;
+
+namespace DDNSUpdate.Tests.Application.ExternalAddresses
 {
-    public class DNSRecordCollectionExternalAddressHydraterTests
+    public class DNSRecordCollectionExternalAddressHydraterTests : TestBase
     {
     }
 }

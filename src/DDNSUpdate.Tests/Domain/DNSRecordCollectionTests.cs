@@ -1,7 +1,7 @@
 ﻿using DDNSUpdate.Domain;
 using Xunit;
 
-namespace DDNSUpdate.Tests
+namespace DDNSUpdate.Tests.Domain
 {
     public class DNSRecordCollectionTests
     {
