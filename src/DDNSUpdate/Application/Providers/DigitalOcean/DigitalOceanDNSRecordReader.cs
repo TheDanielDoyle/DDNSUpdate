@@ -27,6 +27,7 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
             {
                 return result.ToResult();
             }
+
             IEnumerable<DNSRecord> records = _mapper.Map<IEnumerable<DNSRecord>>(result.Value.DomainRecords);
             return Result.Ok(new DNSRecordCollection(records));
         }

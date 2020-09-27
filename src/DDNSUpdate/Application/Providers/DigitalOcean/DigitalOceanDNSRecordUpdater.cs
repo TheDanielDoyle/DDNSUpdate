@@ -26,7 +26,7 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
             foreach (DigitalOceanUpdateDomainRecordRequest request in requests)
             {
                 Result updateResult = await _digitalOceanClient.UpdateDNSRecordAsync(request, token, cancellation);
-                Result.Merge(result, updateResult);
+                result = Result.Merge(result, updateResult);
             }
             return result;
         }

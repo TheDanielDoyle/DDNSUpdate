@@ -1,4 +1,3 @@
-using DDNSUpdate.Application.Configuration;
 using DDNSUpdate.Application.Providers.DigitalOcean.Domain;
 using FluentValidation;
 
