@@ -6,13 +6,8 @@ namespace DDNSUpdate.Domain
 {
     public class DNSRecordCollection : ReadOnlyCollection<DNSRecord>
     {
-        public static DNSRecordCollection Empty;
+        public static DNSRecordCollection Empty { get; } = new DNSRecordCollection(new DNSRecord[]{});
 
-        static DNSRecordCollection()
-        {
-            Empty = new DNSRecordCollection(new DNSRecord[]{});
-        }
-        
         public DNSRecordCollection(params IEnumerable<DNSRecord>[] dnsRecords) : base(dnsRecords.SelectMany(r => r).ToList())
         {
         }
