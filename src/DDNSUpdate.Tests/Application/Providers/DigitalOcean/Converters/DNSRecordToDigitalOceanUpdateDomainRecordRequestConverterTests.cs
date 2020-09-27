@@ -1,6 +1,4 @@
-﻿using System;
-using DDNSUpdate.Application;
-using DDNSUpdate.Application.Providers.DigitalOcean.Converters;
+﻿using DDNSUpdate.Application.Providers.DigitalOcean.Converters;
 using DDNSUpdate.Application.Providers.DigitalOcean.Requests;
 using DDNSUpdate.Domain;
 using DDNSUpdate.Tests.Helpers;

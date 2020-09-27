@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using DDNSUpdate.Application.Configuration;
-using DDNSUpdate.Application.Providers.DigitalOcean.Configuration;
+﻿using DDNSUpdate.Application.Providers.DigitalOcean.Configuration;
 using DDNSUpdate.Domain;
 using DDNSUpdate.Tests.Helpers;
 using FluentValidation;
