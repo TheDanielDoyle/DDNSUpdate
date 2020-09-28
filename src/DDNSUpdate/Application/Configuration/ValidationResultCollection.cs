@@ -7,6 +7,10 @@ namespace DDNSUpdate.Application.Configuration
 {
     public class ValidationResultCollection : ReadOnlyCollection<ValidationResult>
     {
+        public ValidationResultCollection(IEnumerable<ValidationResult> results) : base(results.ToList())
+        {
+        }
+
         public IEnumerable<string> ErrorMessages
         {
             get { return this.Errors.SelectMany(e => e.Errors.Select(x => x.ErrorMessage)); }
@@ -20,10 +24,6 @@ namespace DDNSUpdate.Application.Configuration
         public bool IsValid
         {
             get { return this.All(v => v.IsValid); }
-        }
-
-        public ValidationResultCollection(IEnumerable<ValidationResult> results) : base(results.ToList())
-        {
         }
     }
 }

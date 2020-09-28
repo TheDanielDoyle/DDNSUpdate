@@ -1,13 +1,21 @@
-﻿using System;
-using System.Threading.Tasks;
-using DDNSUpdate.Infrastructure.Hosting;
+﻿using DDNSUpdate.Infrastructure.Hosting;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using System;
+using System.Threading.Tasks;
 
 namespace DDNSUpdate
 {
     internal class Program
     {
+        private static IHost BuildHost(string[] commandlineArguments)
+        {
+            IConfigurationConfigurator configurationConfigurator = new ConfigurationConfigurator();
+            ILoggingConfigurator loggingConfigurator = new LoggingConfigurator();
+            IApplicationHostBuilder hostBuilder = new ApplicationHostBuilder(configurationConfigurator, loggingConfigurator);
+            return hostBuilder.Build(commandlineArguments);
+        }
+
         private static async Task<int> Main(string[] commandlineArguments)
         {
             IHost host = BuildHost(commandlineArguments);
@@ -28,14 +36,6 @@ namespace DDNSUpdate
             }
             Log.Information("DDNSUpdate stopping.");
             return ReturnCode.OK;
-        }
-
-        private static IHost BuildHost(string[] commandlineArguments)
-        {
-            IConfigurationConfigurator configurationConfigurator = new ConfigurationConfigurator();
-            ILoggingConfigurator loggingConfigurator = new LoggingConfigurator();
-            IApplicationHostBuilder hostBuilder = new ApplicationHostBuilder(configurationConfigurator, loggingConfigurator);
-            return hostBuilder.Build(commandlineArguments);
         }
     }
 }

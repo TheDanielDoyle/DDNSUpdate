@@ -1,14 +1,15 @@
 ﻿using DDNSUpdate.Application.Configuration;
+using DDNSUpdate.Tests.Helpers;
 using FluentValidation.Results;
 using System.Collections;
 using System.Collections.Generic;
 using Xunit;
 
-namespace DDNSUpdate.Tests
+namespace DDNSUpdate.Tests.Application.Configuration
 {
-    public class ValidationResultCollectionTests
+    public class ValidationResultCollectionTests : TestBase
     {
-        private ValidationResult _validResult = new ValidationResult();
+        private readonly ValidationResult _validResult = new ValidationResult();
 
         [Theory]
         [ClassData(typeof(InvalidValidationResultCollections))]

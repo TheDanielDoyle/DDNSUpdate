@@ -1,54 +1,61 @@
-using Microsoft.Extensions.DependencyInjection;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+using DDNSUpdate.Application.Configuration;
+using DDNSUpdate.Application.ExternalAddresses;
 using DDNSUpdate.Infrastructure;
 using DDNSUpdate.Infrastructure.Extensions;
 using FluentResults;
-using DDNSUpdate.Application.ExternalAddresses;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DDNSUpdate.Application
 {
     public class DDNSUpdateInvoker : IDDNSUpdateInvoker
     {
-        private readonly ILogger _logger;
+        private readonly IConfigurationValidator _configurationValidator;
         private readonly IScopeBuilder _scopeBuilder;
 
-        public DDNSUpdateInvoker(ILogger<DDNSUpdateInvoker> logger, IScopeBuilder scopeBuilder)
+        public DDNSUpdateInvoker(IConfigurationValidator configurationValidator, IScopeBuilder scopeBuilder)
         {
-            _logger = logger;
+            _configurationValidator = configurationValidator;
             _scopeBuilder = scopeBuilder;
         }
 
-        public async Task InvokeAsync(CancellationToken cancellation)
+        public async Task<Result> InvokeAsync(CancellationToken cancellation)
         {
-            using(IServiceScope scope = _scopeBuilder.Build())
+            using (IServiceScope scope = _scopeBuilder.Build())
             {
+                Result validateConfigurationResult = await _configurationValidator.ValidateAsync(cancellation);
+                if (validateConfigurationResult.IsFailed)
+                {
+                    return validateConfigurationResult;
+                }
+
                 IExternalAddressClient externalAddressClient = GetService<IExternalAddressClient>(scope);
                 Result<IExternalAddressResponse> externalAddressResult = await externalAddressClient.GetAsync(cancellation);
-                if (externalAddressResult.IsSuccess)
+                if (externalAddressResult.IsFailed)
                 {
-                    IEnumerable<IDDNSService> services = GetService<IEnumerable<IDDNSService>>(scope);
-                    IEnumerable<Task> updateTasks = services.Select(async service => service.ProcessAsync(cancellation));
-                    await Task.WhenAll(updateTasks).WithAggregatedExceptions();
+                    return externalAddressResult;
                 }
-                else
-                {
-                    _logger.LogError(GetExternalAddressResultErrorMessage(externalAddressResult));
-                }
-            }
-        }
 
-        private string GetExternalAddressResultErrorMessage(Result<IExternalAddressResponse> externalAddressResult)
-        {
-            return externalAddressResult.Errors.FirstOrDefault()?.Message ?? ExternalAddressClient.ErrorMessage;
+                IEnumerable<IDDNSService> dnsServices = GetService<IEnumerable<IDDNSService>>(scope);
+                return await ProcessAsync(dnsServices, externalAddressResult.Value, cancellation);
+            }
         }
 
         private static T GetService<T>(IServiceScope scope)
         {
             return (T)scope.ServiceProvider.GetService(typeof(T));
+        }
+
+        private async Task<Result> ProcessAsync(IEnumerable<IDDNSService> dnsServices, IExternalAddressResponse value, CancellationToken cancellation)
+        {
+            Result result = Result.Ok();
+            foreach (IDDNSService dnsService in dnsServices)
+            {
+                result = result.Merge(await dnsService.ProcessAsync(value.ExternalAddress, cancellation));
+            }
+            return result;
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
 
-namespace DDNSUpdate.Tests
+namespace DDNSUpdate.Tests.Helpers
 {
-    public class FakeLogger<T> : ILogger<T>, IDisposable
+    internal class FakeLogger<T> : ILogger<T>, IDisposable
     {
         public static readonly FakeLogger<T> Instance = new FakeLogger<T>();
 

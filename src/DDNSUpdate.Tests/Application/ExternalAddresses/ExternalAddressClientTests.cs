@@ -1,5 +1,6 @@
 ﻿using DDNSUpdate.Application.ExternalAddresses;
 using DDNSUpdate.Infrastructure.Configuration;
+using DDNSUpdate.Tests.Helpers;
 using FakeItEasy;
 using FluentResults;
 using Flurl.Http.Testing;
@@ -11,9 +12,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace DDNSUpdate.Tests.Application.ExternalAddress
+namespace DDNSUpdate.Tests.Application.ExternalAddresses
 {
-    public class ExternalAddressClientTests : IDisposable
+    public class ExternalAddressClientTests : TestBase, IDisposable
     {
         private readonly HttpClient _httpClient;
         private readonly HttpTest _httpTest;
@@ -52,7 +53,7 @@ namespace DDNSUpdate.Tests.Application.ExternalAddress
         {
             IOptionsSnapshot<ApplicationConfiguration> options = A.Fake<IOptionsSnapshot<ApplicationConfiguration>>();
             A.CallTo(() => options.Value).Returns(CreateValidApplicationConfiguration());
-            
+
             IExternalAddressClient client = new ExternalAddressClient(options, _httpClient);
             _httpTest.RespondWith("100.100.100.100");
 

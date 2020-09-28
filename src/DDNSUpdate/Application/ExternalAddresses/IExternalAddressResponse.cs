@@ -1,9 +1,9 @@
-﻿using System.Net;
+﻿using DDNSUpdate.Domain;
 
 namespace DDNSUpdate.Application.ExternalAddresses
 {
     public interface IExternalAddressResponse
     {
-        IPAddress IPAddress { get; }
+        ExternalAddress ExternalAddress { get; }
     }
 }

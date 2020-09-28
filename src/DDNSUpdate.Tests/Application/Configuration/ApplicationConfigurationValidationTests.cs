@@ -1,5 +1,6 @@
 using DDNSUpdate.Application.Configuration;
 using DDNSUpdate.Infrastructure.Configuration;
+using DDNSUpdate.Tests.Helpers;
 using FluentValidation;
 using FluentValidation.Results;
 using System;
@@ -8,9 +9,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace DDNSUpdate.Tests
+namespace DDNSUpdate.Tests.Application.Configuration
 {
-    public class ApplicationConfigurationValidationTests
+    public class ApplicationConfigurationValidationTests : TestBase
     {
         [Theory]
         [ClassData(typeof(ApplicationConfigurationInvalidExternalAddressProviders))]
@@ -58,8 +59,8 @@ namespace DDNSUpdate.Tests
         {
             return new ApplicationConfiguration()
             {
-                ExternalAddressProviders = new List<ExternalAddressProvider>() 
-                { 
+                ExternalAddressProviders = new List<ExternalAddressProvider>()
+                {
                     new ExternalAddressProvider() { Uri = new Uri("https://test.com/") }
                 },
                 UpdateInterval = ApplicationConfiguration.MinimumUpdateInterval

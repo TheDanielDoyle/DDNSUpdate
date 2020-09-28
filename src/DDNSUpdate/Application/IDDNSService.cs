@@ -1,7 +1,12 @@
+using DDNSUpdate.Domain;
+using FluentResults;
 using System.Threading;
 using System.Threading.Tasks;
 
-public interface IDDNSService
+namespace DDNSUpdate.Application
 {
-    Task ProcessAsync(CancellationToken cancellation);
+    public interface IDDNSService
+    {
+        Task<Result> ProcessAsync(ExternalAddress externalAddress, CancellationToken cancellation);
+    }
 }

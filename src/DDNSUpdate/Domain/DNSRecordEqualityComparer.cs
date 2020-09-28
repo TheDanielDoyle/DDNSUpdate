@@ -7,21 +7,14 @@ namespace DDNSUpdate.Domain
     {
         public static readonly DNSRecordEqualityComparer Instance = new DNSRecordEqualityComparer();
 
+#pragma warning disable 8765
+
         public override bool Equals(DNSRecord x, DNSRecord y)
+#pragma warning restore 8765
         {
             if (ReferenceEquals(x, y))
             {
                 return true;
-            }
-
-            if (ReferenceEquals(x, null))
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(y, null))
-            {
-                return false;
             }
 
             if (x.GetType() != y.GetType())

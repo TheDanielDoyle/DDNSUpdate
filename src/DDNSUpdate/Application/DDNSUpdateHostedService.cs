@@ -1,10 +1,11 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using DDNSUpdate.Infrastructure.Configuration;
+﻿using DDNSUpdate.Infrastructure.Configuration;
+using FluentResults;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DDNSUpdate.Application
 {
@@ -27,12 +28,13 @@ namespace DDNSUpdate.Application
             {
                 try
                 {
-                    await _invoker.InvokeAsync(cancellation);
+                    Result result = await _invoker.InvokeAsync(cancellation);
+                    LogErrors(result);
                 }
                 catch (TaskCanceledException)
                 {
                 }
-                catch(Exception exception)
+                catch (Exception exception)
                 {
                     _logger.LogError(exception, exception.Message);
                 }
@@ -49,6 +51,14 @@ namespace DDNSUpdate.Application
         private TimeSpan GetUpdateInterval()
         {
             return _configuration.CurrentValue.UpdateInterval;
+        }
+
+        private void LogErrors(Result result)
+        {
+            foreach (Error error in result.Errors)
+            {
+                _logger.LogError(error.Message);
+            }
         }
     }
 }
