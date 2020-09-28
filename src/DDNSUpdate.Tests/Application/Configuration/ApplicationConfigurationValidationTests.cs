@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using DDNSUpdate.Application.Configuration;
 using DDNSUpdate.Infrastructure.Configuration;
+using DDNSUpdate.Tests.Helpers;
 using FluentValidation;
 using FluentValidation.Results;
 using Xunit;
 
 namespace DDNSUpdate.Tests.Application.Configuration
 {
-    public class ApplicationConfigurationValidationTests
+    public class ApplicationConfigurationValidationTests : TestBase
     {
         [Theory]
         [ClassData(typeof(ApplicationConfigurationInvalidExternalAddressProviders))]

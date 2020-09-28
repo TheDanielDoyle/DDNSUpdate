@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using DDNSUpdate.Application.Configuration;
 using DDNSUpdate.Infrastructure;
 using FluentResults;
 using DDNSUpdate.Application.ExternalAddresses;
@@ -10,10 +11,12 @@ namespace DDNSUpdate.Application
 {
     public class DDNSUpdateInvoker : IDDNSUpdateInvoker
     {
+        private readonly IConfigurationValidator _configurationValidator;
         private readonly IScopeBuilder _scopeBuilder;
 
-        public DDNSUpdateInvoker(IScopeBuilder scopeBuilder)
+        public DDNSUpdateInvoker(IConfigurationValidator configurationValidator, IScopeBuilder scopeBuilder)
         {
+            _configurationValidator = configurationValidator;
             _scopeBuilder = scopeBuilder;
         }
 
@@ -21,14 +24,22 @@ namespace DDNSUpdate.Application
         {
             using(IServiceScope scope = _scopeBuilder.Build())
             {
+                Result validateConfigurationResult = await _configurationValidator.ValidateAsync(cancellation);
+                if (validateConfigurationResult.IsFailed)
+                {
+                    return validateConfigurationResult;
+                }
+
                 IExternalAddressClient externalAddressClient = GetService<IExternalAddressClient>(scope);
                 Result<IExternalAddressResponse> externalAddressResult = await externalAddressClient.GetAsync(cancellation);
-                if (externalAddressResult.IsSuccess)
+                if (externalAddressResult.IsFailed)
                 {
-                    IEnumerable<IDDNSService> dnsServices = GetService<IEnumerable<IDDNSService>>(scope);
-                    return await ProcessAsync(dnsServices, externalAddressResult.Value, cancellation);
+                    return externalAddressResult;
                 }
-                return externalAddressResult;
+
+                IEnumerable<IDDNSService> dnsServices = GetService<IEnumerable<IDDNSService>>(scope);
+                return await ProcessAsync(dnsServices, externalAddressResult.Value, cancellation);
+                
             }
         }
 

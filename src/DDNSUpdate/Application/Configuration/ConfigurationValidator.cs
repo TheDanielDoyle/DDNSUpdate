@@ -3,52 +3,49 @@ using DDNSUpdate.Infrastructure;
 using DDNSUpdate.Infrastructure.Configuration;
 using FluentValidation;
 using FluentValidation.Results;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
+using DDNSUpdate.Infrastructure.Extensions;
+using FluentResults;
 
 namespace DDNSUpdate.Application.Configuration
 {
     public class ConfigurationValidator : IConfigurationValidator
     {
-        private readonly ILogger _logger;
         private readonly ServiceFactory _serviceFactory;
 
-        public ConfigurationValidator(ServiceFactory serviceFactory, ILogger<ConfigurationValidator> logger)
+        public ConfigurationValidator(ServiceFactory serviceFactory)
         {
-            _logger = logger;
             _serviceFactory = serviceFactory;
         }
 
-        public bool IsValid()
+        public async Task<Result> ValidateAsync(CancellationToken cancellation)
         {
-            return Validate().IsValid;
-        }
-
-        private void LogErrors(ValidationResultCollection results)
-        {
-            foreach (string errorMessage in results.ErrorMessages)
+            IList<ValidationResult> validationResults = new List<ValidationResult>();
+            await foreach (ValidationResult validationResult in ConfigurationsAsync(cancellation))
             {
-                _logger.LogError(errorMessage);
+                validationResults.Add(validationResult);
             }
+            ValidationResultCollection results = new ValidationResultCollection(validationResults);
+            if (results.IsValid)
+            {
+                return Result.Ok();
+            }
+            return results.ToResults();
         }
 
-        private ValidationResultCollection Validate()
-        {
-            ValidationResultCollection results = new ValidationResultCollection(GetValidationResults());
-            LogErrors(results);
-            return results;
-        }
-
-        private IEnumerable<ValidationResult> GetValidationResults()
+        async IAsyncEnumerable<ValidationResult> ConfigurationsAsync([EnumeratorCancellation] CancellationToken cancellation)
         {
             IValidator<ApplicationConfiguration> applicationConfigurationValidator = GetService<IValidator<ApplicationConfiguration>>();
             IOptionsSnapshot<ApplicationConfiguration> applicationConfiguration = GetService<IOptionsSnapshot<ApplicationConfiguration>>();
-            yield return applicationConfigurationValidator.Validate(applicationConfiguration.Value);
+            yield return await applicationConfigurationValidator.ValidateAsync(applicationConfiguration.Value, cancellation);
 
             IValidator<DigitalOceanConfiguration> digitalOceanConfigurationValidator = GetService<IValidator<DigitalOceanConfiguration>>();
             IOptionsSnapshot<DigitalOceanConfiguration> digitalOceanConfiguration = GetService<IOptionsSnapshot<DigitalOceanConfiguration>>();
-            yield return digitalOceanConfigurationValidator.Validate(digitalOceanConfiguration.Value);
+            yield return await digitalOceanConfigurationValidator.ValidateAsync(digitalOceanConfiguration.Value, cancellation);
         }
 
         private T GetService<T>()

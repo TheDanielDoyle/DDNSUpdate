@@ -1,9 +1,10 @@
 ﻿using DDNSUpdate.Domain;
+using DDNSUpdate.Tests.Helpers;
 using Xunit;
 
 namespace DDNSUpdate.Tests.Domain
 {
-    public class DNSRecordCollectionTests
+    public class DNSRecordCollectionTests : TestBase
     {
         [Fact]
         public void NewRecords()

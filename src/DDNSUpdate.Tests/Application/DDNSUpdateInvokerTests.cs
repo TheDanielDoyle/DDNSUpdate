@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using DDNSUpdate.Application.Configuration;
 using DDNSUpdate.Domain;
 using DDNSUpdate.Tests.Helpers;
 using Xunit;
@@ -20,9 +21,12 @@ namespace DDNSUpdate.Tests.Application
         public async Task SingleExceptionIsCaught()
         {
             IEnumerable<IDDNSService> services = new[] { new NotImplementedExceptionThrowingDDNSService() };
+            IConfigurationValidator configurationValidator = A.Fake<IConfigurationValidator>();
             IExternalAddressClient externalAddressClient = A.Fake<IExternalAddressClient>();
 
-            A.CallTo(() => externalAddressClient.GetAsync(A<CancellationToken>._))
+            A.CallTo(() => configurationValidator.ValidateAsync(A<CancellationToken>.Ignored)).Returns(Result.Ok());
+
+            A.CallTo(() => externalAddressClient.GetAsync(A<CancellationToken>.Ignored))
                 .Returns(Task.FromResult(Result.Ok<IExternalAddressResponse>(new ExternalAddressResponse(default))));
 
             IServiceProvider scopeServiceProvider = A.Fake<IServiceProvider>();
@@ -35,7 +39,7 @@ namespace DDNSUpdate.Tests.Application
             IScopeBuilder scopeBuilder = A.Fake<IScopeBuilder>();
             A.CallTo(() => scopeBuilder.Build()).Returns(fakeScope);
 
-            DDNSUpdateInvoker invoker = new DDNSUpdateInvoker(scopeBuilder);
+            IDDNSUpdateInvoker invoker = new DDNSUpdateInvoker(configurationValidator, scopeBuilder);
             await Assert.ThrowsAsync<NotImplementedException>(() => invoker.InvokeAsync(new CancellationToken()));
         }
 

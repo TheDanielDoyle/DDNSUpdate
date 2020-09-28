@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using DDNSUpdate.Application.Providers.DigitalOcean;
 using DDNSUpdate.Application.Providers.DigitalOcean.Domain;
-using DDNSUpdate.Application.Providers.DigitalOcean.Requests;
 using DDNSUpdate.Application.Providers.DigitalOcean.Responses;
 using DDNSUpdate.Domain;
 using DDNSUpdate.Tests.Helpers;

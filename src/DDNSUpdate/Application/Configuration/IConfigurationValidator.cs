@@ -1,7 +1,11 @@
-﻿namespace DDNSUpdate.Application.Configuration
+﻿using System.Threading;
+using System.Threading.Tasks;
+using FluentResults;
+
+namespace DDNSUpdate.Application.Configuration
 {
     public interface IConfigurationValidator
     {
-        bool IsValid();
+        Task<Result> ValidateAsync(CancellationToken cancellation);
     }
 }
