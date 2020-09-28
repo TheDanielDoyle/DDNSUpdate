@@ -15,10 +15,14 @@ namespace DDNSUpdate.Infrastructure.Hosting
                 IHostEnvironment environment = context.HostingEnvironment;
                 builder
                     .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile($"{_configurationFilename}.json", optional: false, reloadOnChange: true);
+                    .AddJsonFile($"{_configurationFilename}.json", optional: true, reloadOnChange: true)
+                    .AddYamlFile($"{_configurationFilename}.yaml", optional: true, reloadOnChange: true)
+                    .AddYamlFile($"{_configurationFilename}.yml", optional: true, reloadOnChange: true);
                 if (environment.IsDevelopment())
                 {
                     builder.AddJsonFile($"{_configurationFilename}.{environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
+                    builder.AddYamlFile($"{_configurationFilename}.{environment.EnvironmentName}.yaml", optional: true, reloadOnChange: true);
+                    builder.AddYamlFile($"{_configurationFilename}.{environment.EnvironmentName}.yml", optional: true, reloadOnChange: true);
                 }
 
                 builder.AddEnvironmentVariables();
