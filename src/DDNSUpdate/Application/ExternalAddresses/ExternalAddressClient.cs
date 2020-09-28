@@ -1,4 +1,5 @@
-﻿using DDNSUpdate.Infrastructure.Configuration;
+﻿using DDNSUpdate.Domain;
+using DDNSUpdate.Infrastructure.Configuration;
 using FluentResults;
 using Flurl.Http;
 using Microsoft.Extensions.Options;
@@ -6,7 +7,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using DDNSUpdate.Domain;
 
 namespace DDNSUpdate.Application.ExternalAddresses
 {
@@ -20,7 +20,7 @@ namespace DDNSUpdate.Application.ExternalAddresses
         public ExternalAddressClient(IOptionsSnapshot<ApplicationConfiguration> configuration, HttpClient httpClient)
         {
             _configuration = configuration;
-            _httpClient = new FlurlClient(httpClient); 
+            _httpClient = new FlurlClient(httpClient);
         }
 
         public async Task<Result<IExternalAddressResponse>> GetAsync(CancellationToken cancellation)

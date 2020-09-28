@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using DDNSUpdate.Application.Providers.DigitalOcean.Configuration;
+﻿using DDNSUpdate.Application.Providers.DigitalOcean.Configuration;
 using DDNSUpdate.Application.Providers.DigitalOcean.Domain;
 using DDNSUpdate.Domain;
 using DDNSUpdate.Tests.Helpers;
 using FluentValidation;
 using FluentValidation.Results;
+using System.Linq;
 using Xunit;
 
 namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Configuration
@@ -12,29 +12,11 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Configuration
     public class DigitalOceanAccountValidatorTests : TestBase
     {
         [Fact]
-        public void ValidDigitalOceanAccount()
-        {
-            DigitalOceanAccount account = new DigitalOceanAccount
-            {
-                Domains = new []
-                {
-                    ValidDigitalOceanDomain()
-                },
-                Token = "QSA5VXQSWMH3L8MYX2XF"
-            };
-
-            IValidator<DigitalOceanAccount> validator = new DigitalOceanAccountValidator();
-            ValidationResult validationResult = validator.Validate(account);
-
-            Assert.True(validationResult.IsValid);
-        }
-
-        [Fact]
         public void InvalidDigitalOceanAccount()
         {
             DigitalOceanAccount account = new DigitalOceanAccount
             {
-                Domains = new []
+                Domains = new[]
                 {
                     ValidDigitalOceanDomain()
                 },
@@ -47,7 +29,25 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Configuration
             Assert.False(validationResult.IsValid);
             Assert.True(validationResult.Errors.All(m => m.ErrorMessage.Equals(DigitalOceanAccountValidator.TokenErrorMessage)));
         }
-        
+
+        [Fact]
+        public void ValidDigitalOceanAccount()
+        {
+            DigitalOceanAccount account = new DigitalOceanAccount
+            {
+                Domains = new[]
+                {
+                    ValidDigitalOceanDomain()
+                },
+                Token = "QSA5VXQSWMH3L8MYX2XF"
+            };
+
+            IValidator<DigitalOceanAccount> validator = new DigitalOceanAccountValidator();
+            ValidationResult validationResult = validator.Validate(account);
+
+            Assert.True(validationResult.IsValid);
+        }
+
         private DigitalOceanDomain ValidDigitalOceanDomain()
         {
             return new DigitalOceanDomain

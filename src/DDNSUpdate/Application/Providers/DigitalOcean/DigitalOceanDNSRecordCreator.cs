@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using DDNSUpdate.Application.Providers.DigitalOcean.Requests;
 using DDNSUpdate.Domain;
+using DDNSUpdate.Infrastructure.Extensions;
 using FluentResults;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DDNSUpdate.Application.Providers.DigitalOcean
 {
@@ -26,7 +27,7 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
             foreach (DigitalOceanCreateDomainRecordRequest request in requests)
             {
                 Result createResult = await _digitalOceanClient.CreateDNSRecordAsync(request, token, cancellation);
-                result = Result.Merge(result, createResult);
+                result = result.Merge(createResult);
             }
             return result;
         }

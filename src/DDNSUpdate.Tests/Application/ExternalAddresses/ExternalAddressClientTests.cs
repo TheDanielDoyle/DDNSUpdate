@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using DDNSUpdate.Application.ExternalAddresses;
+﻿using DDNSUpdate.Application.ExternalAddresses;
 using DDNSUpdate.Infrastructure.Configuration;
 using DDNSUpdate.Tests.Helpers;
 using FakeItEasy;
 using FluentResults;
 using Flurl.Http.Testing;
 using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace DDNSUpdate.Tests.Application.ExternalAddresses
@@ -53,7 +53,7 @@ namespace DDNSUpdate.Tests.Application.ExternalAddresses
         {
             IOptionsSnapshot<ApplicationConfiguration> options = A.Fake<IOptionsSnapshot<ApplicationConfiguration>>();
             A.CallTo(() => options.Value).Returns(CreateValidApplicationConfiguration());
-            
+
             IExternalAddressClient client = new ExternalAddressClient(options, _httpClient);
             _httpTest.RespondWith("100.100.100.100");
 

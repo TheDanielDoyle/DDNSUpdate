@@ -1,11 +1,11 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using DDNSUpdate.Infrastructure.Configuration;
+﻿using DDNSUpdate.Infrastructure.Configuration;
 using FluentResults;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DDNSUpdate.Application
 {
@@ -34,7 +34,7 @@ namespace DDNSUpdate.Application
                 catch (TaskCanceledException)
                 {
                 }
-                catch(Exception exception)
+                catch (Exception exception)
                 {
                     _logger.LogError(exception, exception.Message);
                 }

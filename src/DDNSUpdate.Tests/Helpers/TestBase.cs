@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using DDNSUpdate.Application;
+﻿using DDNSUpdate.Application;
+using System.Reflection;
 
 namespace DDNSUpdate.Tests.Helpers
 {

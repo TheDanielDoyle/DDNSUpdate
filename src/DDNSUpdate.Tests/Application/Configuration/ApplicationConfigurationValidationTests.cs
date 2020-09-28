@@ -1,12 +1,12 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using DDNSUpdate.Application.Configuration;
 using DDNSUpdate.Infrastructure.Configuration;
 using DDNSUpdate.Tests.Helpers;
 using FluentValidation;
 using FluentValidation.Results;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace DDNSUpdate.Tests.Application.Configuration
@@ -59,8 +59,8 @@ namespace DDNSUpdate.Tests.Application.Configuration
         {
             return new ApplicationConfiguration()
             {
-                ExternalAddressProviders = new List<ExternalAddressProvider>() 
-                { 
+                ExternalAddressProviders = new List<ExternalAddressProvider>()
+                {
                     new ExternalAddressProvider() { Uri = new Uri("https://test.com/") }
                 },
                 UpdateInterval = ApplicationConfiguration.MinimumUpdateInterval

@@ -16,38 +16,6 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Converters
         }
 
         [Fact]
-        public void ReturnsNewDNSRecordWhenPassedNull()
-        {
-            DigitalOceanGetDomainRecordResponseToDNSRecordConverter converter = new DigitalOceanGetDomainRecordResponseToDNSRecordConverter();
-            DigitalOceanGetDomainRecordResponse response = new DigitalOceanGetDomainRecordResponse()
-            {
-                Data = "data",
-                Flags = 1,
-                Id = 1,
-                Name = "name",
-                Port = 1,
-                Priority = 1,
-                Tag = "tag",
-                Ttl = 1,
-                Type = "A",
-                Weight = 1
-            };
-
-            DNSRecord actual = converter.Convert(response, null, _mappingHelper.ResolutionContext);
-
-            Assert.Equal(response.Data, actual.Data);
-            Assert.Equal(response.Flags, actual.Flags);
-            Assert.Equal(response.Id.ToString(), actual.Id);
-            Assert.Equal(response.Name, actual.Name);
-            Assert.Equal(response.Port, actual.Port);
-            Assert.Equal(response.Priority, actual.Priority);
-            Assert.Equal(response.Tag, actual.Tag);
-            Assert.Equal(response.Ttl, actual.TTL);
-            Assert.Equal(DNSRecordType.A, actual.Type);
-            Assert.Equal(response.Weight, actual.Weight);
-        }
-
-        [Fact]
         public void OverwritesDNSRecordWhenPassedARecord()
         {
             DigitalOceanGetDomainRecordResponseToDNSRecordConverter converter = new DigitalOceanGetDomainRecordResponseToDNSRecordConverter();
@@ -79,6 +47,38 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Converters
             };
 
             DNSRecord actual = converter.Convert(response, record, _mappingHelper.ResolutionContext);
+
+            Assert.Equal(response.Data, actual.Data);
+            Assert.Equal(response.Flags, actual.Flags);
+            Assert.Equal(response.Id.ToString(), actual.Id);
+            Assert.Equal(response.Name, actual.Name);
+            Assert.Equal(response.Port, actual.Port);
+            Assert.Equal(response.Priority, actual.Priority);
+            Assert.Equal(response.Tag, actual.Tag);
+            Assert.Equal(response.Ttl, actual.TTL);
+            Assert.Equal(DNSRecordType.A, actual.Type);
+            Assert.Equal(response.Weight, actual.Weight);
+        }
+
+        [Fact]
+        public void ReturnsNewDNSRecordWhenPassedNull()
+        {
+            DigitalOceanGetDomainRecordResponseToDNSRecordConverter converter = new DigitalOceanGetDomainRecordResponseToDNSRecordConverter();
+            DigitalOceanGetDomainRecordResponse response = new DigitalOceanGetDomainRecordResponse()
+            {
+                Data = "data",
+                Flags = 1,
+                Id = 1,
+                Name = "name",
+                Port = 1,
+                Priority = 1,
+                Tag = "tag",
+                Ttl = 1,
+                Type = "A",
+                Weight = 1
+            };
+
+            DNSRecord actual = converter.Convert(response, null, _mappingHelper.ResolutionContext);
 
             Assert.Equal(response.Data, actual.Data);
             Assert.Equal(response.Flags, actual.Flags);

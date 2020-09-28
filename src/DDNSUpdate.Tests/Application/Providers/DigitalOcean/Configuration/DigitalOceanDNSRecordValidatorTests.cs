@@ -10,22 +10,6 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Configuration
     public class DigitalOceanDNSRecordValidatorTests : TestBase
     {
         [Fact]
-        public void ValidDNSRecord()
-        {
-            DNSRecord dnsRecord = new DNSRecord
-            {
-                Name = "validate",
-                TTL = 1800,
-                Type = DNSRecordType.A
-            };
-
-            IValidator<DNSRecord> validator = new DigitalOceanDNSRecordValidator();
-            ValidationResult validationResult = validator.Validate(dnsRecord);
-
-            Assert.True(validationResult.IsValid);
-        }
-
-        [Fact]
         public void InvalidDNSRecord()
         {
             DNSRecord dnsRecord = new DNSRecord
@@ -53,6 +37,22 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Configuration
             Assert.Contains(validationResult.Errors, f => f.PropertyName == nameof(DNSRecord.Tag));
             Assert.Contains(validationResult.Errors, f => f.PropertyName == nameof(DNSRecord.TTL));
             Assert.Contains(validationResult.Errors, f => f.PropertyName == nameof(DNSRecord.Type));
+        }
+
+        [Fact]
+        public void ValidDNSRecord()
+        {
+            DNSRecord dnsRecord = new DNSRecord
+            {
+                Name = "validate",
+                TTL = 1800,
+                Type = DNSRecordType.A
+            };
+
+            IValidator<DNSRecord> validator = new DigitalOceanDNSRecordValidator();
+            ValidationResult validationResult = validator.Validate(dnsRecord);
+
+            Assert.True(validationResult.IsValid);
         }
     }
 }

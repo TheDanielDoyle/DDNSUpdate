@@ -1,28 +1,14 @@
-﻿using System.Linq;
-using System.Net;
-using DDNSUpdate.Application.ExternalAddresses;
+﻿using DDNSUpdate.Application.ExternalAddresses;
 using DDNSUpdate.Domain;
 using DDNSUpdate.Tests.Helpers;
+using System.Linq;
+using System.Net;
 using Xunit;
 
 namespace DDNSUpdate.Tests.Application.ExternalAddresses
 {
     public class DNSRecordCollectionExternalAddressHydraterTests : TestBase
     {
-        [Fact]
-        public void ReturnsOriginalDNSRecordCollectionWhenInputEmpty()
-        {
-            DNSRecordCollection dnsRecords = DNSRecordCollection.Empty;
-            ExternalAddress externalAddress = new ExternalAddress
-            {
-                IPv4Address = IPAddress.None
-            };
-            IDNSRecordCollectionExternalAddressHydrater hydrater = new DNSRecordCollectionExternalAddressHydrater();
-            DNSRecordCollection hydratedDnsRecords = hydrater.Hydrate(dnsRecords, externalAddress, DNSRecordType.A);
-
-            Assert.Same(dnsRecords, hydratedDnsRecords);
-        }
-
         [Fact]
         public void ReturnsHydratedDNSRecord()
         {
@@ -33,7 +19,7 @@ namespace DDNSUpdate.Tests.Application.ExternalAddresses
                 TTL = 1800,
                 Type = DNSRecordType.A
             };
-            DNSRecordCollection dnsRecords = new DNSRecordCollection(new [] { dnsRecord });
+            DNSRecordCollection dnsRecords = new DNSRecordCollection(new[] { dnsRecord });
             ExternalAddress externalAddress = new ExternalAddress
             {
                 IPv4Address = IPAddress.Parse(ipAddress)
@@ -48,6 +34,20 @@ namespace DDNSUpdate.Tests.Application.ExternalAddresses
             Assert.Equal(ipAddress, hydratedDnsRecord.Data);
             Assert.Equal(dnsRecord.Name, hydratedDnsRecord.Name);
             Assert.Equal(dnsRecord.TTL, hydratedDnsRecord.TTL);
+        }
+
+        [Fact]
+        public void ReturnsOriginalDNSRecordCollectionWhenInputEmpty()
+        {
+            DNSRecordCollection dnsRecords = DNSRecordCollection.Empty;
+            ExternalAddress externalAddress = new ExternalAddress
+            {
+                IPv4Address = IPAddress.None
+            };
+            IDNSRecordCollectionExternalAddressHydrater hydrater = new DNSRecordCollectionExternalAddressHydrater();
+            DNSRecordCollection hydratedDnsRecords = hydrater.Hydrate(dnsRecords, externalAddress, DNSRecordType.A);
+
+            Assert.Same(dnsRecords, hydratedDnsRecords);
         }
     }
 }

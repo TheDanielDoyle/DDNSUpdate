@@ -12,7 +12,7 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean.Configuration
             RuleFor(p => p.Name)
                 .NotEmpty()
                 .WithMessage(NameErrorMessage);
-            
+
             RuleForEach(p => p.Records).SetValidator(new DigitalOceanDNSRecordValidator());
         }
     }

@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using DDNSUpdate.Application.Providers.DigitalOcean;
+﻿using DDNSUpdate.Application.Providers.DigitalOcean;
 using DDNSUpdate.Application.Providers.DigitalOcean.Domain;
 using DDNSUpdate.Application.Providers.DigitalOcean.Responses;
 using DDNSUpdate.Domain;
 using DDNSUpdate.Tests.Helpers;
 using FakeItEasy;
 using FluentResults;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
@@ -48,7 +48,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
 
             IDigitalOceanClient client = A.Fake<IDigitalOceanClient>();
             IDigitalOceanDNSRecordReader reader = new DigitalOceanDNSRecordReader(client, _mappingHelper.Mapper);
-            
+
             A.CallTo(() => client.GetDNSRecordsAsync(A<DigitalOceanDomain>.Ignored, A<string>.Ignored, A<CancellationToken>.Ignored)).Returns(clientResponeResult);
 
             Result<DNSRecordCollection> result = await reader.ReadAsync(domain, string.Empty, CancellationToken.None);

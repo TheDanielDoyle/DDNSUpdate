@@ -1,9 +1,9 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using DDNSUpdate.Application.Providers.DigitalOcean.Domain;
-using DDNSUpdate.Infrastructure.Extensions;
+﻿using DDNSUpdate.Application.Providers.DigitalOcean.Domain;
 using DDNSUpdate.Domain;
+using DDNSUpdate.Infrastructure.Extensions;
 using FluentResults;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DDNSUpdate.Application.Providers.DigitalOcean
 {

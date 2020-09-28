@@ -1,17 +1,13 @@
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using AutoMapper;
 
 namespace DDNSUpdate.Tests.Helpers
 {
     internal class MappingHelper
     {
-        public IMapper Mapper { get; }
-
-        public ResolutionContext ResolutionContext { get; }
-
         public MappingHelper(params Assembly[] assemblies)
         {
             MapperConfiguration config = new MapperConfiguration((cfg) =>
@@ -26,6 +22,10 @@ namespace DDNSUpdate.Tests.Helpers
             Mapper = config.CreateMapper();
             ResolutionContext = CreateResolutionContext(Mapper);
         }
+
+        public IMapper Mapper { get; }
+
+        public ResolutionContext ResolutionContext { get; }
 
         private ResolutionContext CreateResolutionContext(IMapper mapper)
         {

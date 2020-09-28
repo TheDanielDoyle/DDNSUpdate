@@ -16,38 +16,6 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Converters
         }
 
         [Fact]
-        public void ReturnsNewUpdateRequestWhenNull()
-        {
-            DNSRecordToDigitalOceanUpdateDomainRecordRequestConverter converter = new DNSRecordToDigitalOceanUpdateDomainRecordRequestConverter();
-
-            DNSRecord record = new DNSRecord()
-            {
-                Data = "DNSData",
-                Flags = 1,
-                Name = "DNSName",
-                Port = 1,
-                Priority = 1,
-                Tag = "DNSTag",
-                TTL = 1,
-                Weight = 1,
-                Type = DNSRecordType.A
-            };
-
-            DigitalOceanUpdateDomainRecordRequest actual = converter.Convert(record, null, _mappingHelper.ResolutionContext);
-
-            Assert.Equal(record.Data, actual.Data);
-            Assert.Equal(record.Flags, actual.Flags);
-            Assert.Equal(record.Name, actual.Name);
-            Assert.Equal(record.Port, actual.Port);
-            Assert.Equal(record.Priority, actual.Priority);
-            Assert.Equal(record.Tag, actual.Tag);
-            Assert.Equal(record.TTL, actual.Ttl);
-            Assert.Equal(record.Weight, actual.Weight);
-            Assert.Equal(DNSRecordType.A.Value, actual.Type);
-        }
-
-
-        [Fact]
         public void OverwirtesUpdateDomainRecordRequestValues()
         {
             DNSRecordToDigitalOceanUpdateDomainRecordRequestConverter converter = new DNSRecordToDigitalOceanUpdateDomainRecordRequestConverter();
@@ -78,6 +46,37 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Converters
             };
 
             DigitalOceanUpdateDomainRecordRequest actual = converter.Convert(record, updateRecord, _mappingHelper.ResolutionContext);
+
+            Assert.Equal(record.Data, actual.Data);
+            Assert.Equal(record.Flags, actual.Flags);
+            Assert.Equal(record.Name, actual.Name);
+            Assert.Equal(record.Port, actual.Port);
+            Assert.Equal(record.Priority, actual.Priority);
+            Assert.Equal(record.Tag, actual.Tag);
+            Assert.Equal(record.TTL, actual.Ttl);
+            Assert.Equal(record.Weight, actual.Weight);
+            Assert.Equal(DNSRecordType.A.Value, actual.Type);
+        }
+
+        [Fact]
+        public void ReturnsNewUpdateRequestWhenNull()
+        {
+            DNSRecordToDigitalOceanUpdateDomainRecordRequestConverter converter = new DNSRecordToDigitalOceanUpdateDomainRecordRequestConverter();
+
+            DNSRecord record = new DNSRecord()
+            {
+                Data = "DNSData",
+                Flags = 1,
+                Name = "DNSName",
+                Port = 1,
+                Priority = 1,
+                Tag = "DNSTag",
+                TTL = 1,
+                Weight = 1,
+                Type = DNSRecordType.A
+            };
+
+            DigitalOceanUpdateDomainRecordRequest actual = converter.Convert(record, null, _mappingHelper.ResolutionContext);
 
             Assert.Equal(record.Data, actual.Data);
             Assert.Equal(record.Flags, actual.Flags);

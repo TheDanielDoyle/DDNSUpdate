@@ -1,6 +1,9 @@
 using DDNSUpdate.Application;
+using DDNSUpdate.Application.Configuration;
 using DDNSUpdate.Application.ExternalAddresses;
+using DDNSUpdate.Domain;
 using DDNSUpdate.Infrastructure;
+using DDNSUpdate.Tests.Helpers;
 using FakeItEasy;
 using FluentResults;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,9 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using DDNSUpdate.Application.Configuration;
-using DDNSUpdate.Domain;
-using DDNSUpdate.Tests.Helpers;
 using Xunit;
 
 namespace DDNSUpdate.Tests.Application

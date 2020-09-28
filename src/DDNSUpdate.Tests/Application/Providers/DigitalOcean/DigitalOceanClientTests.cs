@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using DDNSUpdate.Application.Providers.DigitalOcean;
+﻿using DDNSUpdate.Application.Providers.DigitalOcean;
 using DDNSUpdate.Application.Providers.DigitalOcean.Domain;
 using DDNSUpdate.Application.Providers.DigitalOcean.Requests;
 using DDNSUpdate.Application.Providers.DigitalOcean.Responses;
@@ -13,6 +6,13 @@ using DDNSUpdate.Domain;
 using DDNSUpdate.Tests.Helpers;
 using FluentResults;
 using Flurl.Http.Testing;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
@@ -87,6 +87,24 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
         }
 
         [Fact]
+        public async Task Create_Failure_Is_Fail_Result()
+        {
+            _httpTest.RespondWith(string.Empty, (int)HttpStatusCode.BadRequest);
+            IDigitalOceanClient client = new DigitalOceanClient(_httpClient);
+
+            DigitalOceanCreateDomainRecordRequest request = new DigitalOceanCreateDomainRecordRequest
+            {
+                Data = "100.100.100.100",
+                Name = "test",
+                Ttl = 1800,
+                Type = DNSRecordType.A
+            };
+
+            Result response = await client.CreateDNSRecordAsync(request, string.Empty, CancellationToken.None);
+            Assert.True(response.IsFailed);
+        }
+
+        [Fact]
         public async Task Create_Success_Is_Success_Result()
         {
             _httpTest.RespondWith(_createResponse, (int)HttpStatusCode.Created);
@@ -104,21 +122,24 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
             Assert.True(response.IsSuccess);
         }
 
-        [Fact]
-        public async Task Create_Failure_Is_Fail_Result()
+        public void Dispose()
         {
-            _httpTest.RespondWith(string.Empty, (int)HttpStatusCode.BadRequest);
+            _httpClient.Dispose();
+            _httpTest.Dispose();
+        }
+
+        [Fact]
+        public async Task Read_Failure_Is_Fail_Result()
+        {
+            _httpTest.RespondWith(string.Empty, (int)HttpStatusCode.NotFound);
             IDigitalOceanClient client = new DigitalOceanClient(_httpClient);
 
-            DigitalOceanCreateDomainRecordRequest request = new DigitalOceanCreateDomainRecordRequest
+            DigitalOceanDomain domain = new DigitalOceanDomain
             {
-                Data = "100.100.100.100",
-                Name = "test",
-                Ttl = 1800,
-                Type = DNSRecordType.A
+                Name = "test.com"
             };
 
-            Result response = await client.CreateDNSRecordAsync(request, string.Empty, CancellationToken.None);
+            Result<DigitalOceanGetDomainRecordsResponse> response = await client.GetDNSRecordsAsync(domain, string.Empty, CancellationToken.None);
             Assert.True(response.IsFailed);
         }
 
@@ -147,17 +168,21 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
         }
 
         [Fact]
-        public async Task Read_Failure_Is_Fail_Result()
+        public async Task Update_Failure_Is_Fail_Result()
         {
-            _httpTest.RespondWith(string.Empty, (int)HttpStatusCode.NotFound);
+            _httpTest.RespondWith(string.Empty, (int)HttpStatusCode.BadRequest);
             IDigitalOceanClient client = new DigitalOceanClient(_httpClient);
 
-            DigitalOceanDomain domain = new DigitalOceanDomain
+            DigitalOceanUpdateDomainRecordRequest request = new DigitalOceanUpdateDomainRecordRequest
             {
-                Name = "test.com"
+                Data = "",
+                Id = "3352896",
+                Name = "test",
+                Ttl = 1800,
+                Type = DNSRecordType.A
             };
 
-            Result<DigitalOceanGetDomainRecordsResponse> response = await client.GetDNSRecordsAsync(domain, string.Empty, CancellationToken.None);
+            Result<DigitalOceanGetDomainRecordsResponse> response = await client.UpdateDNSRecordAsync(request, string.Empty, CancellationToken.None);
             Assert.True(response.IsFailed);
         }
 
@@ -178,31 +203,6 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
 
             Result<DigitalOceanGetDomainRecordsResponse> response = await client.UpdateDNSRecordAsync(request, string.Empty, CancellationToken.None);
             Assert.True(response.IsSuccess);
-        }
-
-        [Fact]
-        public async Task Update_Failure_Is_Fail_Result()
-        {
-            _httpTest.RespondWith(string.Empty, (int)HttpStatusCode.BadRequest);
-            IDigitalOceanClient client = new DigitalOceanClient(_httpClient);
-
-            DigitalOceanUpdateDomainRecordRequest request = new DigitalOceanUpdateDomainRecordRequest
-            {
-                Data = "",
-                Id = "3352896",
-                Name = "test",
-                Ttl = 1800,
-                Type = DNSRecordType.A
-            };
-
-            Result<DigitalOceanGetDomainRecordsResponse> response = await client.UpdateDNSRecordAsync(request, string.Empty, CancellationToken.None);
-            Assert.True(response.IsFailed);
-        }
-
-        public void Dispose()
-        {
-            _httpClient.Dispose();
-            _httpTest.Dispose();
         }
     }
 }

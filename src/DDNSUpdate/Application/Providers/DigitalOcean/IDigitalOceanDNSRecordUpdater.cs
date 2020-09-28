@@ -1,7 +1,7 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using DDNSUpdate.Domain;
+﻿using DDNSUpdate.Domain;
 using FluentResults;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DDNSUpdate.Application.Providers.DigitalOcean
 {

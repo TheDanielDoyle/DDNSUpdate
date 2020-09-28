@@ -1,16 +1,17 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using DDNSUpdate.Application.ExternalAddresses;
+﻿using DDNSUpdate.Application.ExternalAddresses;
 using DDNSUpdate.Application.Providers.DigitalOcean.Domain;
 using DDNSUpdate.Domain;
+using DDNSUpdate.Infrastructure.Extensions;
 using FluentResults;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DDNSUpdate.Application.Providers.DigitalOcean
 {
     public class DigitalOceanDomainProcessor : IDigitalOceanDomainProcessor
     {
-        private readonly IDNSRecordCollectionExternalAddressHydrater _dnsRecordHydrater;
         private readonly IDigitalOceanDNSRecordCreator _dnsRecordCreator;
+        private readonly IDNSRecordCollectionExternalAddressHydrater _dnsRecordHydrater;
         private readonly IDigitalOceanDNSRecordReader _dnsRecordReader;
         private readonly IDigitalOceanDNSRecordUpdater _dnsRecordUpdater;
 
@@ -34,7 +35,7 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
 
             Result create = await _dnsRecordCreator.CreateAsync(activeDnsRecordsResult.Value.WhereNew(hydratedDnsRecords), token, cancellation);
             Result update = await _dnsRecordUpdater.UpdateAsync(activeDnsRecordsResult.Value.WhereUpdated(hydratedDnsRecords), token, cancellation);
-            return Result.Merge(create, update);
+            return create.Merge(update);
         }
     }
 }

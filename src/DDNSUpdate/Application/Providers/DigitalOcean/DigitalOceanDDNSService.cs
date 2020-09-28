@@ -1,17 +1,17 @@
-﻿using DDNSUpdate.Domain;
-using System.Threading;
-using System.Threading.Tasks;
-using DDNSUpdate.Application.Providers.DigitalOcean.Configuration;
+﻿using DDNSUpdate.Application.Providers.DigitalOcean.Configuration;
 using DDNSUpdate.Application.Providers.DigitalOcean.Domain;
+using DDNSUpdate.Domain;
 using DDNSUpdate.Infrastructure.Extensions;
 using FluentResults;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DDNSUpdate.Application.Providers.DigitalOcean
 {
     public class DigitalOceanDDNSService : IDDNSService
     {
-        private readonly DigitalOceanConfiguration _configuration;
         private readonly IDigitalOceanAccountProcessor _accountProcessor;
+        private readonly DigitalOceanConfiguration _configuration;
 
         public DigitalOceanDDNSService(DigitalOceanConfiguration configuration, IDigitalOceanAccountProcessor accountProcessor)
         {

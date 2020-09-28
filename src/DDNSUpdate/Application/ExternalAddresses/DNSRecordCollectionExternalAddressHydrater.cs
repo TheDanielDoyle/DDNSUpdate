@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using DDNSUpdate.Domain;
+﻿using DDNSUpdate.Domain;
+using System.Linq;
 
 namespace DDNSUpdate.Application.ExternalAddresses
 {

@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using DDNSUpdate.Application.Providers.DigitalOcean.Requests;
 using DDNSUpdate.Domain;
+using DDNSUpdate.Infrastructure.Extensions;
 using FluentResults;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DDNSUpdate.Application.Providers.DigitalOcean
 {
@@ -19,15 +20,18 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
             _mapper = mapper;
         }
 
-        public async Task<Result> UpdateAsync(DNSRecordCollection dnsRecords, string token, CancellationToken cancellation)
+        public async Task<Result> UpdateAsync(DNSRecordCollection dnsRecords, string token,
+            CancellationToken cancellation)
         {
             Result result = Result.Ok();
-            IEnumerable<DigitalOceanUpdateDomainRecordRequest> requests = _mapper.Map<IEnumerable<DigitalOceanUpdateDomainRecordRequest>>(dnsRecords);
+            IEnumerable<DigitalOceanUpdateDomainRecordRequest> requests =
+                _mapper.Map<IEnumerable<DigitalOceanUpdateDomainRecordRequest>>(dnsRecords);
             foreach (DigitalOceanUpdateDomainRecordRequest request in requests)
             {
                 Result updateResult = await _digitalOceanClient.UpdateDNSRecordAsync(request, token, cancellation);
-                result = Result.Merge(result, updateResult);
+                result = result.Merge(updateResult);
             }
+
             return result;
         }
     }

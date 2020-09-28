@@ -1,31 +1,16 @@
-﻿using System.Linq;
-using DDNSUpdate.Application.Providers.DigitalOcean.Configuration;
+﻿using DDNSUpdate.Application.Providers.DigitalOcean.Configuration;
 using DDNSUpdate.Application.Providers.DigitalOcean.Domain;
 using DDNSUpdate.Domain;
 using DDNSUpdate.Tests.Helpers;
 using FluentValidation;
 using FluentValidation.Results;
+using System.Linq;
 using Xunit;
 
 namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Configuration
 {
     public class DigitalOceanDomainValidatorTests : TestBase
     {
-        [Fact]
-        public void ValidDigitalOceanDomain()
-        {
-            DigitalOceanDomain domain = new DigitalOceanDomain
-            {
-                Name = "test.com",
-                Records = ValidDNSRecordCollection()
-            };
-
-            IValidator<DigitalOceanDomain> validator = new DigitalOceanDomainValidator();
-            ValidationResult validationResult = validator.Validate(domain);
-
-            Assert.True(validationResult.IsValid);
-        }
-
         [Fact]
         public void InvalidDigitalOceanDomain()
         {
@@ -40,6 +25,21 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Configuration
 
             Assert.False(validationResult.IsValid);
             Assert.True(validationResult.Errors.All(m => m.ErrorMessage.Equals(DigitalOceanDomainValidator.NameErrorMessage)));
+        }
+
+        [Fact]
+        public void ValidDigitalOceanDomain()
+        {
+            DigitalOceanDomain domain = new DigitalOceanDomain
+            {
+                Name = "test.com",
+                Records = ValidDNSRecordCollection()
+            };
+
+            IValidator<DigitalOceanDomain> validator = new DigitalOceanDomainValidator();
+            ValidationResult validationResult = validator.Validate(domain);
+
+            Assert.True(validationResult.IsValid);
         }
 
         private DNSRecord ValidDNSRecord()

@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using DDNSUpdate.Application.Configuration;
+﻿using DDNSUpdate.Application.Configuration;
 using DDNSUpdate.Tests.Helpers;
 using FluentValidation.Results;
+using System.Collections;
+using System.Collections.Generic;
 using Xunit;
 
 namespace DDNSUpdate.Tests.Application.Configuration

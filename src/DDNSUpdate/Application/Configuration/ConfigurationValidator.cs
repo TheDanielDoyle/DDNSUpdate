@@ -1,6 +1,8 @@
 ﻿using DDNSUpdate.Application.Providers.DigitalOcean.Configuration;
 using DDNSUpdate.Infrastructure;
 using DDNSUpdate.Infrastructure.Configuration;
+using DDNSUpdate.Infrastructure.Extensions;
+using FluentResults;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.Options;
@@ -8,8 +10,6 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using DDNSUpdate.Infrastructure.Extensions;
-using FluentResults;
 
 namespace DDNSUpdate.Application.Configuration
 {
@@ -37,7 +37,7 @@ namespace DDNSUpdate.Application.Configuration
             return results.ToResults();
         }
 
-        async IAsyncEnumerable<ValidationResult> ConfigurationsAsync([EnumeratorCancellation] CancellationToken cancellation)
+        private async IAsyncEnumerable<ValidationResult> ConfigurationsAsync([EnumeratorCancellation] CancellationToken cancellation)
         {
             IValidator<ApplicationConfiguration> applicationConfigurationValidator = GetService<IValidator<ApplicationConfiguration>>();
             IOptionsSnapshot<ApplicationConfiguration> applicationConfiguration = GetService<IOptionsSnapshot<ApplicationConfiguration>>();

@@ -14,7 +14,6 @@ namespace DDNSUpdate.Infrastructure.Hosting
             _loggingConfigurator = loggingConfigurator;
         }
 
-
         public IHost Build(string[] commandlineArguments)
         {
             IHostBuilder hostBuilder = Host
