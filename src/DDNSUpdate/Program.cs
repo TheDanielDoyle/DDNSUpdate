@@ -21,7 +21,7 @@ namespace DDNSUpdate
             IHost host = BuildHost(commandlineArguments);
             try
             {
-                Log.Information("DDNSUpdate starting.");
+                Log.Information("DDNSUpdate {Version} starting", AssemblyHelper.ProductVersion);
                 await host.RunAsync();
             }
             catch (Exception exception)
