@@ -7,7 +7,6 @@
     <Authors>Daniel P. Doyle; Adam Parker; Michael Willis</Authors>
     <Product>DDNS Update</Product>
     <Copyright>2020 Daniel P. Doyle</Copyright>
-    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <RepositoryUrl>https://github.com/TheDanielDoyle/DDNSUpdate</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <LangVersion>8.0</LangVersion>
