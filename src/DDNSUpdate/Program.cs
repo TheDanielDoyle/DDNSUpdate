@@ -21,12 +21,12 @@ namespace DDNSUpdate
             IHost host = BuildHost(commandlineArguments);
             try
             {
-                Log.Information("DDNSUpdate {Version} starting", AssemblyHelper.ProductVersion);
+                Log.Information("DDNS Update {Version} starting", AssemblyHelper.ProductVersion);
                 await host.RunAsync();
             }
             catch (Exception exception)
             {
-                Log.Fatal(exception, "DDNSUpdate terminated unexpectedly.");
+                Log.Fatal(exception, "DDNS Update terminated unexpectedly.");
                 return ReturnCode.Fail;
             }
             finally
@@ -34,7 +34,7 @@ namespace DDNSUpdate
                 host.Dispose();
                 Log.CloseAndFlush();
             }
-            Log.Information("DDNSUpdate stopping.");
+            Log.Information("DDNS Update stopping.");
             return ReturnCode.OK;
         }
     }
