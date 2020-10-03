@@ -43,7 +43,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
 
             IDigitalOceanDNSRecordCreator creater = new DigitalOceanDNSRecordCreator(client, _mappingHelper.Mapper);
 
-            Result result = await creater.CreateAsync(string.Empty, dnsRecords, A<string>.Ignored, CancellationToken.None);
+            Result result = await creater.CreateAsync(string.Empty, dnsRecords, string.Empty, CancellationToken.None);
 
             A.CallTo(() => client.CreateDNSRecordAsync(A<string>.Ignored, A<DigitalOceanCreateDomainRecordRequest>.Ignored, A<string>.Ignored, A<CancellationToken>.Ignored)).MustHaveHappenedTwiceExactly();
             Assert.True(result.IsFailed);

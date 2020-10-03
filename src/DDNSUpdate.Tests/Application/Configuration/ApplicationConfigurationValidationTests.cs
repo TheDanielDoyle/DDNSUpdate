@@ -20,12 +20,11 @@ namespace DDNSUpdate.Tests.Application.Configuration
             IValidator<ApplicationConfiguration> validator = new ApplicationConfigurationValidator();
             ApplicationConfiguration configuration = CreateValidApplicationConfiguration();
 
-            configuration.ExternalAddressProviders = externalAddressProviders.ToList();
+            configuration.ExternalAddressProviders = externalAddressProviders?.ToList();
 
             ValidationResult result = validator.Validate(configuration);
 
             Assert.False(result.IsValid);
-            Assert.True(result.Errors.All(m => !string.IsNullOrWhiteSpace(m.ErrorMessage)));
         }
 
         [Theory]
