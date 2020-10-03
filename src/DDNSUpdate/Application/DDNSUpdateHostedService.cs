@@ -29,7 +29,7 @@ namespace DDNSUpdate.Application
                 try
                 {
                     Result result = await _invoker.InvokeAsync(cancellation);
-                    LogErrors(result);
+                    LogResults(result);
                 }
                 catch (TaskCanceledException)
                 {
@@ -53,8 +53,12 @@ namespace DDNSUpdate.Application
             return _configuration.CurrentValue.UpdateInterval;
         }
 
-        private void LogErrors(Result result)
+        private void LogResults(Result result)
         {
+            foreach (Success success in result.Successes)
+            {
+                _logger.LogInformation(success.Message);
+            }
             foreach (Error error in result.Errors)
             {
                 _logger.LogError(error.Message);
