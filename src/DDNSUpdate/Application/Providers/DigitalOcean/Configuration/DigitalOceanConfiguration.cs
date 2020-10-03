@@ -5,6 +5,6 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean.Configuration
 {
     public class DigitalOceanConfiguration
     {
-        public IEnumerable<DigitalOceanAccount> Accounts { get; set; } = new List<DigitalOceanAccount>();
+        public IList<DigitalOceanAccount> Accounts { get; set; } = new List<DigitalOceanAccount>();
     }
 }

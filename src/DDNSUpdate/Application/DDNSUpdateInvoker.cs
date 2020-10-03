@@ -12,12 +12,10 @@ namespace DDNSUpdate.Application
 {
     public class DDNSUpdateInvoker : IDDNSUpdateInvoker
     {
-        private readonly IConfigurationValidator _configurationValidator;
         private readonly IScopeBuilder _scopeBuilder;
 
-        public DDNSUpdateInvoker(IConfigurationValidator configurationValidator, IScopeBuilder scopeBuilder)
+        public DDNSUpdateInvoker(IScopeBuilder scopeBuilder)
         {
-            _configurationValidator = configurationValidator;
             _scopeBuilder = scopeBuilder;
         }
 
@@ -25,7 +23,8 @@ namespace DDNSUpdate.Application
         {
             using (IServiceScope scope = _scopeBuilder.Build())
             {
-                Result validateConfigurationResult = await _configurationValidator.ValidateAsync(cancellation);
+                IConfigurationValidator configurationValidator = GetService<IConfigurationValidator>(scope);
+                Result validateConfigurationResult = await configurationValidator.ValidateAsync(cancellation);
                 if (validateConfigurationResult.IsFailed)
                 {
                     return validateConfigurationResult;

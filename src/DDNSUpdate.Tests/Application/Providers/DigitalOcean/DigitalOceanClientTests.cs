@@ -100,7 +100,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
                 Type = DNSRecordType.A
             };
 
-            Result response = await client.CreateDNSRecordAsync(request, string.Empty, CancellationToken.None);
+            Result response = await client.CreateDNSRecordAsync("test.com", request, string.Empty, CancellationToken.None);
             Assert.True(response.IsFailed);
         }
 
@@ -118,7 +118,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
                 Type = DNSRecordType.A
             };
 
-            Result response = await client.CreateDNSRecordAsync(request, string.Empty, CancellationToken.None);
+            Result response = await client.CreateDNSRecordAsync("test.com", request, string.Empty, CancellationToken.None);
             Assert.True(response.IsSuccess);
         }
 
@@ -182,7 +182,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
                 Type = DNSRecordType.A
             };
 
-            Result<DigitalOceanGetDomainRecordsResponse> response = await client.UpdateDNSRecordAsync(request, string.Empty, CancellationToken.None);
+            Result<DigitalOceanGetDomainRecordsResponse> response = await client.UpdateDNSRecordAsync("test.com", request, string.Empty, CancellationToken.None);
             Assert.True(response.IsFailed);
         }
 
@@ -201,7 +201,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
                 Type = DNSRecordType.A
             };
 
-            Result<DigitalOceanGetDomainRecordsResponse> response = await client.UpdateDNSRecordAsync(request, string.Empty, CancellationToken.None);
+            Result<DigitalOceanGetDomainRecordsResponse> response = await client.UpdateDNSRecordAsync("test.com", request, string.Empty, CancellationToken.None);
             Assert.True(response.IsSuccess);
         }
     }

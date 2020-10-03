@@ -26,21 +26,21 @@ namespace DDNSUpdate.Tests.Application
 
             A.CallTo(() => configurationValidator.ValidateAsync(A<CancellationToken>.Ignored)).Returns(Result.Ok());
 
-            A.CallTo(() => externalAddressClient.GetAsync(A<CancellationToken>.Ignored))
-                .Returns(Task.FromResult(Result.Ok<IExternalAddressResponse>(new ExternalAddressResponse(default))));
+            A.CallTo(() => externalAddressClient.GetAsync(A<CancellationToken>.Ignored)).Returns(Result.Ok<IExternalAddressResponse>(new ExternalAddressResponse(default)));
 
             IServiceProvider scopeServiceProvider = A.Fake<IServiceProvider>();
             A.CallTo(() => scopeServiceProvider.GetService(typeof(IEnumerable<IDDNSService>))).Returns(services);
 
             IServiceScope fakeScope = A.Fake<IServiceScope>();
             A.CallTo(() => fakeScope.ServiceProvider).Returns(scopeServiceProvider);
+            A.CallTo(() => scopeServiceProvider.GetService(typeof(IConfigurationValidator))).Returns(configurationValidator);
             A.CallTo(() => scopeServiceProvider.GetService(typeof(IExternalAddressClient))).Returns(externalAddressClient);
 
             IScopeBuilder scopeBuilder = A.Fake<IScopeBuilder>();
             A.CallTo(() => scopeBuilder.Build()).Returns(fakeScope);
 
-            IDDNSUpdateInvoker invoker = new DDNSUpdateInvoker(configurationValidator, scopeBuilder);
-            await Assert.ThrowsAsync<NotImplementedException>(() => invoker.InvokeAsync(new CancellationToken()));
+            IDDNSUpdateInvoker invoker = new DDNSUpdateInvoker(scopeBuilder);
+            await Assert.ThrowsAsync<NotImplementedException>(() => invoker.InvokeAsync(CancellationToken.None));
         }
 
         private class NotImplementedExceptionThrowingDDNSService : IDDNSService
