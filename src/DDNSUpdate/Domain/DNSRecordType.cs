@@ -1,7 +1,10 @@
-﻿using Ardalis.SmartEnum;
+﻿using System.ComponentModel;
+using Ardalis.SmartEnum;
+using DDNSUpdate.Infrastructure.ComponentModel;
 
 namespace DDNSUpdate.Domain
 {
+    [TypeDescriptionProvider(typeof(SmartEnumDescriptionProvider))]
     public sealed class DNSRecordType : SmartEnum<DNSRecordType, string>
     {
         public static readonly DNSRecordType A = new DNSRecordType("A", "Host address");

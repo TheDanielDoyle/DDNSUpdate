@@ -20,7 +20,7 @@ namespace DDNSUpdate.Tests.Application.Configuration
             IValidator<ApplicationConfiguration> validator = new ApplicationConfigurationValidator();
             ApplicationConfiguration configuration = CreateValidApplicationConfiguration();
 
-            configuration.ExternalAddressProviders = externalAddressProviders;
+            configuration.ExternalAddressProviders = externalAddressProviders.ToList();
 
             ValidationResult result = validator.Validate(configuration);
 

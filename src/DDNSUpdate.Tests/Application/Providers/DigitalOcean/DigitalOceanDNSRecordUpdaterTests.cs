@@ -39,13 +39,13 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
             });
 
             IDigitalOceanClient client = A.Fake<IDigitalOceanClient>();
-            A.CallTo(() => client.UpdateDNSRecordAsync(A<DigitalOceanUpdateDomainRecordRequest>.Ignored, A<string>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Fail("Error"));
+            A.CallTo(() => client.UpdateDNSRecordAsync(A<string>.Ignored, A<DigitalOceanUpdateDomainRecordRequest>.Ignored, A<string>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Fail("Error"));
 
             IDigitalOceanDNSRecordUpdater creater = new DigitalOceanDNSRecordUpdater(client, _mappingHelper.Mapper);
 
-            Result result = await creater.UpdateAsync(dnsRecords, string.Empty, CancellationToken.None);
+            Result result = await creater.UpdateAsync(string.Empty, dnsRecords, string.Empty, CancellationToken.None);
 
-            A.CallTo(() => client.UpdateDNSRecordAsync(A<DigitalOceanUpdateDomainRecordRequest>.Ignored, A<string>.Ignored, A<CancellationToken>.Ignored)).MustHaveHappenedTwiceExactly();
+            A.CallTo(() => client.UpdateDNSRecordAsync(A<string>.Ignored, A<DigitalOceanUpdateDomainRecordRequest>.Ignored, A<string>.Ignored, A<CancellationToken>.Ignored)).MustHaveHappenedTwiceExactly();
             Assert.True(result.IsFailed);
             Assert.True(result.Errors.Count == 2);
         }
@@ -72,9 +72,9 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
             IDigitalOceanClient client = A.Fake<IDigitalOceanClient>();
             IDigitalOceanDNSRecordUpdater creater = new DigitalOceanDNSRecordUpdater(client, _mappingHelper.Mapper);
 
-            Result result = await creater.UpdateAsync(dnsRecords, string.Empty, CancellationToken.None);
+            Result result = await creater.UpdateAsync(string.Empty, dnsRecords, string.Empty, CancellationToken.None);
 
-            A.CallTo(() => client.UpdateDNSRecordAsync(A<DigitalOceanUpdateDomainRecordRequest>.Ignored, A<string>.Ignored, A<CancellationToken>.Ignored)).MustHaveHappenedTwiceExactly();
+            A.CallTo(() => client.UpdateDNSRecordAsync(A<string>.Ignored, A<DigitalOceanUpdateDomainRecordRequest>.Ignored, A<string>.Ignored, A<CancellationToken>.Ignored)).MustHaveHappenedTwiceExactly();
             Assert.True(result.IsSuccess);
         }
     }

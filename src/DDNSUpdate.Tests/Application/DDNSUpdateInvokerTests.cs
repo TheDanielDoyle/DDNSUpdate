@@ -39,7 +39,7 @@ namespace DDNSUpdate.Tests.Application
             IScopeBuilder scopeBuilder = A.Fake<IScopeBuilder>();
             A.CallTo(() => scopeBuilder.Build()).Returns(fakeScope);
 
-            IDDNSUpdateInvoker invoker = new DDNSUpdateInvoker(configurationValidator, scopeBuilder);
+            IDDNSUpdateInvoker invoker = new DDNSUpdateInvoker(scopeBuilder);
             await Assert.ThrowsAsync<NotImplementedException>(() => invoker.InvokeAsync(new CancellationToken()));
         }
 

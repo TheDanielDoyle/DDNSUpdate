@@ -15,14 +15,15 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
 
             context.Services.AddHttpClient<IDigitalOceanClient, DigitalOceanClient>();
 
-            context.Services.AddScoped<IDigitalOceanAccountProcessor, DigitalOceanAccountProcessor>();
             context.Services.Configure<DigitalOceanConfiguration>(configurationSection);
-            context.Services.AddScoped<IDigitalOceanClient, DigitalOceanClient>();
-            context.Services.AddScoped<IDDNSService, DigitalOceanDDNSService>();
-            context.Services.AddScoped<IDigitalOceanDNSRecordCreator, DigitalOceanDNSRecordCreator>();
-            context.Services.AddScoped<IDigitalOceanDNSRecordReader, DigitalOceanDNSRecordReader>();
-            context.Services.AddScoped<IDigitalOceanDNSRecordUpdater, DigitalOceanDNSRecordUpdater>();
-            context.Services.AddScoped<IDigitalOceanDomainProcessor, DigitalOceanDomainProcessor>();
+
+            context.Services.AddTransient<IDigitalOceanAccountProcessor, DigitalOceanAccountProcessor>();
+            context.Services.AddTransient<IDigitalOceanDomainProcessor, DigitalOceanDomainProcessor>();
+            
+            context.Services.AddTransient<IDDNSService, DigitalOceanDDNSService>();
+            context.Services.AddTransient<IDigitalOceanDNSRecordCreator, DigitalOceanDNSRecordCreator>();
+            context.Services.AddTransient<IDigitalOceanDNSRecordReader, DigitalOceanDNSRecordReader>();
+            context.Services.AddTransient<IDigitalOceanDNSRecordUpdater, DigitalOceanDNSRecordUpdater>();
         }
     }
 }

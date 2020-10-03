@@ -20,15 +20,13 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
             _mapper = mapper;
         }
 
-        public async Task<Result> UpdateAsync(DNSRecordCollection dnsRecords, string token,
-            CancellationToken cancellation)
+        public async Task<Result> UpdateAsync(string domainName, DNSRecordCollection dnsRecords, string token, CancellationToken cancellation)
         {
             Result result = Result.Ok();
-            IEnumerable<DigitalOceanUpdateDomainRecordRequest> requests =
-                _mapper.Map<IEnumerable<DigitalOceanUpdateDomainRecordRequest>>(dnsRecords);
+            IEnumerable<DigitalOceanUpdateDomainRecordRequest> requests = _mapper.Map<IEnumerable<DigitalOceanUpdateDomainRecordRequest>>(dnsRecords);
             foreach (DigitalOceanUpdateDomainRecordRequest request in requests)
             {
-                Result updateResult = await _digitalOceanClient.UpdateDNSRecordAsync(request, token, cancellation);
+                Result updateResult = await _digitalOceanClient.UpdateDNSRecordAsync(domainName, request, token, cancellation);
                 result = result.Merge(updateResult);
             }
 
