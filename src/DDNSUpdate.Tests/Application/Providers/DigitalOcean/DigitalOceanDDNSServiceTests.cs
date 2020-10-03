@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 using Xunit;
 
 namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
@@ -24,12 +25,14 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
             DigitalOceanAccount accountTwo = new DigitalOceanAccount();
 
             DigitalOceanConfiguration config = new DigitalOceanConfiguration() { Accounts = new List<DigitalOceanAccount>() { accountOne, accountTwo } };
+            IOptionsSnapshot<DigitalOceanConfiguration> optionsSnapshot = A.Fake<IOptionsSnapshot<DigitalOceanConfiguration>>();
             IDigitalOceanAccountProcessor accountProcessor = A.Fake<IDigitalOceanAccountProcessor>();
 
+            A.CallTo(() => optionsSnapshot.Value).Returns(config);
             A.CallTo(() => accountProcessor.ProcessAsync(accountOne, externalAddress, A<CancellationToken>.Ignored)).Returns(Result.Ok());
             A.CallTo(() => accountProcessor.ProcessAsync(accountTwo, externalAddress, A<CancellationToken>.Ignored)).Returns(Result.Fail("This failed"));
 
-            DigitalOceanDDNSService DOService = new DigitalOceanDDNSService(config, accountProcessor);
+            DigitalOceanDDNSService DOService = new DigitalOceanDDNSService(optionsSnapshot, accountProcessor);
 
             Result actual = await DOService.ProcessAsync(externalAddress, new CancellationToken());
 
@@ -42,11 +45,13 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
             ExternalAddress externalAddress = new ExternalAddress() { IPv4Address = IPAddress.Parse("100.100.100.100") };
 
             DigitalOceanConfiguration config = new DigitalOceanConfiguration() { Accounts = new List<DigitalOceanAccount>() { new DigitalOceanAccount(), new DigitalOceanAccount() } };
+            IOptionsSnapshot<DigitalOceanConfiguration> optionsSnapshot = A.Fake<IOptionsSnapshot<DigitalOceanConfiguration>>();
             IDigitalOceanAccountProcessor accountProcessor = A.Fake<IDigitalOceanAccountProcessor>();
 
+            A.CallTo(() => optionsSnapshot.Value).Returns(config);
             A.CallTo(() => accountProcessor.ProcessAsync(A<DigitalOceanAccount>.Ignored, externalAddress, A<CancellationToken>.Ignored)).Returns(Result.Ok());
 
-            DigitalOceanDDNSService DOService = new DigitalOceanDDNSService(config, accountProcessor);
+            DigitalOceanDDNSService DOService = new DigitalOceanDDNSService(optionsSnapshot, accountProcessor);
 
             Result actual = await DOService.ProcessAsync(externalAddress, new CancellationToken());
 

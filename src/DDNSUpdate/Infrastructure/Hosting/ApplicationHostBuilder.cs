@@ -1,5 +1,4 @@
-﻿using Autofac.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.Hosting;
 
 namespace DDNSUpdate.Infrastructure.Hosting
 {
@@ -23,9 +22,7 @@ namespace DDNSUpdate.Infrastructure.Hosting
             _configurationConfigurator.Configure(hostBuilder, commandlineArguments);
             _loggingConfigurator.Configure(hostBuilder);
 
-            hostBuilder
-                .ConfigureServicesWithProfiles()
-                .UseServiceProviderFactory(new AutofacServiceProviderFactory());
+            hostBuilder.ConfigureServicesWithProfiles();
 
             return hostBuilder.Build();
         }

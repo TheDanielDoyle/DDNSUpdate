@@ -16,14 +16,18 @@ namespace DDNSUpdate.Infrastructure.ServiceProfiles
             context.Services.Configure<ApplicationConfiguration>(context.Configuration);
 
             ServiceCollectionExtensions.AddAutoMapper(context.Services, ThisAssembly);
+
             context.Services.AddHostedService<DDNSUpdateHostedService>();
+
             context.Services.AddHttpClient<IExternalAddressClient, ExternalAddressClient>();
+
             context.Services.AddValidatorsFromAssembly(ThisAssembly);
 
             context.Services.AddScoped<IConfigurationValidator, ConfigurationValidator>();
+            context.Services.AddScoped<IDNSRecordCollectionHydrater, DNSRecordCollectionHydrater>();
 
-            context.Services.AddSingleton<IScopeBuilder, ScopeBuilder>();
-            context.Services.AddSingleton<IDDNSUpdateInvoker, DDNSUpdateInvoker>();
+            context.Services.AddTransient<IDDNSUpdateInvoker, DDNSUpdateInvoker>();
+            context.Services.AddTransient<IScopeBuilder, ScopeBuilder>();
 
             context.Services.AddTransient<ServiceFactory>(p => p.GetService);
         }
