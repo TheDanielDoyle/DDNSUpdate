@@ -7,7 +7,7 @@ namespace DDNSUpdate.Infrastructure.Configuration
     {
         public static readonly TimeSpan MinimumUpdateInterval = TimeSpan.FromMinutes(1);
 
-        public IEnumerable<ExternalAddressProvider> ExternalAddressProviders { get; set; } = new List<ExternalAddressProvider>();
+        public IList<ExternalAddressProvider> ExternalAddressProviders { get; set; } = new List<ExternalAddressProvider>();
 
         public TimeSpan UpdateInterval { get; set; }
     }

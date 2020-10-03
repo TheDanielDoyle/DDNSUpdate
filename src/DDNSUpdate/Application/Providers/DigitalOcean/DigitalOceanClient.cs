@@ -26,18 +26,20 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
             _httpClient = new FlurlClient(httpClient);
         }
 
-        public async Task<Result> CreateDNSRecordAsync(DigitalOceanCreateDomainRecordRequest request, string token, CancellationToken cancellation)
+        public async Task<Result> CreateDNSRecordAsync(string domainName, DigitalOceanCreateDomainRecordRequest request, string token, CancellationToken cancellation)
         {
-            string path = string.Format(_createDNSRecordFormat, request.Name);
-            string json = JsonConvert.SerializeObject(request);
-            HttpResponseMessage response = await BuildRequest(token, path).PostJsonAsync(json, cancellation);
-            return Result.OkIf(response.StatusCode == HttpStatusCode.Created, $"Unable to create DNS record for {request.Name}.");
+            string path = string.Format(_createDNSRecordFormat, domainName);
+            IFlurlRequest httpRequest = BuildRequest(token, path);
+            HttpResponseMessage response = await httpRequest.PostJsonAsync(request, cancellation);
+            bool created = (int)response.StatusCode == (int)HttpStatusCode.Created;
+            return Result.OkIf(created, $"Unable to create DNS record for {request.Name}.");
         }
 
         public async Task<Result<DigitalOceanGetDomainRecordsResponse>> GetDNSRecordsAsync(DigitalOceanDomain domain, string token, CancellationToken cancellation)
         {
             string path = string.Format(_getDNSRecordFormat, domain.Name);
-            HttpResponseMessage response = await BuildRequest(token, path).GetAsync(cancellation);
+            IFlurlRequest httpRequest = BuildRequest(token, path);
+            HttpResponseMessage response = await httpRequest.GetAsync(cancellation);
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync();
@@ -46,21 +48,22 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
             return Result.Fail($"Unable to retrieve DNS records for {domain.Name}");
         }
 
-        public async Task<Result> UpdateDNSRecordAsync(DigitalOceanUpdateDomainRecordRequest request, string token, CancellationToken cancellation)
+        public async Task<Result> UpdateDNSRecordAsync(string domainName, DigitalOceanUpdateDomainRecordRequest request, string token, CancellationToken cancellation)
         {
-            string path = string.Format(_updateDNSRecordFormat, request.Name, request.Id);
-            string json = JsonConvert.SerializeObject(request);
-            HttpResponseMessage response = await BuildRequest(token, path).PutJsonAsync(json, cancellation);
-            return Result.OkIf(response.StatusCode == HttpStatusCode.OK, $"Unable to update DNS record for {request.Name}.");
+            string path = string.Format(_updateDNSRecordFormat, domainName, request.Id);
+            IFlurlRequest httpRequest = BuildRequest(token, path);
+            HttpResponseMessage response = await httpRequest.PutJsonAsync(request, cancellation);
+            bool updated = (int) response.StatusCode == (int) HttpStatusCode.OK;
+            return Result.OkIf(updated, $"Unable to update DNS record for {request.Name}.");
         }
 
         private IFlurlRequest BuildRequest(string token, string path)
         {
             return _httpClient
                 .AllowAnyHttpStatus()
-                .WithOAuthBearerToken(token)
                 .Request(_apiBase)
-                .AppendPathSegment(path);
+                .AppendPathSegment(path)
+                .WithOAuthBearerToken(token);
         }
     }
 }

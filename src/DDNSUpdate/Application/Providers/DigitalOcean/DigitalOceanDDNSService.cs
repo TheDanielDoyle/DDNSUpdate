@@ -5,6 +5,7 @@ using DDNSUpdate.Infrastructure.Extensions;
 using FluentResults;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 
 namespace DDNSUpdate.Application.Providers.DigitalOcean
 {
@@ -13,9 +14,9 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
         private readonly IDigitalOceanAccountProcessor _accountProcessor;
         private readonly DigitalOceanConfiguration _configuration;
 
-        public DigitalOceanDDNSService(DigitalOceanConfiguration configuration, IDigitalOceanAccountProcessor accountProcessor)
+        public DigitalOceanDDNSService(IOptionsSnapshot<DigitalOceanConfiguration> configuration, IDigitalOceanAccountProcessor accountProcessor)
         {
-            _configuration = configuration;
+            _configuration = configuration.Value;
             _accountProcessor = accountProcessor;
         }
 

@@ -26,11 +26,7 @@ namespace DDNSUpdate.Infrastructure.Hosting
                 }
 
                 builder.AddEnvironmentVariables();
-
-                if (commandlineArguments != null)
-                {
-                    builder.AddCommandLine(commandlineArguments);
-                }
+                builder.AddCommandLine(commandlineArguments);
             });
         }
     }
