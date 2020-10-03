@@ -11,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper.Configuration;
 using Xunit;
 
 namespace DDNSUpdate.Tests.Application
@@ -27,7 +26,7 @@ namespace DDNSUpdate.Tests.Application
 
             A.CallTo(() => configurationValidator.ValidateAsync(A<CancellationToken>.Ignored)).Returns(Result.Ok());
 
-            A.CallTo(() => externalAddressClient.GetAsync(A<CancellationToken>.Ignored)).Returns(Task.FromResult(Result.Ok<IExternalAddressResponse>(new ExternalAddressResponse(default))));
+            A.CallTo(() => externalAddressClient.GetAsync(A<CancellationToken>.Ignored)).Returns(Result.Ok<IExternalAddressResponse>(new ExternalAddressResponse(default)));
 
             IServiceProvider scopeServiceProvider = A.Fake<IServiceProvider>();
             A.CallTo(() => scopeServiceProvider.GetService(typeof(IEnumerable<IDDNSService>))).Returns(services);
