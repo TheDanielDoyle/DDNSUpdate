@@ -34,7 +34,7 @@ namespace DDNSUpdate.Application
                 Result<IExternalAddressResponse> externalAddressResult = await externalAddressClient.GetAsync(cancellation);
                 if (externalAddressResult.IsFailed)
                 {
-                    return externalAddressResult.Merge(validateConfigurationResult);
+                    return validateConfigurationResult.Merge(externalAddressResult);
                 }
 
                 IEnumerable<IDDNSService> dnsServices = GetService<IEnumerable<IDDNSService>>(scope);
