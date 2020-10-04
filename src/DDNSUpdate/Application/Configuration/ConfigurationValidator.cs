@@ -16,7 +16,7 @@ namespace DDNSUpdate.Application.Configuration
     public class ConfigurationValidator : IConfigurationValidator
     {
         private readonly ServiceFactory _serviceFactory;
-        private readonly string SuccessMessage = "Configuration Validated Successfully.";
+        private readonly string _successMessage = "Configuration Validated Successfully.";
 
         public ConfigurationValidator(ServiceFactory serviceFactory)
         {
@@ -33,7 +33,7 @@ namespace DDNSUpdate.Application.Configuration
             ValidationResultCollection results = new ValidationResultCollection(validationResults);
             if (results.IsValid)
             {
-                return Result.Ok().WithSuccess(SuccessMessage);
+                return Result.Ok().WithSuccess(_successMessage);
             }
             return results.ToResults();
         }
