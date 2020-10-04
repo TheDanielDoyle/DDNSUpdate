@@ -1,5 +1,4 @@
-﻿using DDNSUpdate.Application.ExternalAddresses;
-using DDNSUpdate.Application.Providers.DigitalOcean.Domain;
+﻿using DDNSUpdate.Application.Providers.DigitalOcean.Domain;
 using DDNSUpdate.Domain;
 using DDNSUpdate.Infrastructure.Extensions;
 using FluentResults;
@@ -38,7 +37,7 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
             
             Result create = await _dnsRecordCreator.CreateAsync(domain.Name, newRecords, token, cancellation);
             Result update = await _dnsRecordUpdater.UpdateAsync(domain.Name, updatedRecords, token, cancellation);
-            return create.Merge(update);
+            return activeDnsRecordsResult.Merge(create, update);
         }
     }
 }

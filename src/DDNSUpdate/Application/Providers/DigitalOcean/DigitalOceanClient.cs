@@ -5,7 +5,7 @@ using FluentResults;
 using Flurl.Http;
 using Newtonsoft.Json;
 using System;
-using System.Net;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,8 +16,14 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
     {
         private static readonly Uri _apiBase = new Uri("https://api.digitalocean.com/v2/");
         private static readonly string _createDNSRecordFormat = "domains/{0}/records";
-        private static readonly string _getDNSRecordFormat = "domains/{0}/records";
+        private static readonly string _createDNSRecordFailureMessageTemplate = "Unable to create DigitalOcean Domain {0} DNS record for {1}";
+        private static readonly string _createDNSRecordSuccessMessageTemplate = "Successfully created DigitalOcean Domain {0} DNS record for {1}";
+        private static readonly string _getDNSRecordsFormat = "domains/{0}/records";
+        private static readonly string _getDNSRecordsFailureMessageTemplate = "Unable to retrieve DigitalOcean Domain DNS records for {0}";
+        private static readonly string _getDNSRecordsSuccessMessageTemplate = "{0} DNS records retrieved for DigitalOcean domain {1}";
         private static readonly string _updateDNSRecordFormat = "domains/{0}/records/{1}";
+        private static readonly string _updateDNSRecordsFailureMessageTemplate = "Unable to update DNS record for {0}";
+        private static readonly string _updateDNSRecordsSuccessMessageTemplate = "Successfully updated DigitalOcean Domain {0} DNS record for {1}";
 
         private readonly IFlurlClient _httpClient;
 
@@ -31,21 +37,25 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
             string path = string.Format(_createDNSRecordFormat, domainName);
             IFlurlRequest httpRequest = BuildRequest(token, path);
             HttpResponseMessage response = await httpRequest.PostJsonAsync(request, cancellation);
-            bool created = (int)response.StatusCode == (int)HttpStatusCode.Created;
-            return Result.OkIf(created, $"Unable to create DNS record for {request.Name}.");
+            if (response.IsSuccessStatusCode)
+            {
+                return Result.Ok().WithSuccess(string.Format(_createDNSRecordSuccessMessageTemplate, domainName, request.Name));
+            }
+            return Result.Fail(string.Format(_createDNSRecordFailureMessageTemplate, domainName, request.Name));
         }
 
         public async Task<Result<DigitalOceanGetDomainRecordsResponse>> GetDNSRecordsAsync(DigitalOceanDomain domain, string token, CancellationToken cancellation)
         {
-            string path = string.Format(_getDNSRecordFormat, domain.Name);
+            string path = string.Format(_getDNSRecordsFormat, domain.Name);
             IFlurlRequest httpRequest = BuildRequest(token, path);
             HttpResponseMessage response = await httpRequest.GetAsync(cancellation);
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync();
-                return Result.Ok(JsonConvert.DeserializeObject<DigitalOceanGetDomainRecordsResponse>(content));
+                DigitalOceanGetDomainRecordsResponse records = JsonConvert.DeserializeObject<DigitalOceanGetDomainRecordsResponse>(content);
+                return Result.Ok(records).WithSuccess(string.Format(_getDNSRecordsSuccessMessageTemplate, records.DomainRecords.Count(), domain.Name));
             }
-            return Result.Fail($"Unable to retrieve DNS records for {domain.Name}");
+            return Result.Fail(string.Format(_getDNSRecordsFailureMessageTemplate, domain.Name));
         }
 
         public async Task<Result> UpdateDNSRecordAsync(string domainName, DigitalOceanUpdateDomainRecordRequest request, string token, CancellationToken cancellation)
@@ -53,8 +63,11 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
             string path = string.Format(_updateDNSRecordFormat, domainName, request.Id);
             IFlurlRequest httpRequest = BuildRequest(token, path);
             HttpResponseMessage response = await httpRequest.PutJsonAsync(request, cancellation);
-            bool updated = (int) response.StatusCode == (int) HttpStatusCode.OK;
-            return Result.OkIf(updated, $"Unable to update DNS record for {request.Name}.");
+            if (response.IsSuccessStatusCode)
+            {
+                return Result.Ok().WithSuccess(string.Format(_updateDNSRecordsSuccessMessageTemplate, domainName, request.Name));
+            }
+            return Result.Fail(string.Format(_updateDNSRecordsFailureMessageTemplate, request.Name));
         }
 
         private IFlurlRequest BuildRequest(string token, string path)
