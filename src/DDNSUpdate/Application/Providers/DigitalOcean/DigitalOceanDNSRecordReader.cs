@@ -6,6 +6,7 @@ using FluentResults;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using DDNSUpdate.Infrastructure.Extensions;
 
 namespace DDNSUpdate.Application.Providers.DigitalOcean
 {
@@ -29,7 +30,7 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
             }
 
             IEnumerable<DNSRecord> records = _mapper.Map<IEnumerable<DNSRecord>>(result.Value.DomainRecords);
-            return Result.Ok(new DNSRecordCollection(records));
+            return Result.Ok(new DNSRecordCollection(records)).Merge(result);
         }
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using DDNSUpdate.Infrastructure;
 
 namespace DDNSUpdate.Application
 {
@@ -13,9 +14,9 @@ namespace DDNSUpdate.Application
     {
         private readonly IOptionsMonitor<ApplicationConfiguration> _configuration;
         private readonly IDDNSUpdateInvoker _invoker;
-        private readonly ILogger<DDNSUpdateHostedService> _logger;
+        private readonly IResultsLogger _logger;
 
-        public DDNSUpdateHostedService(IOptionsMonitor<ApplicationConfiguration> configuration, IDDNSUpdateInvoker invoker, ILogger<DDNSUpdateHostedService> logger)
+        public DDNSUpdateHostedService(IOptionsMonitor<ApplicationConfiguration> configuration, IDDNSUpdateInvoker invoker, IResultsLogger logger)
         {
             _configuration = configuration;
             _invoker = invoker;
@@ -26,20 +27,21 @@ namespace DDNSUpdate.Application
         {
             while (!cancellation.IsCancellationRequested)
             {
+                Result result = Result.Ok();
                 try
                 {
-                    Result result = await _invoker.InvokeAsync(cancellation);
-                    LogErrors(result);
+                    result = await _invoker.InvokeAsync(cancellation);
                 }
                 catch (TaskCanceledException)
                 {
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, exception.Message);
+                    result = Result.Fail(exception.Message);
                 }
                 finally
                 {
+                    _logger.Log(result);
                     if (!cancellation.IsCancellationRequested)
                     {
                         await Task.Delay(GetUpdateInterval(), cancellation);
@@ -51,14 +53,6 @@ namespace DDNSUpdate.Application
         private TimeSpan GetUpdateInterval()
         {
             return _configuration.CurrentValue.UpdateInterval;
-        }
-
-        private void LogErrors(Result result)
-        {
-            foreach (Error error in result.Errors)
-            {
-                _logger.LogError(error.Message);
-            }
         }
     }
 }
