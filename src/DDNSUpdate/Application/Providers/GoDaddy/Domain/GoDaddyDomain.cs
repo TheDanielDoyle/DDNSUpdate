@@ -6,6 +6,6 @@ namespace DDNSUpdate.Application.Providers.GoDaddy.Domain
     {
         public string Name { get; set; } = default!;
 
-        public DNSRecordCollection Records = DNSRecordCollection.Empty;
+        public DNSRecordCollection Records = DNSRecordCollection.Empty();
     }
 }

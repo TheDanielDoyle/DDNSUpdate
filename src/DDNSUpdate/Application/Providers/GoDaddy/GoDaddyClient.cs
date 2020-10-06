@@ -36,7 +36,7 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
                 string content = await response.Content.ReadAsStringAsync();
                 IEnumerable<GoDaddyGetDNSRecordResponse> records
                     = JsonConvert.DeserializeObject<List<GoDaddyGetDNSRecordResponse>>(content);
-                Result.Ok(new GoDaddyGetDNSRecordsResponse(records));
+                return Result.Ok(new GoDaddyGetDNSRecordsResponse(records));
             }
             return Result.Fail($"Unable to retrieve DNS records for {request.DomainName}");
         }
