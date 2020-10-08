@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -30,11 +28,26 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
             A.CallTo(() => client.UpdateDNSRecordsAsync(A<GoDaddyUpdateDNSRecordsRequest>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Fail("Error"));
 
             GoDaddyDNSRecordUpdater updater = new GoDaddyDNSRecordUpdater(client, _mapper);
-            DNSRecordCollection records = new DNSRecordCollection(new DNSRecord(), new DNSRecord());
+            DNSRecordCollection records = new DNSRecordCollection(CreateValidDNSRecord(1), CreateValidDNSRecord(2));
 
             var result = await updater.UpdateAsync("aDomain.com", records, "apiKey", "apiSecret", CancellationToken.None);
 
             Assert.True(result.IsFailed);
+        }
+
+        private DNSRecord CreateValidDNSRecord(int number)
+        {
+            return new DNSRecord()
+            {
+                Data = $"recordData{number}",
+                Name = $"recordName{number}",
+                Port = number,
+                Priority = number,
+                TTL = number,
+                Weight = number,
+                Tag = $"Tag{number}",
+                Type = DNSRecordType.A
+            };
         }
     }
 }
