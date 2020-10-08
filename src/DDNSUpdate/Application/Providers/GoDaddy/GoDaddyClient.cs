@@ -16,6 +16,7 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
     {
         private static readonly Uri _apiBase = new Uri("https://api.godaddy.com");
         private static readonly string _authorizationHeader = "Authorization";
+        private static readonly string _createDNSRecordFormat = "v1/{0}/record";
         private static readonly string _getDNSRecordsFormat = "domains/{0}/records/{1}";
         private static readonly string _ssoKey = "sso-key";
         private static readonly string _updateDNSRecordsFormat = "domains/{0}/records/{1}";
@@ -25,6 +26,20 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
         public GoDaddyClient(HttpClient httpClient)
         {
             _httpClient = new FlurlClient(httpClient);
+        }
+
+        public async Task<Result> CreateDNSRecordAsync(GoDaddyCreateDNSRecordRequest request, CancellationToken cancellation)
+        {
+            string path = string.Format(_createDNSRecordFormat, request.DomainName);
+            HttpResponseMessage response = await BuildRequest(request.ApiKey, request.ApiSecret, path).PatchJsonAsync(request, cancellation);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                IEnumerable<GoDaddyGetDNSRecordResponse> records
+                    = JsonConvert.DeserializeObject<List<GoDaddyGetDNSRecordResponse>>(content);
+                return Result.Ok(new GoDaddyGetDNSRecordsResponse(records));
+            }
+            return Result.Fail($"Unable to retrieve DNS records for {request.DomainName}");
         }
 
         public async Task<Result<GoDaddyGetDNSRecordsResponse>> GetDNSRecordsAsync(GoDaddyGetDNSRecordsRequest request, CancellationToken cancellation)
@@ -41,7 +56,7 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
             return Result.Fail($"Unable to retrieve DNS records for {request.DomainName}");
         }
 
-        public async Task<Result> ReplaceDNSRecordsAsync(GoDaddyUpdateDNSRecordsRequest request, CancellationToken cancellation)
+        public async Task<Result> UpdateDNSRecordsAsync(GoDaddyUpdateDNSRecordsRequest request, CancellationToken cancellation)
         {
             string path = string.Format(_updateDNSRecordsFormat, request.DomainName, request.DNSRecordType.Value);
             string json = JsonConvert.SerializeObject(request.Records);
