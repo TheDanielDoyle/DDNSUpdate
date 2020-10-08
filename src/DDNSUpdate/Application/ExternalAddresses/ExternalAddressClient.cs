@@ -7,12 +7,14 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using DDNSUpdate.Infrastructure.Extensions;
 
 namespace DDNSUpdate.Application.ExternalAddresses
 {
     public class ExternalAddressClient : IExternalAddressClient
     {
-        public static readonly string ErrorMessage = "Cannot process DNS records - Unable to get external IP address.";
+        public static readonly string _errorMessage = "Cannot process DNS records - Unable to get external IP address.";
+        public static readonly string _successMessageTemplate = "Successfully found external IP address {0}";
 
         private readonly IOptionsSnapshot<ApplicationConfiguration> _configuration;
         private readonly IFlurlClient _httpClient;
@@ -31,10 +33,10 @@ namespace DDNSUpdate.Application.ExternalAddresses
                 if (result.IsSuccess)
                 {
                     ExternalAddress externalAddress = new ExternalAddress { IPv4Address = result.Value };
-                    return Result.Ok<IExternalAddressResponse>(new ExternalAddressResponse(externalAddress));
+                    return Result.Ok<IExternalAddressResponse>(new ExternalAddressResponse(externalAddress)).Merge(result);
                 }
             }
-            return Result.Fail<IExternalAddressResponse>(ErrorMessage);
+            return Result.Fail<IExternalAddressResponse>(_errorMessage);
         }
 
         private async Task<Result<IPAddress>> GetExternalIPAddressAsync(ExternalAddressProvider provider, CancellationToken cancellation)
@@ -46,9 +48,9 @@ namespace DDNSUpdate.Application.ExternalAddresses
 
             if (IPAddress.TryParse(response, out IPAddress ipAddress))
             {
-                return Result.Ok(ipAddress);
+                return Result.Ok(ipAddress).WithSuccess(string.Format(_successMessageTemplate, ipAddress));
             }
-            return Result.Fail(ErrorMessage);
+            return Result.Fail(_errorMessage);
         }
     }
 }

@@ -34,11 +34,12 @@ namespace DDNSUpdate.Application
                 Result<IExternalAddressResponse> externalAddressResult = await externalAddressClient.GetAsync(cancellation);
                 if (externalAddressResult.IsFailed)
                 {
-                    return externalAddressResult;
+                    return validateConfigurationResult.Merge(externalAddressResult);
                 }
 
                 IEnumerable<IDDNSService> dnsServices = GetService<IEnumerable<IDDNSService>>(scope);
-                return await ProcessAsync(dnsServices, externalAddressResult.Value, cancellation);
+                Result processResult = await ProcessAsync(dnsServices, externalAddressResult.Value, cancellation);
+                return validateConfigurationResult.Merge(externalAddressResult, processResult);
             }
         }
 

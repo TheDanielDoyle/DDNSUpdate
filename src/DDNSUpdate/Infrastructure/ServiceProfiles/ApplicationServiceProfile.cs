@@ -28,8 +28,9 @@ namespace DDNSUpdate.Infrastructure.ServiceProfiles
 
             context.Services.AddTransient<IDDNSUpdateInvoker, DDNSUpdateInvoker>();
             context.Services.AddTransient<IScopeBuilder, ScopeBuilder>();
-
             context.Services.AddTransient<ServiceFactory>(p => p.GetService);
+
+            context.Services.AddSingleton<IResultsLogger, ResultsLogger>();
         }
     }
 }
