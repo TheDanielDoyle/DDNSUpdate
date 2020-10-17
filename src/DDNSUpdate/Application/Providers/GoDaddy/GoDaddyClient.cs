@@ -16,7 +16,7 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
     {
         private static readonly Uri _apiBase = new Uri("https://api.godaddy.com");
         private static readonly string _authorizationHeader = "Authorization";
-        private static readonly string _createDNSRecordFormat = "v1/{0}/record";
+        private static readonly string _createDNSRecordFormat = "v1/{0}/records";
         private static readonly string _getDNSRecordsFormat = "domains/{0}/records/{1}";
         private static readonly string _ssoKey = "sso-key";
         private static readonly string _updateDNSRecordsFormat = "domains/{0}/records/{1}";
