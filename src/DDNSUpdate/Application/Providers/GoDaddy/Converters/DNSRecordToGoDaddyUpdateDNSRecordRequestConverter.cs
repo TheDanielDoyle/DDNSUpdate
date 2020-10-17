@@ -11,11 +11,10 @@ namespace DDNSUpdate.Application.Providers.GoDaddy.Converters
             destination ??= new GoDaddyUpdateDNSRecordRequest();
             destination.Data = source.Data;
             destination.Name = source.Name;
-            destination.Port = (long)source.Port!;
-            destination.Priority = (long)source.Priority!;
-            destination.Ttl = (long)source.TTL!;
-            destination.Weight = (long)source.Weight!;
-
+            destination.Port = source.Port.GetValueOrDefault();
+            destination.Priority = source.Priority.GetValueOrDefault();
+            destination.Ttl = source.TTL.GetValueOrDefault();
+            destination.Weight = source.Weight.GetValueOrDefault();
             return destination;
         }
     }
