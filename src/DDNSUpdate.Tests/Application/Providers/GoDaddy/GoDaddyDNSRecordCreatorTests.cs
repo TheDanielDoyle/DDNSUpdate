@@ -7,7 +7,6 @@ using FakeItEasy;
 using FluentResults;
 using Xunit;
 
-
 namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
 {
     public class GoDaddyDNSRecordCreatorTests
@@ -20,7 +19,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
             A.CallTo(() => fakeClient.CreateDNSRecordAsync(A<GoDaddyCreateDNSRecordRequest>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Fail("oops"));
 
             GoDaddyDNSRecordCreator creator = new GoDaddyDNSRecordCreator(fakeClient);
-            var dnsRecords = new DNSRecordCollection(
+            DNSRecordCollection dnsRecords = new DNSRecordCollection(
                 new DNSRecord(),
                 new DNSRecord()
             );
@@ -38,7 +37,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
             A.CallTo(() => fakeClient.CreateDNSRecordAsync(A<GoDaddyCreateDNSRecordRequest>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Ok());
 
             GoDaddyDNSRecordCreator creator = new GoDaddyDNSRecordCreator(fakeClient);
-            var dnsRecords = new DNSRecordCollection(
+            DNSRecordCollection dnsRecords = new DNSRecordCollection(
                 new DNSRecord(),
                 new DNSRecord()
             );

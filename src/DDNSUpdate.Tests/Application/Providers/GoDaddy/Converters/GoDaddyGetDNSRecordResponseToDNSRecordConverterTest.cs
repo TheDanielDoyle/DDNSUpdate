@@ -21,7 +21,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy.Converters
         public void Given_Null_DNS_Record_Returns_New_DNS_Record()
         {
             GoDaddyGetDNSRecordResponseToDNSRecordConverter converter = new GoDaddyGetDNSRecordResponseToDNSRecordConverter();
-            var response = new GoDaddyGetDNSRecordResponse()
+            GoDaddyGetDNSRecordResponse response = new GoDaddyGetDNSRecordResponse()
             {
                 Data = "Data",
                 Name = "Name",
@@ -51,7 +51,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy.Converters
         public void Given_Non_Null_DNS_Record_Overwrites_Values()
         {
             GoDaddyGetDNSRecordResponseToDNSRecordConverter converter = new GoDaddyGetDNSRecordResponseToDNSRecordConverter();
-            var response = new GoDaddyGetDNSRecordResponse()
+            GoDaddyGetDNSRecordResponse response = new GoDaddyGetDNSRecordResponse()
             {
                 Data = "Data",
                 Name = "Name",

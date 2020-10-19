@@ -86,8 +86,8 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
 
             Assert.True(result.IsSuccess);
 
-            var records = result.Value.Records.ToList();
-            var record = records.First();
+            List<GoDaddyGetDNSRecordResponse> records = result.Value.Records.ToList();
+            GoDaddyGetDNSRecordResponse record = records.First();
 
             Assert.Equal("testData", record.Data);
             Assert.Equal("testName", record.Name);

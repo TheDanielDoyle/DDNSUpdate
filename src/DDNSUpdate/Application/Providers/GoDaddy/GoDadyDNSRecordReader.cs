@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,7 +29,7 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
                 IList<DNSRecord> records = _mapper.Map<IList<DNSRecord>>(result.Value.Records);
                 return Result.Ok(new DNSRecordCollection(records));
             }
-            return Result.Fail($"Unable to get Records for domain {domain.Name}");
+            return result.ToResult();
         }
     }
 }

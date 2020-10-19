@@ -23,14 +23,14 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
         [Fact]
         public async Task No_Records_Are_Successfully_Created_If_Client_Fails()
         {
-            var client = A.Fake<IGoDaddyClient>();
+            IGoDaddyClient client = A.Fake<IGoDaddyClient>();
 
             A.CallTo(() => client.UpdateDNSRecordsAsync(A<GoDaddyUpdateDNSRecordsRequest>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Fail("Error"));
 
             GoDaddyDNSRecordUpdater updater = new GoDaddyDNSRecordUpdater(client, _mapper);
             DNSRecordCollection records = new DNSRecordCollection(CreateValidDNSRecord(1), CreateValidDNSRecord(2));
 
-            var result = await updater.UpdateAsync("aDomain.com", records, "apiKey", "apiSecret", CancellationToken.None);
+            Result result = await updater.UpdateAsync("aDomain.com", records, "apiKey", "apiSecret", CancellationToken.None);
 
             Assert.True(result.IsFailed);
             Assert.Single(result.Errors);
@@ -39,14 +39,14 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
         [Fact]
         public async Task Returns_Success_When_All_Records_Update()
         {
-            var client = A.Fake<IGoDaddyClient>();
+            IGoDaddyClient client = A.Fake<IGoDaddyClient>();
 
             A.CallTo(() => client.UpdateDNSRecordsAsync(A<GoDaddyUpdateDNSRecordsRequest>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Ok());
 
             GoDaddyDNSRecordUpdater updater = new GoDaddyDNSRecordUpdater(client, _mapper);
             DNSRecordCollection records = new DNSRecordCollection(CreateValidDNSRecord(1), CreateValidDNSRecord(2));
 
-            var result = await updater.UpdateAsync("aDomain.com", records, "apiKey", "apiSecret", CancellationToken.None);
+            Result result = await updater.UpdateAsync("aDomain.com", records, "apiKey", "apiSecret", CancellationToken.None);
 
             Assert.True(result.IsSuccess);
         }
