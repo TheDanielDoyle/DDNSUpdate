@@ -17,9 +17,15 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
         private static readonly Uri _apiBase = new Uri("https://api.godaddy.com");
         private static readonly string _authorizationHeader = "Authorization";
         private static readonly string _createDNSRecordFormat = "v1/{0}/records";
+        private static readonly string _createDNSRecordFailureMessageTemplate = "Unable to create DNS records for domian {0}";
+        private static readonly string _createDNSRecordSuccessMessageTemplate = "Successfully created GoDaddyClient DNS records for domian {0}";
         private static readonly string _getDNSRecordsFormat = "domains/{0}/records/{1}";
+        private static readonly string _getDNSRecordsFailureMessageTemplate = "Unable to retrieve DNS records for {0}";
+        private static readonly string _getDNSRecordsSuccessMessageTemplate = "Successfully retrieved DNS records for {0}";
         private static readonly string _ssoKey = "sso-key";
         private static readonly string _updateDNSRecordsFormat = "domains/{0}/records/{1}";
+        private static readonly string _updateDNSRecordsFailureMessageTemplate = "Unable to update DNS records for {0}";
+        private static readonly string _updateDNSRecordsSuccessMessageTemplate = "Successfully updated GoDaddy Domain DNS records for Doamin {0}";
 
         private readonly IFlurlClient _httpClient;
 
@@ -28,40 +34,50 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
             _httpClient = new FlurlClient(httpClient);
         }
 
-        public async Task<Result> CreateDNSRecordAsync(GoDaddyCreateDNSRecordRequest request, CancellationToken cancellation)
+        public async Task<Result> CreateDNSRecordsAsync(GoDaddyCreateDNSRecordRequest request, CancellationToken cancellation)
         {
             string path = string.Format(_createDNSRecordFormat, request.DomainName);
-            HttpResponseMessage response = await BuildRequest(request.ApiKey, request.ApiSecret, path).PatchJsonAsync(request, cancellation);
+            IFlurlRequest httpRequest = BuildRequest(request.ApiKey, request.ApiSecret, path);
+            HttpResponseMessage response = await httpRequest.PatchJsonAsync(request, cancellation);
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 string content = await response.Content.ReadAsStringAsync();
                 IEnumerable<GoDaddyGetDNSRecordResponse> records
                     = JsonConvert.DeserializeObject<List<GoDaddyGetDNSRecordResponse>>(content);
-                return Result.Ok(new GoDaddyGetDNSRecordsResponse(records));
+                string resultMessage = string.Format(_createDNSRecordSuccessMessageTemplate, request.DomainName);
+                return Result.Ok(new GoDaddyGetDNSRecordsResponse(records)).WithSuccess(resultMessage);
             }
-            return Result.Fail($"Unable to retrieve DNS records for {request.DomainName}");
+            return Result.Fail(string.Format(_createDNSRecordFailureMessageTemplate, request.DomainName));
         }
 
         public async Task<Result<GoDaddyGetDNSRecordsResponse>> GetDNSRecordsAsync(GoDaddyGetDNSRecordsRequest request, CancellationToken cancellation)
         {
             string path = string.Format(_getDNSRecordsFormat, request.DomainName, request.DNSRecordType.Value);
-            HttpResponseMessage response = await BuildRequest(request.ApiKey, request.ApiSecret, path).GetAsync(cancellation);
+            IFlurlRequest httpRequest = BuildRequest(request.ApiKey, request.ApiSecret, path);
+            HttpResponseMessage response = await httpRequest.GetAsync(cancellation);
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 string content = await response.Content.ReadAsStringAsync();
                 IEnumerable<GoDaddyGetDNSRecordResponse> records
                     = JsonConvert.DeserializeObject<List<GoDaddyGetDNSRecordResponse>>(content);
-                return Result.Ok(new GoDaddyGetDNSRecordsResponse(records));
+                string resultMessage = string.Format(_getDNSRecordsSuccessMessageTemplate, request.DomainName);
+                return Result.Ok(new GoDaddyGetDNSRecordsResponse(records)).WithSuccess(resultMessage);
             }
-            return Result.Fail($"Unable to retrieve DNS records for {request.DomainName}");
+            return Result.Fail(string.Format(_getDNSRecordsFailureMessageTemplate, request.DomainName));
         }
 
         public async Task<Result> UpdateDNSRecordsAsync(GoDaddyUpdateDNSRecordsRequest request, CancellationToken cancellation)
         {
             string path = string.Format(_updateDNSRecordsFormat, request.DomainName, request.DNSRecordType.Value);
             string json = JsonConvert.SerializeObject(request.Records);
-            HttpResponseMessage response = await BuildRequest(request.ApiKey, request.ApiSecret, path).PutJsonAsync(json, cancellation);
-            return Result.OkIf(response.StatusCode == HttpStatusCode.OK, $"Unable to update DNS for {request.DomainName}");
+            IFlurlRequest httpRequest = BuildRequest(request.ApiKey, request.ApiSecret, path);
+            HttpResponseMessage response = await httpRequest.PutJsonAsync(json, cancellation);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                string resultMessage = string.Format(_updateDNSRecordsSuccessMessageTemplate, request.DomainName);
+                return Result.Ok().WithSuccess(resultMessage);
+            }
+            return Result.Fail(string.Format(_updateDNSRecordsFailureMessageTemplate, request.DomainName));
         }
 
         private IFlurlRequest BuildRequest(string apiKey, string apiSecret, string path)
