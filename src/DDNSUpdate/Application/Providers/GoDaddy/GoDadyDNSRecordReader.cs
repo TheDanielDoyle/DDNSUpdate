@@ -20,9 +20,9 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
             _client = client;
             _mapper = mapper;
         }
-        public async Task<Result<DNSRecordCollection>> ReadAsync(GoDaddyDomain domain, string apiKey, string apiSecret, CancellationToken cancellation)
+        public async Task<Result<DNSRecordCollection>> ReadAsync(string domainName, GoDaddyAuthenticationDetails authentication, CancellationToken cancellation)
         {
-            GoDaddyGetDNSRecordsRequest request = new GoDaddyGetDNSRecordsRequest(apiKey, apiSecret, DNSRecordType.A, domain.Name);
+            GoDaddyGetDNSRecordsRequest request = new GoDaddyGetDNSRecordsRequest(authentication.ApiKey, authentication.ApiSecret, DNSRecordType.A, domainName);
             Result<GoDaddyGetDNSRecordsResponse> result = await _client.GetDNSRecordsAsync(request, cancellation);
             if (result.IsSuccess)
             {

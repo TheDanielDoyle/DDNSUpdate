@@ -34,7 +34,7 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
             _httpClient = new FlurlClient(httpClient);
         }
 
-        public async Task<Result> CreateDNSRecordsAsync(GoDaddyCreateDNSRecordRequest request, CancellationToken cancellation)
+        public async Task<Result> CreateDNSRecordsAsync(GoDaddyCreateDNSRecordsRequest request, CancellationToken cancellation)
         {
             string path = string.Format(_createDNSRecordFormat, request.DomainName);
             IFlurlRequest httpRequest = BuildRequest(request.ApiKey, request.ApiSecret, path);

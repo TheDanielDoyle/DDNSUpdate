@@ -8,7 +8,7 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
 {
     public interface IGoDaddyClient
     {
-        Task<Result> CreateDNSRecordsAsync(GoDaddyCreateDNSRecordRequest request, CancellationToken cancellation);
+        Task<Result> CreateDNSRecordsAsync(GoDaddyCreateDNSRecordsRequest request, CancellationToken cancellation);
 
         Task<Result<GoDaddyGetDNSRecordsResponse>> GetDNSRecordsAsync(GoDaddyGetDNSRecordsRequest request, CancellationToken cancellation);
 

@@ -8,6 +8,6 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
 {
     public interface IGoDaddyDNSRecordReader
     {
-        Task<Result<DNSRecordCollection>> ReadAsync(GoDaddyDomain domain, string apiKey, string apiSecret, CancellationToken cancellation);
+        Task<Result<DNSRecordCollection>> ReadAsync(string domainName, GoDaddyAuthenticationDetails authentication, CancellationToken cancellation);
     }
 }

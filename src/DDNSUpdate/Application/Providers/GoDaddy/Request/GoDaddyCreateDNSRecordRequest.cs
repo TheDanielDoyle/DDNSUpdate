@@ -1,25 +1,31 @@
-using System.Collections.Generic;
-using DDNSUpdate.Domain;
+﻿using Newtonsoft.Json;
 
 namespace DDNSUpdate.Application.Providers.GoDaddy.Request
 {
     public class GoDaddyCreateDNSRecordRequest
     {
-        public GoDaddyCreateDNSRecordRequest(string apiKey, string apiSecret, IEnumerable<DNSRecord> records, string domainName)
-        {
-            ApiKey = apiKey;
-            ApiSecret = apiSecret;
-            Records = records;
-            DomainName = domainName;
-        }
+        [JsonProperty("data")]
+        public string Data { get; set; } = default!;
 
+        [JsonProperty("name")]
+        public string Name { get; set; } = default!;
 
-        public string ApiKey { get; }
+        [JsonProperty("port")]
+        public int Port { get; set; }
 
-        public string ApiSecret { get; }
+        [JsonProperty("priority")]
+        public int Priority { get; set; }
 
-        public IEnumerable<DNSRecord> Records { get; }
+        [JsonProperty("protocol")]
+        public string Protocol { get; set; } = default!;
 
-        public string DomainName { get; }
+        [JsonProperty("service")]
+        public string Service { get; set; } = default!;
+
+        [JsonProperty("ttl")]
+        public int Ttl { get; set; }
+
+        [JsonProperty("weight")]
+        public int Weight { get; set; }
     }
 }

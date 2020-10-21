@@ -1,7 +1,6 @@
 ﻿using DDNSUpdate.Infrastructure.Configuration;
 using FluentResults;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Threading;

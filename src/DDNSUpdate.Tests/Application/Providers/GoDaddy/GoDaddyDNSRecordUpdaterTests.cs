@@ -2,6 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using DDNSUpdate.Application.Providers.GoDaddy;
+using DDNSUpdate.Application.Providers.GoDaddy.Domain;
 using DDNSUpdate.Application.Providers.GoDaddy.Request;
 using DDNSUpdate.Domain;
 using DDNSUpdate.Tests.Helpers;
@@ -29,8 +30,9 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
 
             GoDaddyDNSRecordUpdater updater = new GoDaddyDNSRecordUpdater(client, _mapper);
             DNSRecordCollection records = new DNSRecordCollection(CreateValidDNSRecord(1), CreateValidDNSRecord(2));
+            GoDaddyAuthenticationDetails authicationDetails = new GoDaddyAuthenticationDetails("apiKey", "apiSecret");
 
-            Result result = await updater.UpdateAsync("aDomain.com", records, "apiKey", "apiSecret", CancellationToken.None);
+            Result result = await updater.UpdateAsync("aDomain.com", records, authicationDetails, CancellationToken.None);
 
             Assert.True(result.IsFailed);
             Assert.Single(result.Errors);
@@ -45,8 +47,9 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
 
             GoDaddyDNSRecordUpdater updater = new GoDaddyDNSRecordUpdater(client, _mapper);
             DNSRecordCollection records = new DNSRecordCollection(CreateValidDNSRecord(1), CreateValidDNSRecord(2));
+            GoDaddyAuthenticationDetails authicationDetails = new GoDaddyAuthenticationDetails("apiKey", "apiSecret");
 
-            Result result = await updater.UpdateAsync("aDomain.com", records, "apiKey", "apiSecret", CancellationToken.None);
+            Result result = await updater.UpdateAsync("aDomain.com", records, authicationDetails, CancellationToken.None);
 
             Assert.True(result.IsSuccess);
         }

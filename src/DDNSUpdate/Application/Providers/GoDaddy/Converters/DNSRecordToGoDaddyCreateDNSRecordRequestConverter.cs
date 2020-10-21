@@ -1,14 +1,14 @@
-using AutoMapper;
+﻿using AutoMapper;
 using DDNSUpdate.Application.Providers.GoDaddy.Request;
 using DDNSUpdate.Domain;
 
 namespace DDNSUpdate.Application.Providers.GoDaddy.Converters
 {
-    public class DNSRecordToGoDaddyUpdateDNSRecordRequestConverter : ITypeConverter<DNSRecord, GoDaddyUpdateDNSRecordRequest>
+    public class DNSRecordToGoDaddyCreateDNSRecordRequestConverter : ITypeConverter<DNSRecord, GoDaddyCreateDNSRecordRequest>
     {
-        public GoDaddyUpdateDNSRecordRequest Convert(DNSRecord dnsRecord, GoDaddyUpdateDNSRecordRequest request, ResolutionContext context)
+        public GoDaddyCreateDNSRecordRequest Convert(DNSRecord dnsRecord, GoDaddyCreateDNSRecordRequest request, ResolutionContext context)
         {
-            request ??= new GoDaddyUpdateDNSRecordRequest();
+            request ??= new GoDaddyCreateDNSRecordRequest();
 
             request.Data = dnsRecord.Data;
             request.Name = dnsRecord.Name;

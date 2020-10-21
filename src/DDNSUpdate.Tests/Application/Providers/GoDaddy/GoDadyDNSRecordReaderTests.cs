@@ -34,8 +34,9 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
             A.CallTo(() => fakeClient.GetDNSRecordsAsync(A<GoDaddyGetDNSRecordsRequest>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Fail("failed"));
 
             GoDadyDNSRecordReader reader = new GoDadyDNSRecordReader(fakeClient, _mapper);
+            GoDaddyAuthenticationDetails authicationDetails = new GoDaddyAuthenticationDetails("apiKey", "apiSecret");
 
-            Result<DNSRecordCollection> result = await reader.ReadAsync(CreateValidDomain(), string.Empty, string.Empty, CancellationToken.None);
+            Result<DNSRecordCollection> result = await reader.ReadAsync(string.Empty, authicationDetails, CancellationToken.None);
 
             Assert.True(result.IsFailed);
         }
@@ -56,8 +57,9 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
 
             A.CallTo(() => fakeClient.GetDNSRecordsAsync(A<GoDaddyGetDNSRecordsRequest>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Ok(clientResponse));
             GoDadyDNSRecordReader reader = new GoDadyDNSRecordReader(fakeClient, _mapper);
+            GoDaddyAuthenticationDetails authicationDetails = new GoDaddyAuthenticationDetails("apiKey", "apiSecret");
 
-            Result<DNSRecordCollection> result = await reader.ReadAsync(CreateValidDomain(), string.Empty, string.Empty, CancellationToken.None);
+            Result<DNSRecordCollection> result = await reader.ReadAsync(string.Empty, authicationDetails, CancellationToken.None);
             DNSRecord firstRecord = result.Value.First();
 
             Assert.True(result.IsSuccess);
@@ -66,15 +68,6 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
             Assert.Equal("Data-1", firstRecord.Data);
             Assert.Equal("Name-1", firstRecord.Name);
             Assert.Equal(1, firstRecord.Port);
-        }
-
-        private GoDaddyDomain CreateValidDomain()
-        {
-            return new GoDaddyDomain()
-            {
-                Name = "A test",
-                Records = new DNSRecordCollection(new DNSRecord())
-            };
         }
 
         private GoDaddyGetDNSRecordResponse CreateValidGoDaddyGetDNSRecordResponse(int num)
