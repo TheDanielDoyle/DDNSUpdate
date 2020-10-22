@@ -7,6 +7,7 @@ namespace DDNSUpdate.Infrastructure.Hosting
     public class ConfigurationConfigurator : IConfigurationConfigurator
     {
         private static readonly string _configurationFilename = "config";
+        private static readonly string _keyPerFileDirectory = "/run/secrets";
 
         public void Configure(IHostBuilder hostBuilder, string[] commandlineArguments)
         {
@@ -18,15 +19,18 @@ namespace DDNSUpdate.Infrastructure.Hosting
                     .AddJsonFile($"{_configurationFilename}.json", optional: true, reloadOnChange: true)
                     .AddYamlFile($"{_configurationFilename}.yaml", optional: true, reloadOnChange: true)
                     .AddYamlFile($"{_configurationFilename}.yml", optional: true, reloadOnChange: true);
-                if (environment.IsDevelopment())
+                if (environment.IsDevelopment() || environment.IsStaging())
                 {
-                    builder.AddJsonFile($"{_configurationFilename}.{environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
-                    builder.AddYamlFile($"{_configurationFilename}.{environment.EnvironmentName}.yaml", optional: true, reloadOnChange: true);
-                    builder.AddYamlFile($"{_configurationFilename}.{environment.EnvironmentName}.yml", optional: true, reloadOnChange: true);
+                    builder
+                        .AddJsonFile($"{_configurationFilename}.{environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                        .AddYamlFile($"{_configurationFilename}.{environment.EnvironmentName}.yaml", optional: true, reloadOnChange: true)
+                        .AddYamlFile($"{_configurationFilename}.{environment.EnvironmentName}.yml", optional: true, reloadOnChange: true);
                 }
 
-                builder.AddEnvironmentVariables();
-                builder.AddCommandLine(commandlineArguments);
+                builder
+                    .AddEnvironmentVariables()
+                    .AddCommandLine(commandlineArguments)
+                    .AddKeyPerFile(_keyPerFileDirectory, optional: true);
             });
         }
     }
