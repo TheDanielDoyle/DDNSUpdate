@@ -4,7 +4,7 @@ using DDNSUpdate.Domain;
 
 namespace DDNSUpdate.Application.Providers.GoDaddy.Converters
 {
-    public class DNSRecordToGoDaddyCreateDNSRecordRequestConverter : ITypeConverter<DNSRecord, GoDaddyCreateDNSRecordRequest>
+    public class DNSRecordToGoDaddyCreateToDNSRecordRequestConverter : ITypeConverter<DNSRecord, GoDaddyCreateDNSRecordRequest>
     {
         public GoDaddyCreateDNSRecordRequest Convert(DNSRecord dnsRecord, GoDaddyCreateDNSRecordRequest request, ResolutionContext context)
         {

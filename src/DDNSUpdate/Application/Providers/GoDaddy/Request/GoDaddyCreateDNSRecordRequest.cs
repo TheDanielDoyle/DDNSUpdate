@@ -11,7 +11,7 @@ namespace DDNSUpdate.Application.Providers.GoDaddy.Request
         public string Name { get; set; } = default!;
 
         [JsonProperty("port")]
-        public int Port { get; set; }
+        public int? Port { get; set; }
 
         [JsonProperty("priority")]
         public int Priority { get; set; }

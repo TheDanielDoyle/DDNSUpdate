@@ -11,6 +11,7 @@ namespace DDNSUpdate.Application.Providers.GoDaddy.Converters
             dnsRecord ??= new DNSRecord();
 
             dnsRecord.Data = source.Data;
+            dnsRecord.Id = source.Name;
             dnsRecord.Name = source.Name;
             dnsRecord.Port = source.Port;
             dnsRecord.Priority = source.Priority;

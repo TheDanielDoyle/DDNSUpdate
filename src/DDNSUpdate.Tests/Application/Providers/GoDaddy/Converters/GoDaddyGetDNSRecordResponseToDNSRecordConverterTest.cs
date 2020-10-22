@@ -38,13 +38,13 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy.Converters
 
             Assert.NotNull(result);
             Assert.Equal(response.Data, result.Data);
+            Assert.Equal(response.Name, result.Id);
             Assert.Equal(response.Name, result.Name);
             Assert.Equal(response.Port, result.Port);
             Assert.Equal(response.Priority, result.Priority);
             Assert.Equal(response.Ttl, result.TTL);
             Assert.Equal(response.Type, result.Type);
             Assert.Equal(response.Weight, result.Weight);
-            Assert.Null(result.Id);
         }
 
         [Fact]

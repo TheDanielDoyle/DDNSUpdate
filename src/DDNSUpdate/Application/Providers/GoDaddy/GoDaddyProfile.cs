@@ -10,7 +10,7 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
     {
         public GoDaddyProfile()
         {
-            CreateMap<DNSRecord, GoDaddyCreateDNSRecordRequest>().ConvertUsing<DNSRecordToGoDaddyCreateDNSRecordRequestConverter>();
+            CreateMap<DNSRecord, GoDaddyCreateDNSRecordRequest>().ConvertUsing<DNSRecordToGoDaddyCreateToDNSRecordRequestConverter>();
             CreateMap<DNSRecord, GoDaddyUpdateDNSRecordRequest>().ConvertUsing<DNSRecordToGoDaddyUpdateDNSRecordRequestConverter>();
             CreateMap<GoDaddyGetDNSRecordResponse, DNSRecord>().ConvertUsing<GoDaddyGetDNSRecordResponseToDNSRecordConverter>();
         }

@@ -12,10 +12,10 @@ namespace DDNSUpdate.Application.Providers.GoDaddy.Converters
 
             request.Data = dnsRecord.Data;
             request.Name = dnsRecord.Name;
-            request.Port = dnsRecord.Port.GetValueOrDefault();
-            request.Priority = dnsRecord.Priority.GetValueOrDefault();
-            request.Ttl = dnsRecord.TTL.GetValueOrDefault();
-            request.Weight = dnsRecord.Weight.GetValueOrDefault();
+            request.Port = dnsRecord.Port;
+            request.Priority = dnsRecord.Priority;
+            request.Ttl = dnsRecord.TTL;
+            request.Weight = dnsRecord.Weight;
 
             return request;
         }

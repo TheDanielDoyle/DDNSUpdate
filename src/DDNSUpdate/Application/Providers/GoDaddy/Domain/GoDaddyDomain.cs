@@ -1,4 +1,5 @@
 ﻿using DDNSUpdate.Domain;
+using System.Collections.Generic;
 
 namespace DDNSUpdate.Application.Providers.GoDaddy.Domain
 {
@@ -6,6 +7,6 @@ namespace DDNSUpdate.Application.Providers.GoDaddy.Domain
     {
         public string Name { get; set; } = default!;
 
-        public DNSRecordCollection Records = DNSRecordCollection.Empty();
+        public IList<DNSRecord> Records { get; set; } = new List<DNSRecord>();
     }
 }

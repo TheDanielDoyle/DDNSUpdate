@@ -11,6 +11,6 @@ namespace DDNSUpdate.Application.Providers.GoDaddy.Domain
 
         public string ApiKey { get; }
 
-        public string ApiSecret { get; set; }
+        public string ApiSecret { get; }
     }
 }
