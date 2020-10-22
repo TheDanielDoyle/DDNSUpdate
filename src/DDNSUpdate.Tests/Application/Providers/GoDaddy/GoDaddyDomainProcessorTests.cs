@@ -43,6 +43,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
             Assert.False(result.IsFailed);
         }
 
+        [Fact]
         public async Task ProcessAsync_CreateFails_ReturnsFailureResult()
         {
             IGoDaddyDNSRecordCreator dnsCreator = A.Fake<IGoDaddyDNSRecordCreator>();
