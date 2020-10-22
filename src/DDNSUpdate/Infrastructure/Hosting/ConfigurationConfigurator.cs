@@ -19,7 +19,7 @@ namespace DDNSUpdate.Infrastructure.Hosting
                     .AddJsonFile($"{_configurationFilename}.json", optional: true, reloadOnChange: true)
                     .AddYamlFile($"{_configurationFilename}.yaml", optional: true, reloadOnChange: true)
                     .AddYamlFile($"{_configurationFilename}.yml", optional: true, reloadOnChange: true);
-                if (environment.IsDevelopment() || environment.IsStaging())
+                if (!environment.IsProduction())
                 {
                     builder
                         .AddJsonFile($"{_configurationFilename}.{environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
