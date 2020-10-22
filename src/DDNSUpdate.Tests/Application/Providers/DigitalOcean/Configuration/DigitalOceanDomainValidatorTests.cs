@@ -28,7 +28,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Configuration
         }
 
         [Fact]
-        public void ValidDigitalOceanDomain()
+        public void ValidateValidDigitalOceanDomain()
         {
             DigitalOceanDomain domain = new DigitalOceanDomain
             {

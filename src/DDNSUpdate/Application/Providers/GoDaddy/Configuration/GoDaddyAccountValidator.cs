@@ -9,6 +9,8 @@ namespace DDNSUpdate.Application.Providers.GoDaddy.Configuration
 
         private static readonly string ApiSecretErrorMessage = "You must provide a GoDaddy account Api Secret.";
 
+        private static readonly string DomainsErrorMessage = "You must provide a GoDaddy Domain for account.";
+
         public GoDaddyAccountValidator()
         {
             RuleFor(p => p.ApiKey)
@@ -18,6 +20,10 @@ namespace DDNSUpdate.Application.Providers.GoDaddy.Configuration
             RuleFor(p => p.ApiSecret)
                 .NotEmpty()
                 .WithMessage(ApiSecretErrorMessage);
+
+            RuleFor(p => p.Domains)
+                .NotEmpty()
+                .WithMessage(DomainsErrorMessage);
 
             RuleForEach(p => p.Domains)
                 .SetValidator(new GoDaddyDomainValidator());

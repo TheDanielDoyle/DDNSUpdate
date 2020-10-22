@@ -56,7 +56,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
 
             IGoDaddyDNSRecordReader dnsReader = A.Fake<IGoDaddyDNSRecordReader>();
             A.CallTo(() => dnsReader.ReadAsync(A<string>.Ignored, A<GoDaddyAuthenticationDetails>.Ignored, A<CancellationToken>.Ignored))
-                .Returns(Result.Ok());
+                .Returns(Result.Ok(DNSRecordCollection.Empty()));
 
             IGoDaddyDNSRecordUpdater dnsUpdater = A.Fake<IGoDaddyDNSRecordUpdater>();
             A.CallTo(() => dnsUpdater.UpdateAsync(A<string>.Ignored, A<DNSRecordCollection>.Ignored, A<GoDaddyAuthenticationDetails>.Ignored, A<CancellationToken>.Ignored))
