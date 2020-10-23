@@ -15,7 +15,7 @@
           {
             "Name": "my-example-domain.com",
             "Records": [
-				{
+                {
                 "Name": "@",
                 "TTL": 300,
                 "Type": "A"
@@ -32,10 +32,10 @@
               }
             ]
           },
-		  {
+          {
             "Name": "my-example-domain.net",
             "Records": [
-			  {
+              {
                 "Name": "@",
                 "TTL": 300,
                 "Type": "A"
@@ -54,14 +54,14 @@
           }
         ],
         "ApiKey": "AtqiIHLOdrDGvdBt855Q5M5xi3s9W5FmR8",
-        "ApiSecret": "WwU0UHg6iTocCh0a6Bs9KR",
+        "ApiSecret": "WwU0UHg6iTocCh0a6Bs9KR"
       },
-	  {
+      {
         "Domains": [
           {
             "Name": "my-other-example-domain.com",
             "Records": [
-				{
+                {
                 "Name": "@",
                 "TTL": 300,
                 "Type": "A"
@@ -78,10 +78,10 @@
               }
             ]
           },
-		  {
+          {
             "Name": "my-other-example-domain.com",
             "Records": [
-			  {
+              {
                 "Name": "@",
                 "TTL": 300,
                 "Type": "A"
@@ -100,7 +100,7 @@
           }
         ],
         "ApiKey": "FRMBvuFpOBbmC18QmmDNyTNM5nZ9kmqopY",
-        "ApiSecret": "TGIQHx4Q2Vt4jwsNJoKcvX",
+        "ApiSecret": "TGIQHx4Q2Vt4jwsNJoKcvX"
       }
     ]
   }
