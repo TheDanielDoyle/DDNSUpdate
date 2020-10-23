@@ -17,7 +17,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) f
 
 ## Acknowledgements
 
-We would like the thank the following open source projects.
+We would like to thank the following open source projects.
 
 | Project                    | Repository                                               | License                                                                                 |
 | -------------------------- | -------------------------------------------------------- | --------------------------------------------------------------------------------------- |
