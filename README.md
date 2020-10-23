@@ -19,7 +19,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) f
 
 We would like the thank the following open source projects.
 
-|                            |                                                          |                                                                                         |
+| Project                    | Repository                                               | License                                                                                 |
 | -------------------------- | -------------------------------------------------------- | --------------------------------------------------------------------------------------- |
 | Ardalis.SmartEnum          | https://github.com/ardalis/SmartEnum                     | [LICENSE](https://github.com/ardalis/SmartEnum/blob/master/LICENSE)                     |
 | AutoMapper                 | https://github.com/AutoMapper/AutoMapper                 | [LICENSE](https://github.com/AutoMapper/AutoMapper/blob/master/LICENSE.txt)             |
