@@ -9,6 +9,12 @@ Update checks can occur on a frequency specified in configuration.
 * DigitalOcean
 * GoDaddy
 
+## Supported DNS record types
+
+* Address (**A**)
+
+More record types will be added at a later date.
+
 ## Getting started
 
 1. Pull the DDNSUpdate package from the [DDNSUpdate Repository at GitHub](https://github.com/users/TheDanielDoyle/packages/container/package/ddnsupdate).
