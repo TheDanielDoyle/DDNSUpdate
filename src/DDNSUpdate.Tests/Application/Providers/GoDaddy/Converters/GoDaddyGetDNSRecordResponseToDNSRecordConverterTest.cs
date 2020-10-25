@@ -38,7 +38,6 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy.Converters
 
             Assert.NotNull(result);
             Assert.Equal(response.Data, result.Data);
-            Assert.Equal(response.Name, result.Id);
             Assert.Equal(response.Name, result.Name);
             Assert.Equal(response.Port, result.Port);
             Assert.Equal(response.Priority, result.Priority);
@@ -68,7 +67,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy.Converters
             {
                 Data = "RecordData",
                 Flags = 42,
-                Id = "RecordId",
+                Id = "A-RecordName",
                 Name = "RecordName",
                 Port = 42,
                 Priority = 42,

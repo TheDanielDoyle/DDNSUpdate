@@ -118,10 +118,10 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
         {
             _httpTest.RespondWith(string.Empty);
             GoDaddyClient client = new GoDaddyClient(_httpClient);
-            IEnumerable<GoDaddyUpdateDNSRecordRequest> recordRequests = new List<GoDaddyUpdateDNSRecordRequest>();
-            GoDaddyUpdateDNSRecordsRequest request = new GoDaddyUpdateDNSRecordsRequest("ApiKey", "ApiSecret", DNSRecordType.A, "test.com", recordRequests);
+            GoDaddyUpdateDNSRecord recordRequest = new GoDaddyUpdateDNSRecord();
+            GoDaddyUpdateDNSRecordsRequest request = new GoDaddyUpdateDNSRecordsRequest("ApiKey", "ApiSecret", "test.com", DNSRecordType.A, "test", recordRequest);
 
-            Result actual = await client.UpdateDNSRecordsAsync(request, new CancellationToken());
+            Result actual = await client.UpdateDNSRecordAsync(request, new CancellationToken());
 
             Assert.True(actual.IsSuccess);
         }
@@ -131,10 +131,10 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
         {
             _httpTest.RespondWith(string.Empty, (int)HttpStatusCode.InternalServerError);
             GoDaddyClient client = new GoDaddyClient(_httpClient);
-            IEnumerable<GoDaddyUpdateDNSRecordRequest> recordRequests = new List<GoDaddyUpdateDNSRecordRequest>();
-            GoDaddyUpdateDNSRecordsRequest request = new GoDaddyUpdateDNSRecordsRequest("ApiKey", "ApiSecret", DNSRecordType.A, "test.com", recordRequests);
+            GoDaddyUpdateDNSRecord recordRequest = new GoDaddyUpdateDNSRecord();
+            GoDaddyUpdateDNSRecordsRequest request = new GoDaddyUpdateDNSRecordsRequest("ApiKey", "ApiSecret", "test.com", DNSRecordType.A, "test", recordRequest);
 
-            Result actual = await client.UpdateDNSRecordsAsync(request, new CancellationToken());
+            Result actual = await client.UpdateDNSRecordAsync(request, new CancellationToken());
 
             Assert.True(actual.IsFailed);
         }

@@ -22,7 +22,7 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
             context.Services.AddTransient<IGoDaddyAccountProcessor, GoDaddyAccountProcessor>();
             context.Services.AddTransient<IGoDaddyDomainProcessor, GoDaddyDomainProcessor>();
             context.Services.AddTransient<IGoDaddyDNSRecordCreator, GoDaddyDNSRecordCreator>();
-            context.Services.AddTransient<IGoDaddyDNSRecordReader, GoDadyDNSRecordReader>();
+            context.Services.AddTransient<IGoDaddyDNSRecordReader, GoDaddyDNSRecordReader>();
             context.Services.AddTransient<IGoDaddyDNSRecordUpdater, GoDaddyDNSRecordUpdater>();
         }
     }

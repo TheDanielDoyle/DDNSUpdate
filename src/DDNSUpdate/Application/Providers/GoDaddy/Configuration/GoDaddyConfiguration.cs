@@ -5,6 +5,6 @@ namespace DDNSUpdate.Application.Providers.GoDaddy.Configuration
 {
     public class GoDaddyConfiguration
     {
-        public IList<GoDaddyAccount> Accounts = new List<GoDaddyAccount>();
+        public IList<GoDaddyAccount> Accounts { get; set; } = new List<GoDaddyAccount>();
     }
 }

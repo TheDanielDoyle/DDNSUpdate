@@ -31,13 +31,18 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
             }
 
             DNSRecordCollection configurationRecords = new DNSRecordCollection(domain.Records);
-            DNSRecordCollection hydratedDnsRecords = _dnsRecordHydrater.Hydrate(configurationRecords, activeDnsRecordsResult.Value, externalAddress, DNSRecordType.A);
+            DNSRecordCollection hydratedDnsRecords = _dnsRecordHydrater.Hydrate(configurationRecords, activeDnsRecordsResult.Value, externalAddress, DNSRecordType.A, HydrateIds);
             DNSRecordCollection newRecords = activeDnsRecordsResult.Value.WhereNew(hydratedDnsRecords);
             DNSRecordCollection updatedRecords = activeDnsRecordsResult.Value.WhereUpdated(hydratedDnsRecords);
             
             Result create = await _dnsRecordCreator.CreateAsync(domain.Name, newRecords, token, cancellation);
             Result update = await _dnsRecordUpdater.UpdateAsync(domain.Name, updatedRecords, token, cancellation);
             return activeDnsRecordsResult.Merge(create, update);
+        }
+
+        private DNSRecordCollection HydrateIds(DNSRecordCollection dnsRecords, DNSRecordCollection dnsRecordsToMerge)
+        {
+            return dnsRecords.WithUpdatedIdsFrom(dnsRecordsToMerge);
         }
     }
 }

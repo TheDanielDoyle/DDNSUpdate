@@ -2,13 +2,10 @@
 
 namespace DDNSUpdate.Application.Providers.GoDaddy.Request
 {
-    public class GoDaddyCreateDNSRecordRequest
+    public class GoDaddyUpdateDNSRecord
     {
         [JsonProperty("data")]
         public string Data { get; set; } = default!;
-
-        [JsonProperty("name")]
-        public string Name { get; set; } = default!;
 
         [JsonProperty("port", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public int? Port { get; set; }
@@ -21,9 +18,6 @@ namespace DDNSUpdate.Application.Providers.GoDaddy.Request
 
         [JsonProperty("service", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string? Service { get; set; }
-
-        [JsonProperty("type")]
-        public string Type { get; set; } = default!;
 
         [JsonProperty("ttl")]
         public int Ttl { get; set; }

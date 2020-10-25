@@ -12,6 +12,6 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
 
         Task<Result<GoDaddyGetDNSRecordsResponse>> GetDNSRecordsAsync(GoDaddyGetDNSRecordsRequest request, CancellationToken cancellation);
 
-        Task<Result> UpdateDNSRecordsAsync(GoDaddyUpdateDNSRecordsRequest request, CancellationToken cancellation);
+        Task<Result> UpdateDNSRecordAsync(GoDaddyUpdateDNSRecordsRequest request, CancellationToken cancellation);
     }
 }

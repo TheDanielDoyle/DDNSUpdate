@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using DDNSUpdate.Domain;
 
 namespace DDNSUpdate.Application.Providers.GoDaddy.Request
 {

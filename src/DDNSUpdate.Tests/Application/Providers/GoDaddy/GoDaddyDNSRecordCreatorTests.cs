@@ -30,9 +30,14 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
 
             GoDaddyDNSRecordCreator creator = new GoDaddyDNSRecordCreator(fakeClient, _mapper);
             DNSRecordCollection dnsRecords = new DNSRecordCollection(
-                new DNSRecord(),
-                new DNSRecord()
-            );
+                new DNSRecord
+                {
+                    Type = DNSRecordType.A
+                },
+                new DNSRecord
+                {
+                    Type = DNSRecordType.A
+                });
             GoDaddyAuthenticationDetails authicationDetails = new GoDaddyAuthenticationDetails(string.Empty, string.Empty);
             
             Result result = await creator.CreateAsync(string.Empty, dnsRecords, authicationDetails, CancellationToken.None);
@@ -49,9 +54,14 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
 
             GoDaddyDNSRecordCreator creator = new GoDaddyDNSRecordCreator(fakeClient, _mapper);
             DNSRecordCollection dnsRecords = new DNSRecordCollection(
-                new DNSRecord(),
-                new DNSRecord()
-            );
+            new DNSRecord
+            {
+                Type = DNSRecordType.A
+            },
+            new DNSRecord
+            {
+                Type = DNSRecordType.A
+            });
             GoDaddyAuthenticationDetails authicationDetails = new GoDaddyAuthenticationDetails(string.Empty, string.Empty);
 
             Result result = await creator.CreateAsync(string.Empty, dnsRecords, authicationDetails, CancellationToken.None);

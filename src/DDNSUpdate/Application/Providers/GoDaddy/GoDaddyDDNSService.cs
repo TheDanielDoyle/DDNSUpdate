@@ -11,8 +11,8 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
 {
     public class GoDaddyDDNSService : IDDNSService
     {
-        private IGoDaddyAccountProcessor _accountProcessor;
-        private GoDaddyConfiguration _configuration;
+        private readonly IGoDaddyAccountProcessor _accountProcessor;
+        private readonly GoDaddyConfiguration _configuration;
 
         public GoDaddyDDNSService(IGoDaddyAccountProcessor accountProcessor, IOptionsSnapshot<GoDaddyConfiguration> configuration)
         {

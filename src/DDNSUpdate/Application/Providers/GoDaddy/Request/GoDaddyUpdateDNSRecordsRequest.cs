@@ -1,5 +1,4 @@
 ﻿using DDNSUpdate.Domain;
-using System.Collections.Generic;
 
 namespace DDNSUpdate.Application.Providers.GoDaddy.Request
 {
@@ -8,25 +7,29 @@ namespace DDNSUpdate.Application.Providers.GoDaddy.Request
         public GoDaddyUpdateDNSRecordsRequest(
             string apiKey,
             string apiSecret,
-            DNSRecordType dNSRecordType,
             string domainName,
-            IEnumerable<GoDaddyUpdateDNSRecordRequest> records)
+            DNSRecordType recordType,
+            string recordName,
+            GoDaddyUpdateDNSRecord record)
         {
             ApiKey = apiKey;
             ApiSecret = apiSecret;
-            DNSRecordType = dNSRecordType;
             DomainName = domainName;
-            Records = records;
+            Record = record;
+            RecordName = recordName;
+            RecordType = recordType;
         }
 
         public string ApiKey { get; }
 
         public string ApiSecret { get; }
 
-        public DNSRecordType DNSRecordType { get; }
-
         public string DomainName { get; }
 
-        public IEnumerable<GoDaddyUpdateDNSRecordRequest> Records { get; }
+        public GoDaddyUpdateDNSRecord Record { get; }
+
+        public string RecordName { get; }
+
+        public DNSRecordType RecordType { get; }
     }
 }

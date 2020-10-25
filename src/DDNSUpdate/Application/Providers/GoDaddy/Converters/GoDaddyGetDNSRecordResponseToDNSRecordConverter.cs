@@ -6,12 +6,11 @@ namespace DDNSUpdate.Application.Providers.GoDaddy.Converters
 {
     public class GoDaddyGetDNSRecordResponseToDNSRecordConverter : ITypeConverter<GoDaddyGetDNSRecordResponse, DNSRecord>
     {
-        public DNSRecord Convert(GoDaddyGetDNSRecordResponse source, DNSRecord dnsRecord, ResolutionContext context)
+        public DNSRecord Convert(GoDaddyGetDNSRecordResponse source, DNSRecord? dnsRecord, ResolutionContext context)
         {
             dnsRecord ??= new DNSRecord();
 
             dnsRecord.Data = source.Data;
-            dnsRecord.Id = source.Name;
             dnsRecord.Name = source.Name;
             dnsRecord.Port = source.Port;
             dnsRecord.Priority = source.Priority;

@@ -1,4 +1,5 @@
-﻿using DDNSUpdate.Application;
+﻿using System;
+using DDNSUpdate.Application;
 using DDNSUpdate.Application.Providers.GoDaddy;
 using DDNSUpdate.Application.Providers.GoDaddy.Domain;
 using DDNSUpdate.Domain;
@@ -20,7 +21,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
                 .Returns(Result.Ok());
 
             IDNSRecordCollectionHydrater hydrater = A.Fake<IDNSRecordCollectionHydrater>();
-            A.CallTo(() => hydrater.Hydrate(A<DNSRecordCollection>.Ignored, A<DNSRecordCollection>.Ignored, A<ExternalAddress>.Ignored, A<DNSRecordType>.Ignored))
+            A.CallTo(() => hydrater.Hydrate(A<DNSRecordCollection>.Ignored, A<DNSRecordCollection>.Ignored, A<ExternalAddress>.Ignored, A<DNSRecordType>.Ignored, A<Func<DNSRecordCollection, DNSRecordCollection, DNSRecordCollection>>.Ignored))
                 .Returns(DNSRecordCollection.Empty());
 
             IGoDaddyDNSRecordReader dnsReader = A.Fake<IGoDaddyDNSRecordReader>();
@@ -51,7 +52,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
                 .Returns(Result.Fail("Creation Failure"));
 
             IDNSRecordCollectionHydrater hydrater = A.Fake<IDNSRecordCollectionHydrater>();
-            A.CallTo(() => hydrater.Hydrate(A<DNSRecordCollection>.Ignored, A<DNSRecordCollection>.Ignored, A<ExternalAddress>.Ignored, A<DNSRecordType>.Ignored))
+            A.CallTo(() => hydrater.Hydrate(A<DNSRecordCollection>.Ignored, A<DNSRecordCollection>.Ignored, A<ExternalAddress>.Ignored, A<DNSRecordType>.Ignored, A<Func<DNSRecordCollection, DNSRecordCollection, DNSRecordCollection>>.Ignored))
                 .Returns(DNSRecordCollection.Empty());
 
             IGoDaddyDNSRecordReader dnsReader = A.Fake<IGoDaddyDNSRecordReader>();
@@ -82,7 +83,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
                 .Returns(Result.Ok());
 
             IDNSRecordCollectionHydrater hydrater = A.Fake<IDNSRecordCollectionHydrater>();
-            A.CallTo(() => hydrater.Hydrate(A<DNSRecordCollection>.Ignored, A<DNSRecordCollection>.Ignored, A<ExternalAddress>.Ignored, A<DNSRecordType>.Ignored))
+            A.CallTo(() => hydrater.Hydrate(A<DNSRecordCollection>.Ignored, A<DNSRecordCollection>.Ignored, A<ExternalAddress>.Ignored, A<DNSRecordType>.Ignored, A<Func<DNSRecordCollection, DNSRecordCollection, DNSRecordCollection>>.Ignored))
                 .Returns(DNSRecordCollection.Empty());
 
             IGoDaddyDNSRecordReader dnsReader = A.Fake<IGoDaddyDNSRecordReader>();
@@ -113,7 +114,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
                 .Returns(Result.Ok());
 
             IDNSRecordCollectionHydrater hydrater = A.Fake<IDNSRecordCollectionHydrater>();
-            A.CallTo(() => hydrater.Hydrate(A<DNSRecordCollection>.Ignored, A<DNSRecordCollection>.Ignored, A<ExternalAddress>.Ignored, A<DNSRecordType>.Ignored))
+            A.CallTo(() => hydrater.Hydrate(A<DNSRecordCollection>.Ignored, A<DNSRecordCollection>.Ignored, A<ExternalAddress>.Ignored, A<DNSRecordType>.Ignored, A<Func<DNSRecordCollection, DNSRecordCollection, DNSRecordCollection>>.Ignored))
                 .Returns(DNSRecordCollection.Empty());
 
             IGoDaddyDNSRecordReader dnsReader = A.Fake<IGoDaddyDNSRecordReader>();

@@ -40,7 +40,6 @@ namespace DDNSUpdate.Tests.Application
             Assert.NotEmpty(hydratedDnsRecords);
 
             DNSRecord hydratedDnsRecord = hydratedDnsRecords.First();
-            Assert.Equal(id, hydratedDnsRecord.Id);
             Assert.Equal(ipAddress, hydratedDnsRecord.Data);
             Assert.Equal(dnsRecord.Name, hydratedDnsRecord.Name);
             Assert.Equal(dnsRecord.TTL, hydratedDnsRecord.TTL);

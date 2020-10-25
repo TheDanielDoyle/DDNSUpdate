@@ -102,7 +102,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy.Configuration
             };
         }
 
-        private IEnumerable<GoDaddyDomain> CreateValidGoDaddyDomains()
+        private IList<GoDaddyDomain> CreateValidGoDaddyDomains()
         {
             return new List<GoDaddyDomain>(new[]
             {

@@ -8,6 +8,6 @@ namespace DDNSUpdate.Application.Providers.GoDaddy.Domain
 
         public string ApiSecret { get; set; } = default!;
 
-        public IEnumerable<GoDaddyDomain> Domains = new List<GoDaddyDomain>();
+        public IList<GoDaddyDomain> Domains { get; set; } = new List<GoDaddyDomain>();
     }
 }

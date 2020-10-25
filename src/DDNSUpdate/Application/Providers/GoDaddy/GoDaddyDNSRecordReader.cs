@@ -10,12 +10,12 @@ using FluentResults;
 
 namespace DDNSUpdate.Application.Providers.GoDaddy
 {
-    public class GoDadyDNSRecordReader : IGoDaddyDNSRecordReader
+    public class GoDaddyDNSRecordReader : IGoDaddyDNSRecordReader
     {
         private readonly IGoDaddyClient _client;
         private readonly IMapper _mapper;
 
-        public GoDadyDNSRecordReader(IGoDaddyClient client, IMapper mapper)
+        public GoDaddyDNSRecordReader(IGoDaddyClient client, IMapper mapper)
         {
             _client = client;
             _mapper = mapper;

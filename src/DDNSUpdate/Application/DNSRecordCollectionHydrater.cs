@@ -1,4 +1,5 @@
-﻿using DDNSUpdate.Domain;
+﻿using System;
+using DDNSUpdate.Domain;
 
 namespace DDNSUpdate.Application
 {
@@ -8,12 +9,16 @@ namespace DDNSUpdate.Application
         {
         }
 
-        public DNSRecordCollection Hydrate(DNSRecordCollection dnsRecords, DNSRecordCollection dnsRecordsToMerge, ExternalAddress externalAddress, DNSRecordType dnsRecordType)
+        public DNSRecordCollection Hydrate(DNSRecordCollection dnsRecords, DNSRecordCollection dnsRecordsToMerge, ExternalAddress externalAddress, DNSRecordType dnsRecordType, Func<DNSRecordCollection, DNSRecordCollection, DNSRecordCollection> mutateDnsRecords = null!)
         {
-            return dnsRecords
+            DNSRecordCollection result =  dnsRecords
                 .WithRecordType(dnsRecordType)
-                .WithUpdatedDataFrom(externalAddress.IPv4Address!.ToString())
-                .WithUpdatedIdsFrom(dnsRecordsToMerge);
+                .WithUpdatedDataFrom(externalAddress.IPv4Address!.ToString());
+            if (mutateDnsRecords != null)
+            {
+                result = mutateDnsRecords.Invoke(dnsRecords, dnsRecordsToMerge);
+            }
+            return result;
         }
     }
 }

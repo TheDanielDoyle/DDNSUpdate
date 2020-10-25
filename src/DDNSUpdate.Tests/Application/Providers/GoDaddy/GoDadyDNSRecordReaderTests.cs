@@ -33,7 +33,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
 
             A.CallTo(() => fakeClient.GetDNSRecordsAsync(A<GoDaddyGetDNSRecordsRequest>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Fail("failed"));
 
-            GoDadyDNSRecordReader reader = new GoDadyDNSRecordReader(fakeClient, _mapper);
+            GoDaddyDNSRecordReader reader = new GoDaddyDNSRecordReader(fakeClient, _mapper);
             GoDaddyAuthenticationDetails authicationDetails = new GoDaddyAuthenticationDetails("apiKey", "apiSecret");
 
             Result<DNSRecordCollection> result = await reader.ReadAsync(string.Empty, authicationDetails, CancellationToken.None);
@@ -56,7 +56,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
             GoDaddyGetDNSRecordsResponse clientResponse = new GoDaddyGetDNSRecordsResponse(records);
 
             A.CallTo(() => fakeClient.GetDNSRecordsAsync(A<GoDaddyGetDNSRecordsRequest>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Ok(clientResponse));
-            GoDadyDNSRecordReader reader = new GoDadyDNSRecordReader(fakeClient, _mapper);
+            GoDaddyDNSRecordReader reader = new GoDaddyDNSRecordReader(fakeClient, _mapper);
             GoDaddyAuthenticationDetails authicationDetails = new GoDaddyAuthenticationDetails("apiKey", "apiSecret");
 
             Result<DNSRecordCollection> result = await reader.ReadAsync(string.Empty, authicationDetails, CancellationToken.None);

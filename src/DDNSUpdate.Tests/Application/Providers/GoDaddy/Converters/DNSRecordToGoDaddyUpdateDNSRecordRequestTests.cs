@@ -34,10 +34,9 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy.Converters
                 Type = DNSRecordType.A
             };
 
-            GoDaddyUpdateDNSRecordRequest result = converter.Convert(record, null, _resolutionContext);
+            GoDaddyUpdateDNSRecord result = converter.Convert(record, null, _resolutionContext);
             Assert.NotNull(result);
             Assert.Equal(record.Data, result.Data);
-            Assert.Equal(record.Name, result.Name);
             Assert.Equal((int)record.Port, result.Port);
             Assert.Equal((int)record.Priority, result.Priority);
             Assert.Null(result.Protocol);
@@ -62,10 +61,9 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy.Converters
                 Type = DNSRecordType.A
             };
 
-            GoDaddyUpdateDNSRecordRequest updateRequest = new GoDaddyUpdateDNSRecordRequest()
+            GoDaddyUpdateDNSRecord updateRequest = new GoDaddyUpdateDNSRecord()
             {
                 Data = "updateRequestData",
-                Name = "updateRequestName",
                 Port = 2,
                 Priority = 2,
                 Protocol = "updateRequestProtocol",
@@ -74,10 +72,9 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy.Converters
                 Weight = 2
             };
 
-            GoDaddyUpdateDNSRecordRequest result = converter.Convert(record, updateRequest, _resolutionContext);
+            GoDaddyUpdateDNSRecord result = converter.Convert(record, updateRequest, _resolutionContext);
 
             Assert.Equal(record.Data, result.Data);
-            Assert.Equal(record.Name, result.Name);
             Assert.Equal((int)record.Port, result.Port);
             Assert.Equal((int)record.Priority, result.Priority);
             Assert.Equal(updateRequest.Protocol, result.Protocol);

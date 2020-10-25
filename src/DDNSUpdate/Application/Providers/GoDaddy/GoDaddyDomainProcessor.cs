@@ -14,11 +14,7 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
         private readonly IGoDaddyDNSRecordReader _dnsRecordReader;
         private readonly IGoDaddyDNSRecordUpdater _dnsRecordUpdater;
 
-        public GoDaddyDomainProcessor(
-            IGoDaddyDNSRecordCreator dnsRecordCreator,
-            IDNSRecordCollectionHydrater dnsRecordHydrater,
-            IGoDaddyDNSRecordReader dnsRecordReader,
-            IGoDaddyDNSRecordUpdater dnsRecordUpdater)
+        public GoDaddyDomainProcessor(IGoDaddyDNSRecordCreator dnsRecordCreator, IDNSRecordCollectionHydrater dnsRecordHydrater, IGoDaddyDNSRecordReader dnsRecordReader, IGoDaddyDNSRecordUpdater dnsRecordUpdater)
         {
             _dnsRecordCreator = dnsRecordCreator;
             _dnsRecordHydrater = dnsRecordHydrater;

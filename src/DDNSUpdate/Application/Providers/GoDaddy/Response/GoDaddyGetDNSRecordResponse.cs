@@ -11,16 +11,16 @@ namespace DDNSUpdate.Application.Providers.GoDaddy.Response
         public string Name { get; set; } = default!;
 
         [JsonProperty("port")]
-        public int Port { get; set; }
+        public int? Port { get; set; }
 
         [JsonProperty("priority")]
-        public int Priority { get; set; }
+        public int? Priority { get; set; }
 
         [JsonProperty("protocol")]
-        public string Protocol { get; set; } = default!;
+        public string? Protocol { get; set; } = default!;
 
         [JsonProperty("service")]
-        public string Service { get; set; } = default!;
+        public string? Service { get; set; } = default!;
 
         [JsonProperty("ttl")]
         public int Ttl { get; set; }
@@ -29,6 +29,6 @@ namespace DDNSUpdate.Application.Providers.GoDaddy.Response
         public string Type { get; set; } = default!;
 
         [JsonProperty("weight")]
-        public int Weight { get; set; }
+        public int? Weight { get; set; }
     }
 }

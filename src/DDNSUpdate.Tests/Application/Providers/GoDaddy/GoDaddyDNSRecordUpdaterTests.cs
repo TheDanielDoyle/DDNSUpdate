@@ -26,7 +26,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
         {
             IGoDaddyClient client = A.Fake<IGoDaddyClient>();
 
-            A.CallTo(() => client.UpdateDNSRecordsAsync(A<GoDaddyUpdateDNSRecordsRequest>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Fail("Error"));
+            A.CallTo(() => client.UpdateDNSRecordAsync(A<GoDaddyUpdateDNSRecordsRequest>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Fail("Error"));
 
             GoDaddyDNSRecordUpdater updater = new GoDaddyDNSRecordUpdater(client, _mapper);
             DNSRecordCollection records = new DNSRecordCollection(CreateValidDNSRecord(1), CreateValidDNSRecord(2));
@@ -35,7 +35,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
             Result result = await updater.UpdateAsync("aDomain.com", records, authicationDetails, CancellationToken.None);
 
             Assert.True(result.IsFailed);
-            Assert.Single(result.Errors);
+            Assert.Equal(2, result.Errors.Count);
         }
 
         [Fact]
@@ -43,7 +43,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
         {
             IGoDaddyClient client = A.Fake<IGoDaddyClient>();
 
-            A.CallTo(() => client.UpdateDNSRecordsAsync(A<GoDaddyUpdateDNSRecordsRequest>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Ok());
+            A.CallTo(() => client.UpdateDNSRecordAsync(A<GoDaddyUpdateDNSRecordsRequest>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Ok());
 
             GoDaddyDNSRecordUpdater updater = new GoDaddyDNSRecordUpdater(client, _mapper);
             DNSRecordCollection records = new DNSRecordCollection(CreateValidDNSRecord(1), CreateValidDNSRecord(2));
