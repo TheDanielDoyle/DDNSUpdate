@@ -24,7 +24,7 @@ namespace DDNSUpdate.Infrastructure.ServiceProfiles
             context.Services.AddValidatorsFromAssembly(ThisAssembly);
 
             context.Services.AddScoped<IConfigurationValidator, ConfigurationValidator>();
-            context.Services.AddScoped<IDNSRecordCollectionHydrater, DNSRecordCollectionHydrater>();
+            context.Services.AddScoped<IDNSRecordCollectionMutator, DNSRecordCollectionMutator>();
 
             context.Services.AddTransient<IDDNSUpdateInvoker, DDNSUpdateInvoker>();
             context.Services.AddTransient<IScopeBuilder, ScopeBuilder>();

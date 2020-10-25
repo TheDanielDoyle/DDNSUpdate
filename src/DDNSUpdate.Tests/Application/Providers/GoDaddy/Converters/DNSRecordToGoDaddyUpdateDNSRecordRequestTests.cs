@@ -3,7 +3,6 @@ using DDNSUpdate.Application.Providers.GoDaddy.Converters;
 using DDNSUpdate.Application.Providers.GoDaddy.Request;
 using DDNSUpdate.Domain;
 using DDNSUpdate.Tests.Helpers;
-using FakeItEasy;
 using Xunit;
 
 namespace DDNSUpdate.Tests.Application.Providers.GoDaddy.Converters

@@ -6,7 +6,7 @@ namespace DDNSUpdate.Application.Providers.GoDaddy.Configuration
     public class GoDaddyDNSRecordValidator : AbstractValidator<DNSRecord>
     {
         private const string _propertyDisallowedMessage = "The {PropertyName} field should not be set in configuration.";
-        private const int _ttlMinimumSeconds = 30;
+        private const int _ttlMinimumSeconds = 600;
 
         public static readonly string DataErrorMessage = _propertyDisallowedMessage;
         public static readonly string FlagsErrorMessage = _propertyDisallowedMessage;

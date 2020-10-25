@@ -2,9 +2,6 @@
 using DDNSUpdate.Domain;
 using FluentValidation;
 using FluentValidation.Results;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace DDNSUpdate.Tests.Application.Providers.GoDaddy.Configuration

@@ -1,22 +1,25 @@
-﻿using DDNSUpdate.Application.Providers.DigitalOcean.Domain;
+﻿using System.Collections;
+using System.Collections.Generic;
+using DDNSUpdate.Application.Providers.DigitalOcean.Domain;
 using DDNSUpdate.Domain;
 using DDNSUpdate.Infrastructure.Extensions;
 using FluentResults;
 using System.Threading;
 using System.Threading.Tasks;
+using DDNSUpdate.Application.Mutations;
 
 namespace DDNSUpdate.Application.Providers.DigitalOcean
 {
     public class DigitalOceanDomainProcessor : IDigitalOceanDomainProcessor
     {
         private readonly IDigitalOceanDNSRecordCreator _dnsRecordCreator;
-        private readonly IDNSRecordCollectionHydrater _dnsRecordHydrater;
+        private readonly IDNSRecordCollectionMutator _dnsRecordMutator;
         private readonly IDigitalOceanDNSRecordReader _dnsRecordReader;
         private readonly IDigitalOceanDNSRecordUpdater _dnsRecordUpdater;
 
-        public DigitalOceanDomainProcessor(IDNSRecordCollectionHydrater dnsRecordHydrater, IDigitalOceanDNSRecordCreator dnsRecordCreator, IDigitalOceanDNSRecordReader dnsRecordReader, IDigitalOceanDNSRecordUpdater dnsRecordUpdater)
+        public DigitalOceanDomainProcessor(IDNSRecordCollectionMutator dnsRecordMutator, IDigitalOceanDNSRecordCreator dnsRecordCreator, IDigitalOceanDNSRecordReader dnsRecordReader, IDigitalOceanDNSRecordUpdater dnsRecordUpdater)
         {
-            _dnsRecordHydrater = dnsRecordHydrater;
+            _dnsRecordMutator = dnsRecordMutator;
             _dnsRecordCreator = dnsRecordCreator;
             _dnsRecordReader = dnsRecordReader;
             _dnsRecordUpdater = dnsRecordUpdater;
@@ -30,8 +33,10 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
                 return activeDnsRecordsResult;
             }
 
+            IDNSRecordCollectionMutation[] mutations = GetMutations(externalAddress, activeDnsRecordsResult.Value);
+
             DNSRecordCollection configurationRecords = new DNSRecordCollection(domain.Records);
-            DNSRecordCollection hydratedDnsRecords = _dnsRecordHydrater.Hydrate(configurationRecords, activeDnsRecordsResult.Value, externalAddress, DNSRecordType.A, HydrateIds);
+            DNSRecordCollection hydratedDnsRecords = _dnsRecordMutator.Mutate(configurationRecords, mutations);
             DNSRecordCollection newRecords = activeDnsRecordsResult.Value.WhereNew(hydratedDnsRecords);
             DNSRecordCollection updatedRecords = activeDnsRecordsResult.Value.WhereUpdated(hydratedDnsRecords);
             
@@ -40,9 +45,14 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
             return activeDnsRecordsResult.Merge(create, update);
         }
 
-        private DNSRecordCollection HydrateIds(DNSRecordCollection dnsRecords, DNSRecordCollection dnsRecordsToMerge)
+        private IDNSRecordCollectionMutation[] GetMutations(ExternalAddress externalAddress, DNSRecordCollection idsFrom)
         {
-            return dnsRecords.WithUpdatedIdsFrom(dnsRecordsToMerge);
+            return new IDNSRecordCollectionMutation[]
+            {
+                new WithRecordType(DNSRecordType.A),
+                new WithUpdatedData(externalAddress.ToIPv4String()!),
+                new WithUpdatedIds(idsFrom)
+            };
         }
     }
 }

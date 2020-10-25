@@ -1,5 +1,4 @@
-﻿using System;
-using DDNSUpdate.Application;
+﻿using DDNSUpdate.Application;
 using DDNSUpdate.Application.Providers.GoDaddy;
 using DDNSUpdate.Application.Providers.GoDaddy.Domain;
 using DDNSUpdate.Domain;
@@ -20,8 +19,8 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
             A.CallTo(() => dnsCreator.CreateAsync(A<string>.Ignored, A<DNSRecordCollection>.Ignored, A<GoDaddyAuthenticationDetails>.Ignored, A<CancellationToken>.Ignored))
                 .Returns(Result.Ok());
 
-            IDNSRecordCollectionHydrater hydrater = A.Fake<IDNSRecordCollectionHydrater>();
-            A.CallTo(() => hydrater.Hydrate(A<DNSRecordCollection>.Ignored, A<DNSRecordCollection>.Ignored, A<ExternalAddress>.Ignored, A<DNSRecordType>.Ignored, A<Func<DNSRecordCollection, DNSRecordCollection, DNSRecordCollection>>.Ignored))
+            IDNSRecordCollectionMutator mutator = A.Fake<IDNSRecordCollectionMutator>();
+            A.CallTo(() => mutator.Mutate(A<DNSRecordCollection>.Ignored, A<IDNSRecordCollectionMutation>.Ignored))
                 .Returns(DNSRecordCollection.Empty());
 
             IGoDaddyDNSRecordReader dnsReader = A.Fake<IGoDaddyDNSRecordReader>();
@@ -32,7 +31,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
             A.CallTo(() => dnsUpdater.UpdateAsync(A<string>.Ignored, A<DNSRecordCollection>.Ignored, A<GoDaddyAuthenticationDetails>.Ignored, A<CancellationToken>.Ignored))
                 .Returns(Result.Ok());
 
-            IGoDaddyDomainProcessor domainProcessor = new GoDaddyDomainProcessor(dnsCreator, hydrater, dnsReader, dnsUpdater);
+            IGoDaddyDomainProcessor domainProcessor = new GoDaddyDomainProcessor(dnsCreator, mutator, dnsReader, dnsUpdater);
 
             GoDaddyDomain domain = new GoDaddyDomain() { Name = "GoDaddy Domain" };
             ExternalAddress externalAddress = A.Fake<ExternalAddress>();
@@ -51,8 +50,8 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
             A.CallTo(() => dnsCreator.CreateAsync(A<string>.Ignored, A<DNSRecordCollection>.Ignored, A<GoDaddyAuthenticationDetails>.Ignored, A<CancellationToken>.Ignored))
                 .Returns(Result.Fail("Creation Failure"));
 
-            IDNSRecordCollectionHydrater hydrater = A.Fake<IDNSRecordCollectionHydrater>();
-            A.CallTo(() => hydrater.Hydrate(A<DNSRecordCollection>.Ignored, A<DNSRecordCollection>.Ignored, A<ExternalAddress>.Ignored, A<DNSRecordType>.Ignored, A<Func<DNSRecordCollection, DNSRecordCollection, DNSRecordCollection>>.Ignored))
+            IDNSRecordCollectionMutator mutator = A.Fake<IDNSRecordCollectionMutator>();
+            A.CallTo(() => mutator.Mutate(A<DNSRecordCollection>.Ignored, A<IDNSRecordCollectionMutation>.Ignored))
                 .Returns(DNSRecordCollection.Empty());
 
             IGoDaddyDNSRecordReader dnsReader = A.Fake<IGoDaddyDNSRecordReader>();
@@ -63,7 +62,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
             A.CallTo(() => dnsUpdater.UpdateAsync(A<string>.Ignored, A<DNSRecordCollection>.Ignored, A<GoDaddyAuthenticationDetails>.Ignored, A<CancellationToken>.Ignored))
                 .Returns(Result.Ok());
 
-            IGoDaddyDomainProcessor domainProcessor = new GoDaddyDomainProcessor(dnsCreator, hydrater, dnsReader, dnsUpdater);
+            IGoDaddyDomainProcessor domainProcessor = new GoDaddyDomainProcessor(dnsCreator, mutator, dnsReader, dnsUpdater);
 
             GoDaddyDomain domain = new GoDaddyDomain() { Name = "GoDaddy Domain" };
             ExternalAddress externalAddress = A.Fake<ExternalAddress>();
@@ -82,8 +81,8 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
             A.CallTo(() => dnsCreator.CreateAsync(A<string>.Ignored, A<DNSRecordCollection>.Ignored, A<GoDaddyAuthenticationDetails>.Ignored, A<CancellationToken>.Ignored))
                 .Returns(Result.Ok());
 
-            IDNSRecordCollectionHydrater hydrater = A.Fake<IDNSRecordCollectionHydrater>();
-            A.CallTo(() => hydrater.Hydrate(A<DNSRecordCollection>.Ignored, A<DNSRecordCollection>.Ignored, A<ExternalAddress>.Ignored, A<DNSRecordType>.Ignored, A<Func<DNSRecordCollection, DNSRecordCollection, DNSRecordCollection>>.Ignored))
+            IDNSRecordCollectionMutator mutator = A.Fake<IDNSRecordCollectionMutator>();
+            A.CallTo(() => mutator.Mutate(A<DNSRecordCollection>.Ignored, A<IDNSRecordCollectionMutation>.Ignored))
                 .Returns(DNSRecordCollection.Empty());
 
             IGoDaddyDNSRecordReader dnsReader = A.Fake<IGoDaddyDNSRecordReader>();
@@ -94,7 +93,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
             A.CallTo(() => dnsUpdater.UpdateAsync(A<string>.Ignored, A<DNSRecordCollection>.Ignored, A<GoDaddyAuthenticationDetails>.Ignored, A<CancellationToken>.Ignored))
                 .Returns(Result.Ok());
 
-            IGoDaddyDomainProcessor domainProcessor = new GoDaddyDomainProcessor(dnsCreator, hydrater, dnsReader, dnsUpdater);
+            IGoDaddyDomainProcessor domainProcessor = new GoDaddyDomainProcessor(dnsCreator, mutator, dnsReader, dnsUpdater);
 
             GoDaddyDomain domain = new GoDaddyDomain() { Name = "GoDaddy Domain" };
             ExternalAddress externalAddress = A.Fake<ExternalAddress>();
@@ -113,8 +112,8 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
             A.CallTo(() => dnsCreator.CreateAsync(A<string>.Ignored, A<DNSRecordCollection>.Ignored, A<GoDaddyAuthenticationDetails>.Ignored, A<CancellationToken>.Ignored))
                 .Returns(Result.Ok());
 
-            IDNSRecordCollectionHydrater hydrater = A.Fake<IDNSRecordCollectionHydrater>();
-            A.CallTo(() => hydrater.Hydrate(A<DNSRecordCollection>.Ignored, A<DNSRecordCollection>.Ignored, A<ExternalAddress>.Ignored, A<DNSRecordType>.Ignored, A<Func<DNSRecordCollection, DNSRecordCollection, DNSRecordCollection>>.Ignored))
+            IDNSRecordCollectionMutator mutator = A.Fake<IDNSRecordCollectionMutator>();
+            A.CallTo(() => mutator.Mutate(A<DNSRecordCollection>.Ignored, A<IDNSRecordCollectionMutation>.Ignored))
                 .Returns(DNSRecordCollection.Empty());
 
             IGoDaddyDNSRecordReader dnsReader = A.Fake<IGoDaddyDNSRecordReader>();
@@ -125,7 +124,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
             A.CallTo(() => dnsUpdater.UpdateAsync(A<string>.Ignored, A<DNSRecordCollection>.Ignored, A<GoDaddyAuthenticationDetails>.Ignored, A<CancellationToken>.Ignored))
                 .Returns(Result.Fail("Update Failure"));
 
-            IGoDaddyDomainProcessor domainProcessor = new GoDaddyDomainProcessor(dnsCreator, hydrater, dnsReader, dnsUpdater);
+            IGoDaddyDomainProcessor domainProcessor = new GoDaddyDomainProcessor(dnsCreator, mutator, dnsReader, dnsUpdater);
 
             GoDaddyDomain domain = new GoDaddyDomain() { Name = "GoDaddy Domain" };
             ExternalAddress externalAddress = A.Fake<ExternalAddress>();
