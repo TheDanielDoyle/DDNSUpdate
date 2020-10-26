@@ -16,14 +16,14 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
     {
         private static readonly Uri _apiBase = new Uri("https://api.digitalocean.com/v2/");
         private static readonly string _createDNSRecordFormat = "domains/{0}/records";
-        private static readonly string _createDNSRecordFailureMessageTemplate = "Unable to create DigitalOcean Domain {0} DNS record for {1}";
-        private static readonly string _createDNSRecordSuccessMessageTemplate = "Successfully created DigitalOcean Domain {0} DNS record for {1}";
+        private static readonly string _createDNSRecordFailureMessageTemplate = "Unable to create DigitalOcean domain {0} DNS record for {1}";
+        private static readonly string _createDNSRecordSuccessMessageTemplate = "Successfully created DigitalOcean domain {0} DNS record for {1}";
         private static readonly string _getDNSRecordsFormat = "domains/{0}/records";
-        private static readonly string _getDNSRecordsFailureMessageTemplate = "Unable to retrieve DigitalOcean Domain DNS records for {0}";
+        private static readonly string _getDNSRecordsFailureMessageTemplate = "Unable to retrieve DigitalOcean domain DNS records for {0}";
         private static readonly string _getDNSRecordsSuccessMessageTemplate = "{0} DNS records retrieved for DigitalOcean domain {1}";
         private static readonly string _updateDNSRecordFormat = "domains/{0}/records/{1}";
-        private static readonly string _updateDNSRecordsFailureMessageTemplate = "Unable to update DNS record for {0}";
-        private static readonly string _updateDNSRecordsSuccessMessageTemplate = "Successfully updated DigitalOcean Domain {0} DNS record for {1}";
+        private static readonly string _updateDNSRecordsFailureMessageTemplate = "Unable to update DNS record {0} for DigitalOcean domain {1}";
+        private static readonly string _updateDNSRecordsSuccessMessageTemplate = "Successfully updated DigitalOcean domain {0} DNS record for {1}";
 
         private readonly IFlurlClient _httpClient;
 
@@ -67,7 +67,7 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
             {
                 return Result.Ok().WithSuccess(string.Format(_updateDNSRecordsSuccessMessageTemplate, domainName, request.Name));
             }
-            return Result.Fail(string.Format(_updateDNSRecordsFailureMessageTemplate, request.Name));
+            return Result.Fail(string.Format(_updateDNSRecordsFailureMessageTemplate, request.Name, domainName));
         }
 
         private IFlurlRequest BuildRequest(string token, string path)

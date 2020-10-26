@@ -20,8 +20,8 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
             DigitalOceanDomain domain = new DigitalOceanDomain();
             ExternalAddress externalAddress = new ExternalAddress();
 
-            IDNSRecordCollectionHydrater dnsRecordHydrater = A.Fake<IDNSRecordCollectionHydrater>();
-            A.CallTo(() => dnsRecordHydrater.Hydrate(A<DNSRecordCollection>.Ignored, A<DNSRecordCollection>.Ignored, A<ExternalAddress>.Ignored, A<DNSRecordType>.Ignored)).Returns(dnsRecordCollection);
+            IDNSRecordCollectionMutator dnsRecordMutator = A.Fake<IDNSRecordCollectionMutator>();
+            A.CallTo(() => dnsRecordMutator.Mutate(A<DNSRecordCollection>.Ignored, A<IDNSRecordCollectionMutation>.Ignored)).Returns(dnsRecordCollection);
 
             IDigitalOceanDNSRecordCreator dnsRecordCreator = A.Fake<IDigitalOceanDNSRecordCreator>();
             A.CallTo(() => dnsRecordCreator.CreateAsync(A<string>.Ignored, A<DNSRecordCollection>.Ignored, A<string>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Fail("Error."));
@@ -32,7 +32,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
             IDigitalOceanDNSRecordUpdater dnsRecordUpdater = A.Fake<IDigitalOceanDNSRecordUpdater>();
             A.CallTo(() => dnsRecordUpdater.UpdateAsync(A<string>.Ignored, A<DNSRecordCollection>.Ignored, A<string>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Ok());
 
-            IDigitalOceanDomainProcessor processor = new DigitalOceanDomainProcessor(dnsRecordHydrater, dnsRecordCreator, dnsRecordReader, dnsRecordUpdater);
+            IDigitalOceanDomainProcessor processor = new DigitalOceanDomainProcessor(dnsRecordMutator, dnsRecordCreator, dnsRecordReader, dnsRecordUpdater);
             Result result = await processor.ProcessAsync(domain, externalAddress, string.Empty, new CancellationToken());
 
             Assert.True(result.IsFailed);
@@ -45,8 +45,8 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
             DigitalOceanDomain domain = new DigitalOceanDomain();
             ExternalAddress externalAddress = new ExternalAddress();
 
-            IDNSRecordCollectionHydrater dnsRecordHydrater = A.Fake<IDNSRecordCollectionHydrater>();
-            A.CallTo(() => dnsRecordHydrater.Hydrate(A<DNSRecordCollection>.Ignored, A<DNSRecordCollection>.Ignored, A<ExternalAddress>.Ignored, A<DNSRecordType>.Ignored)).Returns(dnsRecordCollection);
+            IDNSRecordCollectionMutator dnsRecordMutator = A.Fake<IDNSRecordCollectionMutator>();
+            A.CallTo(() => dnsRecordMutator.Mutate(A<DNSRecordCollection>.Ignored, A<IDNSRecordCollectionMutation>.Ignored)).Returns(dnsRecordCollection);
 
             IDigitalOceanDNSRecordCreator dnsRecordCreator = A.Fake<IDigitalOceanDNSRecordCreator>();
             A.CallTo(() => dnsRecordCreator.CreateAsync(A<string>.Ignored, A<DNSRecordCollection>.Ignored, A<string>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Ok());
@@ -57,7 +57,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
             IDigitalOceanDNSRecordUpdater dnsRecordUpdater = A.Fake<IDigitalOceanDNSRecordUpdater>();
             A.CallTo(() => dnsRecordUpdater.UpdateAsync(A<string>.Ignored, A<DNSRecordCollection>.Ignored, A<string>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Ok());
 
-            IDigitalOceanDomainProcessor processor = new DigitalOceanDomainProcessor(dnsRecordHydrater, dnsRecordCreator, dnsRecordReader, dnsRecordUpdater);
+            IDigitalOceanDomainProcessor processor = new DigitalOceanDomainProcessor(dnsRecordMutator, dnsRecordCreator, dnsRecordReader, dnsRecordUpdater);
             Result result = await processor.ProcessAsync(domain, externalAddress, string.Empty, new CancellationToken());
 
             Assert.True(result.IsFailed);
@@ -70,8 +70,8 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
             DigitalOceanDomain domain = new DigitalOceanDomain();
             ExternalAddress externalAddress = new ExternalAddress();
 
-            IDNSRecordCollectionHydrater dnsRecordHydrater = A.Fake<IDNSRecordCollectionHydrater>();
-            A.CallTo(() => dnsRecordHydrater.Hydrate(A<DNSRecordCollection>.Ignored, A<DNSRecordCollection>.Ignored, A<ExternalAddress>.Ignored, A<DNSRecordType>.Ignored)).Returns(dnsRecordCollection);
+            IDNSRecordCollectionMutator dnsRecordMutator = A.Fake<IDNSRecordCollectionMutator>();
+            A.CallTo(() => dnsRecordMutator.Mutate(A<DNSRecordCollection>.Ignored, A<IDNSRecordCollectionMutation>.Ignored)).Returns(dnsRecordCollection);
 
             IDigitalOceanDNSRecordCreator dnsRecordCreator = A.Fake<IDigitalOceanDNSRecordCreator>();
             A.CallTo(() => dnsRecordCreator.CreateAsync(A<string>.Ignored, A<DNSRecordCollection>.Ignored, A<string>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Ok());
@@ -82,7 +82,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
             IDigitalOceanDNSRecordUpdater dnsRecordUpdater = A.Fake<IDigitalOceanDNSRecordUpdater>();
             A.CallTo(() => dnsRecordUpdater.UpdateAsync(A<string>.Ignored, A<DNSRecordCollection>.Ignored, A<string>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Fail("Error."));
 
-            IDigitalOceanDomainProcessor processor = new DigitalOceanDomainProcessor(dnsRecordHydrater, dnsRecordCreator, dnsRecordReader, dnsRecordUpdater);
+            IDigitalOceanDomainProcessor processor = new DigitalOceanDomainProcessor(dnsRecordMutator, dnsRecordCreator, dnsRecordReader, dnsRecordUpdater);
             Result result = await processor.ProcessAsync(domain, externalAddress, string.Empty, new CancellationToken());
 
             Assert.True(result.IsFailed);
@@ -95,8 +95,8 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
             DigitalOceanDomain domain = new DigitalOceanDomain();
             ExternalAddress externalAddress = new ExternalAddress();
 
-            IDNSRecordCollectionHydrater dnsRecordHydrater = A.Fake<IDNSRecordCollectionHydrater>();
-            A.CallTo(() => dnsRecordHydrater.Hydrate(A<DNSRecordCollection>.Ignored, A<DNSRecordCollection>.Ignored, A<ExternalAddress>.Ignored, A<DNSRecordType>.Ignored)).Returns(dnsRecordCollection);
+            IDNSRecordCollectionMutator dnsRecordMutator = A.Fake<IDNSRecordCollectionMutator>();
+            A.CallTo(() => dnsRecordMutator.Mutate(A<DNSRecordCollection>.Ignored, A<IDNSRecordCollectionMutation>.Ignored)).Returns(dnsRecordCollection);
 
             IDigitalOceanDNSRecordCreator dnsRecordCreator = A.Fake<IDigitalOceanDNSRecordCreator>();
             A.CallTo(() => dnsRecordCreator.CreateAsync(A<string>.Ignored, A<DNSRecordCollection>.Ignored, A<string>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Ok());
@@ -107,7 +107,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
             IDigitalOceanDNSRecordUpdater dnsRecordUpdater = A.Fake<IDigitalOceanDNSRecordUpdater>();
             A.CallTo(() => dnsRecordUpdater.UpdateAsync(A<string>.Ignored, A<DNSRecordCollection>.Ignored, A<string>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Ok());
 
-            IDigitalOceanDomainProcessor processor = new DigitalOceanDomainProcessor(dnsRecordHydrater, dnsRecordCreator, dnsRecordReader, dnsRecordUpdater);
+            IDigitalOceanDomainProcessor processor = new DigitalOceanDomainProcessor(dnsRecordMutator, dnsRecordCreator, dnsRecordReader, dnsRecordUpdater);
             Result result = await processor.ProcessAsync(domain, externalAddress, string.Empty, new CancellationToken());
 
             Assert.True(result.IsSuccess);

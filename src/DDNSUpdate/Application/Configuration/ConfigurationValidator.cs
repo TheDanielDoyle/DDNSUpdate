@@ -1,4 +1,5 @@
 ﻿using DDNSUpdate.Application.Providers.DigitalOcean.Configuration;
+using DDNSUpdate.Application.Providers.GoDaddy.Configuration;
 using DDNSUpdate.Infrastructure;
 using DDNSUpdate.Infrastructure.Configuration;
 using DDNSUpdate.Infrastructure.Extensions;
@@ -40,13 +41,30 @@ namespace DDNSUpdate.Application.Configuration
 
         private async IAsyncEnumerable<ValidationResult> ConfigurationsAsync([EnumeratorCancellation] CancellationToken cancellation)
         {
+            yield return await GetApplicationConfigurationAsync(cancellation);
+            yield return await GetDigitalOceanConfigurationAsync(cancellation);
+            yield return await GetGoDaddyConfigurationAsync(cancellation);
+        }
+
+        private async Task<ValidationResult> GetApplicationConfigurationAsync(CancellationToken cancellation)
+        {
             IValidator<ApplicationConfiguration> applicationConfigurationValidator = GetService<IValidator<ApplicationConfiguration>>();
             IOptionsSnapshot<ApplicationConfiguration> applicationConfiguration = GetService<IOptionsSnapshot<ApplicationConfiguration>>();
-            yield return await applicationConfigurationValidator.ValidateAsync(applicationConfiguration.Value, cancellation);
+            return await applicationConfigurationValidator.ValidateAsync(applicationConfiguration.Value, cancellation);
+        }
 
+        private async Task<ValidationResult> GetDigitalOceanConfigurationAsync(CancellationToken cancellation)
+        {
             IValidator<DigitalOceanConfiguration> digitalOceanConfigurationValidator = GetService<IValidator<DigitalOceanConfiguration>>();
             IOptionsSnapshot<DigitalOceanConfiguration> digitalOceanConfiguration = GetService<IOptionsSnapshot<DigitalOceanConfiguration>>();
-            yield return await digitalOceanConfigurationValidator.ValidateAsync(digitalOceanConfiguration.Value, cancellation);
+            return await digitalOceanConfigurationValidator.ValidateAsync(digitalOceanConfiguration.Value, cancellation);
+        }
+
+        private async Task<ValidationResult> GetGoDaddyConfigurationAsync(CancellationToken cancellation)
+        {
+            IValidator<GoDaddyConfiguration> goDaddyConfigurationValidator = GetService<IValidator<GoDaddyConfiguration>>();
+            IOptionsSnapshot<GoDaddyConfiguration> goDaddyConfiguration = GetService<IOptionsSnapshot<GoDaddyConfiguration>>();
+            return await goDaddyConfigurationValidator.ValidateAsync(goDaddyConfiguration.Value, cancellation);
         }
 
         private T GetService<T>()

@@ -26,17 +26,22 @@ namespace DDNSUpdate.Domain
 
         public DNSRecordCollection WhereNew(DNSRecordCollection compareTo)
         {
-            return GetNotMatchingRecords(this, compareTo, DNSRecordNameTypeEqualityComparer.Instance);
+            DNSRecordCollection newRecords = this.IntersectWith(compareTo, DNSRecordNameTypeEqualityComparer.Instance);
+            return Clone(newRecords);
         }
 
         public DNSRecordCollection WhereUpdated(DNSRecordCollection compareTo)
         {
-            DNSRecordCollection commonRecords = GetMatchingRecords(this, compareTo, DNSRecordNameTypeEqualityComparer.Instance);
-            if (commonRecords.Any())
-            {
-                return GetNotMatchingRecords(commonRecords, compareTo, DNSRecordEqualityComparer.Instance);
-            }
-            return Empty();
+            DNSRecordCollection newRecords = this.WhereNew(compareTo);
+            DNSRecordCollection updatedRecords = this.IntersectWith(compareTo, DNSRecordEqualityComparer.Instance);
+            DNSRecordCollection updatedRecordsWithoutNewRecords = new DNSRecordCollection(updatedRecords.Except(newRecords, DNSRecordNameTypeEqualityComparer.Instance));
+            return Clone(updatedRecordsWithoutNewRecords);
+        }
+
+        private DNSRecordCollection IntersectWith(DNSRecordCollection compareTo, IEqualityComparer<DNSRecord> equalityComparer)
+        {
+            DNSRecordCollection records = new DNSRecordCollection(compareTo.Where(r => !this.Contains(r, equalityComparer)));
+            return records.Any() ? records : Empty();
         }
 
         public DNSRecordCollection WithRecordType(DNSRecordType dnsRecordType)
@@ -61,16 +66,6 @@ namespace DDNSUpdate.Domain
         private static string? FindId(DNSRecord record, DNSRecordCollection dnsRecords)
         {
             return dnsRecords.FirstOrDefault(r => r.Type == record.Type && r.Name == record.Name)?.Id;
-        }
-
-        private static DNSRecordCollection GetMatchingRecords(DNSRecordCollection compareWith, DNSRecordCollection compareTo, IEqualityComparer<DNSRecord> equalityComparer)
-        {
-            return new DNSRecordCollection(compareWith.Intersect(compareTo, equalityComparer));
-        }
-
-        private static DNSRecordCollection GetNotMatchingRecords(DNSRecordCollection compareWith, DNSRecordCollection compareTo, IEqualityComparer<DNSRecord> equalityComparer)
-        {
-            return new DNSRecordCollection(compareTo.Where(r => !compareWith.Contains(r, equalityComparer)));
         }
 
         private static DNSRecord Map(DNSRecord from)
