@@ -10,6 +10,7 @@ namespace DDNSUpdate.Application.Providers.GoDaddy.Configuration
 
         public static readonly string DataErrorMessage = _propertyDisallowedMessage;
         public static readonly string FlagsErrorMessage = _propertyDisallowedMessage;
+        public static readonly string IdErrorMessage = _propertyDisallowedMessage;
         public static readonly string NameErrorMessage = "{PropertyName} must be set.";
         public static readonly string PortErrorMessage = _propertyDisallowedMessage;
         public static readonly string PriorityErrorMessage = _propertyDisallowedMessage;
@@ -27,6 +28,10 @@ namespace DDNSUpdate.Application.Providers.GoDaddy.Configuration
             RuleFor(p => p.Flags)
                 .Empty()
                 .WithMessage(FlagsErrorMessage);
+
+            RuleFor(p => p.Id)
+                .Empty()
+                .WithMessage(IdErrorMessage);
 
             RuleFor(p => p.Name)
                 .NotEmpty()

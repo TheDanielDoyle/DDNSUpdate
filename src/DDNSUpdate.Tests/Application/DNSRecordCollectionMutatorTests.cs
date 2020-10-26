@@ -9,7 +9,7 @@ using Xunit;
 
 namespace DDNSUpdate.Tests.Application
 {
-    public class DNSRecordCollectionMutatorTests : TestBase
+    public class DNSRecordCollectionMutatorTests
     {
         [Fact]
         public void Mutate_WhenZeroMutations_HasNoChange()
