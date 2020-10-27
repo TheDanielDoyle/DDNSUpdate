@@ -22,7 +22,7 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
         private static readonly string _createDNSRecordSuccessMessageTemplate = "Successfully created {0} GoDaddy DNS records for domain {1}";
         private static readonly string _getDNSRecordsFormat = "v1/domains/{0}/records/{1}";
         private static readonly string _getDNSRecordsFailureMessageTemplate = "Unable to retrieve DNS records for {0}";
-        private static readonly string _getDNSRecordsSuccessMessageTemplate = "Successfully retrieved DNS records for {0}";
+        private static readonly string _getDNSRecordsSuccessMessageTemplate = "{0} DNS records retrieved for GoDaddy domain {1}";
         private static readonly string _ssoKey = "sso-key";
         private static readonly string _updateDNSRecordsFormat = "v1/domains/{0}/records/{1}/{2}";
         private static readonly string _updateDNSRecordsFailureMessageTemplate = "Unable to update DNS record {0} for GoDaddy domain {1}";
@@ -56,7 +56,7 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
             {
                 string content = await response.Content.ReadAsStringAsync();
                 IEnumerable<GoDaddyGetDNSRecordResponse> records = JsonConvert.DeserializeObject<List<GoDaddyGetDNSRecordResponse>>(content);
-                string resultMessage = string.Format(_getDNSRecordsSuccessMessageTemplate, request.DomainName);
+                string resultMessage = string.Format(_getDNSRecordsSuccessMessageTemplate, records.Count(),  request.DomainName);
                 return Result.Ok(new GoDaddyGetDNSRecordsResponse(records)).WithSuccess(resultMessage);
             }
             return Result.Fail(string.Format(_getDNSRecordsFailureMessageTemplate, request.DomainName));

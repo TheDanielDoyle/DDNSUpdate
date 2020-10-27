@@ -6,6 +6,7 @@ using DDNSUpdate.Application.Providers.GoDaddy.Domain;
 using DDNSUpdate.Application.Providers.GoDaddy.Request;
 using DDNSUpdate.Application.Providers.GoDaddy.Response;
 using DDNSUpdate.Domain;
+using DDNSUpdate.Infrastructure.Extensions;
 using FluentResults;
 
 namespace DDNSUpdate.Application.Providers.GoDaddy
@@ -27,7 +28,7 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
             if (result.IsSuccess)
             {
                 IList<DNSRecord> records = _mapper.Map<IList<DNSRecord>>(result.Value.Records);
-                return Result.Ok(new DNSRecordCollection(records));
+                return Result.Ok(new DNSRecordCollection(records)).Merge(result);
             }
             return result.ToResult();
         }

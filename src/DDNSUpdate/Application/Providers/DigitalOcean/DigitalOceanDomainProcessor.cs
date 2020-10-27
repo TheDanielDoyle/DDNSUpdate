@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using DDNSUpdate.Application.Providers.DigitalOcean.Domain;
+﻿using DDNSUpdate.Application.Providers.DigitalOcean.Domain;
 using DDNSUpdate.Domain;
 using DDNSUpdate.Infrastructure.Extensions;
 using FluentResults;

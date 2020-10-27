@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -7,7 +6,6 @@ using DDNSUpdate.Application.Providers.GoDaddy.Request;
 using DDNSUpdate.Domain;
 using DDNSUpdate.Infrastructure.Extensions;
 using FluentResults;
-using YamlDotNet.Serialization.NodeTypeResolvers;
 
 namespace DDNSUpdate.Application.Providers.GoDaddy
 {
