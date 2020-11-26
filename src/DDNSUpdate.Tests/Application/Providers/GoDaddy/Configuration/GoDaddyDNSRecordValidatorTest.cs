@@ -11,7 +11,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy.Configuration
         [Fact]
         public void Validate_InvalidDNSRecord_ReturnsIsNotValid()
         {
-            DNSRecord dnsRecord = new DNSRecord
+            DNSRecord dnsRecord = new()
             {
                 Data = "Data",
                 Flags = 0,
@@ -40,7 +40,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy.Configuration
         [Fact]
         public void Validate_ValidDNSRecord_ReturnsIsValid()
         {
-            DNSRecord dnsRecord = new DNSRecord
+            DNSRecord dnsRecord = new()
             {
                 Name = "Valid",
                 TTL = 1800,

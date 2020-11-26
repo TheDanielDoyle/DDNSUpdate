@@ -5,7 +5,7 @@ namespace DDNSUpdate.Tests.Helpers
 {
     internal class FakeLogger<T> : ILogger<T>, IDisposable
     {
-        public static readonly FakeLogger<T> Instance = new FakeLogger<T>();
+        public static readonly FakeLogger<T> Instance = new();
 
         private FakeLogger()
         {

@@ -20,8 +20,8 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy.Converters
         [Fact]
         public void Given_Null_DNS_Record_Returns_New_DNS_Record()
         {
-            GoDaddyGetDNSRecordResponseToDNSRecordConverter converter = new GoDaddyGetDNSRecordResponseToDNSRecordConverter();
-            GoDaddyGetDNSRecordResponse response = new GoDaddyGetDNSRecordResponse()
+            GoDaddyGetDNSRecordResponseToDNSRecordConverter converter = new();
+            GoDaddyGetDNSRecordResponse response = new()
             {
                 Data = "Data",
                 Name = "Name",
@@ -49,8 +49,8 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy.Converters
         [Fact]
         public void Given_Non_Null_DNS_Record_Overwrites_Values()
         {
-            GoDaddyGetDNSRecordResponseToDNSRecordConverter converter = new GoDaddyGetDNSRecordResponseToDNSRecordConverter();
-            GoDaddyGetDNSRecordResponse response = new GoDaddyGetDNSRecordResponse()
+            GoDaddyGetDNSRecordResponseToDNSRecordConverter converter = new();
+            GoDaddyGetDNSRecordResponse response = new()
             {
                 Data = "Data",
                 Name = "Name",
@@ -63,7 +63,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy.Converters
                 Weight = 0
             };
 
-            DNSRecord record = new DNSRecord()
+            DNSRecord record = new()
             {
                 Data = "RecordData",
                 Flags = 42,

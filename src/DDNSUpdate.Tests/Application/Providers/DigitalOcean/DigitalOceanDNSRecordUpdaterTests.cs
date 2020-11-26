@@ -22,7 +22,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
         [Fact]
         public async Task No_Records_Are_Successfully_Created()
         {
-            DNSRecordCollection dnsRecords = new DNSRecordCollection(new[]
+            DNSRecordCollection dnsRecords = new(new[]
             {
                 new DNSRecord
                 {
@@ -53,7 +53,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
         [Fact]
         public async Task Two_Records_Are_Successfully_Updated()
         {
-            DNSRecordCollection dnsRecords = new DNSRecordCollection(new[]
+            DNSRecordCollection dnsRecords = new(new[]
             {
                 new DNSRecord
                 {

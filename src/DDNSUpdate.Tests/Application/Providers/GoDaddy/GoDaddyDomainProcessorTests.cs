@@ -33,7 +33,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
 
             IGoDaddyDomainProcessor domainProcessor = new GoDaddyDomainProcessor(dnsCreator, mutator, dnsReader, dnsUpdater);
 
-            GoDaddyDomain domain = new GoDaddyDomain() { Name = "GoDaddy Domain" };
+            GoDaddyDomain domain = new() { Name = "GoDaddy Domain" };
             ExternalAddress externalAddress = A.Fake<ExternalAddress>();
             GoDaddyAuthenticationDetails authenticationDetails = A.Fake<GoDaddyAuthenticationDetails>();
 
@@ -64,7 +64,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
 
             IGoDaddyDomainProcessor domainProcessor = new GoDaddyDomainProcessor(dnsCreator, mutator, dnsReader, dnsUpdater);
 
-            GoDaddyDomain domain = new GoDaddyDomain() { Name = "GoDaddy Domain" };
+            GoDaddyDomain domain = new() { Name = "GoDaddy Domain" };
             ExternalAddress externalAddress = A.Fake<ExternalAddress>();
             GoDaddyAuthenticationDetails authenticationDetails = A.Fake<GoDaddyAuthenticationDetails>();
 
@@ -95,7 +95,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
 
             IGoDaddyDomainProcessor domainProcessor = new GoDaddyDomainProcessor(dnsCreator, mutator, dnsReader, dnsUpdater);
 
-            GoDaddyDomain domain = new GoDaddyDomain() { Name = "GoDaddy Domain" };
+            GoDaddyDomain domain = new() { Name = "GoDaddy Domain" };
             ExternalAddress externalAddress = A.Fake<ExternalAddress>();
             GoDaddyAuthenticationDetails authenticationDetails = A.Fake<GoDaddyAuthenticationDetails>();
 
@@ -126,7 +126,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
 
             IGoDaddyDomainProcessor domainProcessor = new GoDaddyDomainProcessor(dnsCreator, mutator, dnsReader, dnsUpdater);
 
-            GoDaddyDomain domain = new GoDaddyDomain() { Name = "GoDaddy Domain" };
+            GoDaddyDomain domain = new() { Name = "GoDaddy Domain" };
             ExternalAddress externalAddress = A.Fake<ExternalAddress>();
             GoDaddyAuthenticationDetails authenticationDetails = A.Fake<GoDaddyAuthenticationDetails>();
 

@@ -13,7 +13,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy.Configuration
         [Fact]
         public void Validate_MissingApiKey_ReturnsIsNotValid()
         {
-            GoDaddyAccount account = new GoDaddyAccount()
+            GoDaddyAccount account = new()
             {
                 ApiSecret = "ApiSecret",
                 Domains = CreateValidGoDaddyDomains()
@@ -29,7 +29,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy.Configuration
         [Fact]
         public void Validate_MissingApiSecret_ReturnsIsNotValid()
         {
-            GoDaddyAccount account = new GoDaddyAccount()
+            GoDaddyAccount account = new()
             {
                 ApiKey = "ApiKey",
                 Domains = CreateValidGoDaddyDomains()
@@ -45,7 +45,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy.Configuration
         [Fact]
         public void Validate_MissingDomains_ReturnsIsNotValid()
         {
-            GoDaddyAccount account = new GoDaddyAccount()
+            GoDaddyAccount account = new()
             {
                 ApiKey = "ApiKey",
                 ApiSecret = "ApiSecret"
@@ -61,7 +61,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy.Configuration
         [Fact]
         public void Validate_ValidAccount_ReturnsIsValid()
         {
-            GoDaddyAccount account = new GoDaddyAccount()
+            GoDaddyAccount account = new()
             {
                 ApiKey = "ApiKey",
                 ApiSecret = "ApiSecret",

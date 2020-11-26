@@ -33,8 +33,8 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
 
             A.CallTo(() => fakeClient.GetDNSRecordsAsync(A<GoDaddyGetDNSRecordsRequest>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Fail("failed"));
 
-            GoDaddyDNSRecordReader reader = new GoDaddyDNSRecordReader(fakeClient, _mapper);
-            GoDaddyAuthenticationDetails authicationDetails = new GoDaddyAuthenticationDetails("apiKey", "apiSecret");
+            GoDaddyDNSRecordReader reader = new(fakeClient, _mapper);
+            GoDaddyAuthenticationDetails authicationDetails = new("apiKey", "apiSecret");
 
             Result<DNSRecordCollection> result = await reader.ReadAsync(string.Empty, authicationDetails, CancellationToken.None);
 
@@ -46,18 +46,18 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
         {
             IGoDaddyClient fakeClient = A.Fake<IGoDaddyClient>();
 
-            List<GoDaddyGetDNSRecordResponse> records = new List<GoDaddyGetDNSRecordResponse>()
+            List<GoDaddyGetDNSRecordResponse> records = new()
             {
                 CreateValidGoDaddyGetDNSRecordResponse(1),
                 CreateValidGoDaddyGetDNSRecordResponse(2),
                 CreateValidGoDaddyGetDNSRecordResponse(3)
             };
 
-            GoDaddyGetDNSRecordsResponse clientResponse = new GoDaddyGetDNSRecordsResponse(records);
+            GoDaddyGetDNSRecordsResponse clientResponse = new(records);
 
             A.CallTo(() => fakeClient.GetDNSRecordsAsync(A<GoDaddyGetDNSRecordsRequest>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Ok(clientResponse));
-            GoDaddyDNSRecordReader reader = new GoDaddyDNSRecordReader(fakeClient, _mapper);
-            GoDaddyAuthenticationDetails authicationDetails = new GoDaddyAuthenticationDetails("apiKey", "apiSecret");
+            GoDaddyDNSRecordReader reader = new(fakeClient, _mapper);
+            GoDaddyAuthenticationDetails authicationDetails = new("apiKey", "apiSecret");
 
             Result<DNSRecordCollection> result = await reader.ReadAsync(string.Empty, authicationDetails, CancellationToken.None);
             DNSRecord firstRecord = result.Value.First();

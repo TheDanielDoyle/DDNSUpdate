@@ -19,8 +19,8 @@ namespace DDNSCreate.Tests.Application.Providers.GoDaddy.Converters
         [Fact]
         public void Convert_PassedNullRequest_ReturnsNewRequest()
         {
-            DNSRecordToGoDaddyCreateToDNSRecordRequestConverter converter = new DNSRecordToGoDaddyCreateToDNSRecordRequestConverter();
-            DNSRecord record = new DNSRecord()
+            DNSRecordToGoDaddyCreateToDNSRecordRequestConverter converter = new();
+            DNSRecord record = new()
             {
                 Data = "recordData",
                 Name = "recordName",
@@ -47,8 +47,8 @@ namespace DDNSCreate.Tests.Application.Providers.GoDaddy.Converters
         [Fact]
         public void Convert_PassedNonNullRequests_OverwritesValues()
         {
-            DNSRecordToGoDaddyCreateToDNSRecordRequestConverter converter = new DNSRecordToGoDaddyCreateToDNSRecordRequestConverter();
-            DNSRecord record = new DNSRecord()
+            DNSRecordToGoDaddyCreateToDNSRecordRequestConverter converter = new();
+            DNSRecord record = new()
             {
                 Data = "recordData",
                 Name = "recordName",
@@ -60,7 +60,7 @@ namespace DDNSCreate.Tests.Application.Providers.GoDaddy.Converters
                 Type = DNSRecordType.A
             };
 
-            GoDaddyCreateDNSRecordRequest createRequest = new GoDaddyCreateDNSRecordRequest()
+            GoDaddyCreateDNSRecordRequest createRequest = new()
             {
                 Data = "createRequestData",
                 Name = "createRequestName",

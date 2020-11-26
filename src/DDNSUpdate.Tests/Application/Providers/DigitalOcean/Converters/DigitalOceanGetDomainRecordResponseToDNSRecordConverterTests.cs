@@ -18,8 +18,8 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Converters
         [Fact]
         public void OverwritesDNSRecordWhenPassedARecord()
         {
-            DigitalOceanGetDomainRecordResponseToDNSRecordConverter converter = new DigitalOceanGetDomainRecordResponseToDNSRecordConverter();
-            DigitalOceanGetDomainRecordResponse response = new DigitalOceanGetDomainRecordResponse()
+            DigitalOceanGetDomainRecordResponseToDNSRecordConverter converter = new();
+            DigitalOceanGetDomainRecordResponse response = new()
             {
                 Data = "data",
                 Flags = 1,
@@ -32,7 +32,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Converters
                 Type = "A",
                 Weight = 1
             };
-            DNSRecord record = new DNSRecord()
+            DNSRecord record = new()
             {
                 Data = "dnsData",
                 Flags = 987,
@@ -63,8 +63,8 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Converters
         [Fact]
         public void ReturnsNewDNSRecordWhenPassedNull()
         {
-            DigitalOceanGetDomainRecordResponseToDNSRecordConverter converter = new DigitalOceanGetDomainRecordResponseToDNSRecordConverter();
-            DigitalOceanGetDomainRecordResponse response = new DigitalOceanGetDomainRecordResponse()
+            DigitalOceanGetDomainRecordResponseToDNSRecordConverter converter = new();
+            DigitalOceanGetDomainRecordResponse response = new()
             {
                 Data = "data",
                 Flags = 1,

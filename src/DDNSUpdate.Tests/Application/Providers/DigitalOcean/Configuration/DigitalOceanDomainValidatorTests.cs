@@ -14,7 +14,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Configuration
         [Fact]
         public void InvalidDigitalOceanDomain()
         {
-            DigitalOceanDomain domain = new DigitalOceanDomain
+            DigitalOceanDomain domain = new()
             {
                 Name = string.Empty,
                 Records = ValidDNSRecordCollection()
@@ -30,7 +30,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Configuration
         [Fact]
         public void ValidateValidDigitalOceanDomain()
         {
-            DigitalOceanDomain domain = new DigitalOceanDomain
+            DigitalOceanDomain domain = new()
             {
                 Name = "test.com",
                 Records = ValidDNSRecordCollection()

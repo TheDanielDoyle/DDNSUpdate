@@ -28,8 +28,8 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
 
             A.CallTo(() => fakeClient.CreateDNSRecordsAsync(A<GoDaddyCreateDNSRecordsRequest>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Fail("oops"));
 
-            GoDaddyDNSRecordCreator creator = new GoDaddyDNSRecordCreator(fakeClient, _mapper);
-            DNSRecordCollection dnsRecords = new DNSRecordCollection(
+            GoDaddyDNSRecordCreator creator = new(fakeClient, _mapper);
+            DNSRecordCollection dnsRecords = new(
                 new DNSRecord
                 {
                     Type = DNSRecordType.A
@@ -38,7 +38,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
                 {
                     Type = DNSRecordType.A
                 });
-            GoDaddyAuthenticationDetails authicationDetails = new GoDaddyAuthenticationDetails(string.Empty, string.Empty);
+            GoDaddyAuthenticationDetails authicationDetails = new(string.Empty, string.Empty);
             
             Result result = await creator.CreateAsync(string.Empty, dnsRecords, authicationDetails, CancellationToken.None);
 
@@ -52,8 +52,8 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
 
             A.CallTo(() => fakeClient.CreateDNSRecordsAsync(A<GoDaddyCreateDNSRecordsRequest>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Ok());
 
-            GoDaddyDNSRecordCreator creator = new GoDaddyDNSRecordCreator(fakeClient, _mapper);
-            DNSRecordCollection dnsRecords = new DNSRecordCollection(
+            GoDaddyDNSRecordCreator creator = new(fakeClient, _mapper);
+            DNSRecordCollection dnsRecords = new(
             new DNSRecord
             {
                 Type = DNSRecordType.A
@@ -62,7 +62,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
             {
                 Type = DNSRecordType.A
             });
-            GoDaddyAuthenticationDetails authicationDetails = new GoDaddyAuthenticationDetails(string.Empty, string.Empty);
+            GoDaddyAuthenticationDetails authicationDetails = new(string.Empty, string.Empty);
 
             Result result = await creator.CreateAsync(string.Empty, dnsRecords, authicationDetails, CancellationToken.None);
 

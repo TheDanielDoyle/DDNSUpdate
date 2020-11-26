@@ -92,7 +92,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
             _httpTest.RespondWith(string.Empty, (int)HttpStatusCode.BadRequest);
             IDigitalOceanClient client = new DigitalOceanClient(_httpClient);
 
-            DigitalOceanCreateDomainRecordRequest request = new DigitalOceanCreateDomainRecordRequest
+            DigitalOceanCreateDomainRecordRequest request = new()
             {
                 Data = "100.100.100.100",
                 Name = "test",
@@ -110,7 +110,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
             _httpTest.RespondWith(_createResponse, (int)HttpStatusCode.Created);
             IDigitalOceanClient client = new DigitalOceanClient(_httpClient);
 
-            DigitalOceanCreateDomainRecordRequest request = new DigitalOceanCreateDomainRecordRequest
+            DigitalOceanCreateDomainRecordRequest request = new()
             {
                 Data = "100.100.100.100",
                 Name = "test",
@@ -134,7 +134,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
             _httpTest.RespondWith(string.Empty, (int)HttpStatusCode.NotFound);
             IDigitalOceanClient client = new DigitalOceanClient(_httpClient);
 
-            DigitalOceanDomain domain = new DigitalOceanDomain
+            DigitalOceanDomain domain = new()
             {
                 Name = "test.com"
             };
@@ -149,7 +149,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
             _httpTest.RespondWith(_readResponse);
             IDigitalOceanClient client = new DigitalOceanClient(_httpClient);
 
-            DigitalOceanDomain domain = new DigitalOceanDomain
+            DigitalOceanDomain domain = new()
             {
                 Name = "test.com"
             };
@@ -173,7 +173,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
             _httpTest.RespondWith(string.Empty, (int)HttpStatusCode.BadRequest);
             IDigitalOceanClient client = new DigitalOceanClient(_httpClient);
 
-            DigitalOceanUpdateDomainRecordRequest request = new DigitalOceanUpdateDomainRecordRequest
+            DigitalOceanUpdateDomainRecordRequest request = new()
             {
                 Data = "",
                 Id = "3352896",
@@ -192,7 +192,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
             _httpTest.RespondWith(_updateResponse);
             IDigitalOceanClient client = new DigitalOceanClient(_httpClient);
 
-            DigitalOceanUpdateDomainRecordRequest request = new DigitalOceanUpdateDomainRecordRequest
+            DigitalOceanUpdateDomainRecordRequest request = new()
             {
                 Data = "",
                 Id = "3352896",

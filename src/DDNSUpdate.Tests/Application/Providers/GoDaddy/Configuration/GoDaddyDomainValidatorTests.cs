@@ -12,7 +12,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy.Configuration
         [Fact]
         public void Validate_MissingName_ReturnIsNotValid()
         {
-            GoDaddyDomain domain = new GoDaddyDomain()
+            GoDaddyDomain domain = new()
             {
                 Records = CreateValidDNSRecordCollection()
             };
@@ -27,7 +27,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy.Configuration
         [Fact]
         public void Validate_MissingRecords_ReturnIsNotValid()
         {
-            GoDaddyDomain domain = new GoDaddyDomain()
+            GoDaddyDomain domain = new()
             {
                 Name = "GoDaddy Domain",
             };
@@ -42,7 +42,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy.Configuration
         [Fact]
         public void Validate_ValidDomain_ReturnIsValid()
         {
-            GoDaddyDomain domain = new GoDaddyDomain()
+            GoDaddyDomain domain = new()
             {
                 Name = "GoDaddy Domain",
                 Records = CreateValidDNSRecordCollection()

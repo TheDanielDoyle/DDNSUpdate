@@ -17,8 +17,8 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
         public async Task ReturnsFailureWhenCreateFails()
         {
             DNSRecordCollection dnsRecordCollection = DNSRecordCollection.Empty();
-            DigitalOceanDomain domain = new DigitalOceanDomain();
-            ExternalAddress externalAddress = new ExternalAddress();
+            DigitalOceanDomain domain = new();
+            ExternalAddress externalAddress = new();
 
             IDNSRecordCollectionMutator dnsRecordMutator = A.Fake<IDNSRecordCollectionMutator>();
             A.CallTo(() => dnsRecordMutator.Mutate(A<DNSRecordCollection>.Ignored, A<IDNSRecordCollectionMutation>.Ignored)).Returns(dnsRecordCollection);
@@ -42,8 +42,8 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
         public async Task ReturnsFailureWhenReadFails()
         {
             DNSRecordCollection dnsRecordCollection = DNSRecordCollection.Empty();
-            DigitalOceanDomain domain = new DigitalOceanDomain();
-            ExternalAddress externalAddress = new ExternalAddress();
+            DigitalOceanDomain domain = new();
+            ExternalAddress externalAddress = new();
 
             IDNSRecordCollectionMutator dnsRecordMutator = A.Fake<IDNSRecordCollectionMutator>();
             A.CallTo(() => dnsRecordMutator.Mutate(A<DNSRecordCollection>.Ignored, A<IDNSRecordCollectionMutation>.Ignored)).Returns(dnsRecordCollection);
@@ -67,8 +67,8 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
         public async Task ReturnsFailureWhenUpdateFails()
         {
             DNSRecordCollection dnsRecordCollection = DNSRecordCollection.Empty();
-            DigitalOceanDomain domain = new DigitalOceanDomain();
-            ExternalAddress externalAddress = new ExternalAddress();
+            DigitalOceanDomain domain = new();
+            ExternalAddress externalAddress = new();
 
             IDNSRecordCollectionMutator dnsRecordMutator = A.Fake<IDNSRecordCollectionMutator>();
             A.CallTo(() => dnsRecordMutator.Mutate(A<DNSRecordCollection>.Ignored, A<IDNSRecordCollectionMutation>.Ignored)).Returns(dnsRecordCollection);
@@ -92,8 +92,8 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
         public async Task ReturnsSuccessfulResultWhenAllSucceed()
         {
             DNSRecordCollection dnsRecordCollection = DNSRecordCollection.Empty();
-            DigitalOceanDomain domain = new DigitalOceanDomain();
-            ExternalAddress externalAddress = new ExternalAddress();
+            DigitalOceanDomain domain = new();
+            ExternalAddress externalAddress = new();
 
             IDNSRecordCollectionMutator dnsRecordMutator = A.Fake<IDNSRecordCollectionMutator>();
             A.CallTo(() => dnsRecordMutator.Mutate(A<DNSRecordCollection>.Ignored, A<IDNSRecordCollectionMutation>.Ignored)).Returns(dnsRecordCollection);

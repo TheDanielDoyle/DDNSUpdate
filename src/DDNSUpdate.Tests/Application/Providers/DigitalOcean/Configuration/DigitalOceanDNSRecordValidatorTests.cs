@@ -12,7 +12,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Configuration
         [Fact]
         public void InvalidDNSRecord()
         {
-            DNSRecord dnsRecord = new DNSRecord
+            DNSRecord dnsRecord = new()
             {
                 Data = "boom",
                 Flags = 0,
@@ -42,7 +42,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Configuration
         [Fact]
         public void ValidDNSRecord()
         {
-            DNSRecord dnsRecord = new DNSRecord
+            DNSRecord dnsRecord = new()
             {
                 Name = "validate",
                 TTL = 1800,
