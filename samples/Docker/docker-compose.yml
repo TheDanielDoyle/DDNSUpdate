@@ -11,3 +11,4 @@ services:
         max_attempts: 10
     volumes:
       - /docker/apps/ddnsupdate/config.json:/app/config.json
+      - /docker/apps/ddnsupdate/logs:/app/logs
