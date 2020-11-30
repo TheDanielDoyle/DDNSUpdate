@@ -2,14 +2,14 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
     <Authors>Daniel P. Doyle; Adam Parker; Michael Willis</Authors>
     <Product>DDNS Update</Product>
     <Copyright>2020 Daniel P. Doyle</Copyright>
     <RepositoryUrl>https://github.com/TheDanielDoyle/DDNSUpdate</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>9</LangVersion>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
@@ -17,13 +17,13 @@
     <PackageReference Include="Ardalis.SmartEnum" Version="2.0.0" />
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
-    <PackageReference Include="FluentResults" Version="2.2.0" />
-    <PackageReference Include="FluentValidation" Version="9.2.2" />
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="9.2.0" />
-    <PackageReference Include="Flurl.Http" Version="2.4.2" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.KeyPerFile" Version="3.1.9" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.9" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.9" />
+    <PackageReference Include="FluentResults" Version="2.3.0" />
+    <PackageReference Include="FluentValidation" Version="9.3.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="9.3.0" />
+    <PackageReference Include="Flurl.Http" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.KeyPerFile" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
     <PackageReference Include="NetEscapades.Configuration.Yaml" Version="2.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Serilog.Extensions.Hosting" Version="3.1.0" />
@@ -31,9 +31,12 @@
     <PackageReference Include="Serilog.Enrichers.AssemblyName" Version="1.0.9" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     <PackageReference Include="Serilog.Sinks.Debug" Version="1.0.1" />
+    <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="8.4.1" />
+    <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
+    <PackageReference Include="Serilog.Sinks.Http" Version="7.2.0" />
     <PackageReference Include="Serilog.Sinks.Seq" Version="4.0.0" />
     <PackageReference Include="TheDanielDoyle.ServiceProfiles" Version="4.0.1" />
-    <PackageReference Include="YamlDotNet" Version="8.1.2" />
+    <PackageReference Include="YamlDotNet" Version="9.1.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -39,8 +39,9 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
         {
             string path = string.Format(_createDNSRecordFormat, request.DomainName);
             IFlurlRequest httpRequest = BuildRequest(request.ApiKey, request.ApiSecret, path);
-            HttpResponseMessage response = await httpRequest.PatchJsonAsync(request.Records, cancellation);
-            if (response.StatusCode == HttpStatusCode.OK)
+            IFlurlResponse response = await httpRequest.PatchJsonAsync(request.Records, cancellation);
+            HttpResponseMessage message = response.ResponseMessage;
+            if (message.StatusCode == HttpStatusCode.OK)
             {
                 return Result.Ok().WithSuccess(string.Format(_createDNSRecordSuccessMessageTemplate, request.Records.Count(), request.DomainName));
             }
@@ -51,10 +52,11 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
         {
             string path = string.Format(_getDNSRecordsFormat, request.DomainName, request.DNSRecordType.Value);
             IFlurlRequest httpRequest = BuildRequest(request.ApiKey, request.ApiSecret, path);
-            HttpResponseMessage response = await httpRequest.GetAsync(cancellation);
-            if (response.StatusCode == HttpStatusCode.OK)
+            IFlurlResponse response = await httpRequest.GetAsync(cancellation);
+            HttpResponseMessage message = response.ResponseMessage;
+            if (message.StatusCode == HttpStatusCode.OK)
             {
-                string content = await response.Content.ReadAsStringAsync();
+                string content = await message.Content.ReadAsStringAsync();
                 IEnumerable<GoDaddyGetDNSRecordResponse> records = JsonConvert.DeserializeObject<List<GoDaddyGetDNSRecordResponse>>(content);
                 string resultMessage = string.Format(_getDNSRecordsSuccessMessageTemplate, records.Count(),  request.DomainName);
                 return Result.Ok(new GoDaddyGetDNSRecordsResponse(records)).WithSuccess(resultMessage);
@@ -66,8 +68,9 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
         {
             string path = string.Format(_updateDNSRecordsFormat, request.DomainName, request.RecordType.Value, request.RecordName);
             IFlurlRequest httpRequest = BuildRequest(request.ApiKey, request.ApiSecret, path);
-            HttpResponseMessage response = await httpRequest.PutJsonAsync(new [] { request.Record }, cancellation);
-            if (response.StatusCode == HttpStatusCode.OK)
+            IFlurlResponse response = await httpRequest.PutJsonAsync(new [] { request.Record }, cancellation);
+            HttpResponseMessage message = response.ResponseMessage;
+            if (message.StatusCode == HttpStatusCode.OK)
             {
                 string resultMessage = string.Format(_updateDNSRecordsSuccessMessageTemplate, request.DomainName, request.RecordName);
                 return Result.Ok().WithSuccess(resultMessage);
