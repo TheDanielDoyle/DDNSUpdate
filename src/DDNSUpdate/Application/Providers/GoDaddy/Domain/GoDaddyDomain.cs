@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DDNSUpdate.Application.Providers.GoDaddy.Domain
 {
-    public class GoDaddyDomain
+    public record GoDaddyDomain
     {
         public string Name { get; set; } = default!;
 

@@ -2,7 +2,7 @@
 
 namespace DDNSUpdate.Application.Providers.GoDaddy.Domain
 {
-    public class GoDaddyAccount
+    public record GoDaddyAccount
     {
         public string ApiKey { get; set; } = default!;
 

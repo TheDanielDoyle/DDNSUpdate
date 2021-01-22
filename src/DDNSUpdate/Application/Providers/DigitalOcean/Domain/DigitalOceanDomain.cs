@@ -3,7 +3,7 @@ using DDNSUpdate.Domain;
 
 namespace DDNSUpdate.Application.Providers.DigitalOcean.Domain
 {
-    public class DigitalOceanDomain
+    public record DigitalOceanDomain
     {
         public string Name { get; set; } = default!;
 

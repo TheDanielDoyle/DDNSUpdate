@@ -2,7 +2,7 @@
 
 namespace DDNSUpdate.Application.Providers.DigitalOcean.Domain
 {
-    public class DigitalOceanAccount
+    public record DigitalOceanAccount
     {
         public IList<DigitalOceanDomain> Domains { get; set; } = new List<DigitalOceanDomain>();
 
