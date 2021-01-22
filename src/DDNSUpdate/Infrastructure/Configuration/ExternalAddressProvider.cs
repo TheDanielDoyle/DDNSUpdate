@@ -2,7 +2,7 @@
 
 namespace DDNSUpdate.Infrastructure.Configuration
 {
-    public class ExternalAddressProvider
+    public record ExternalAddressProvider
     {
         public Uri Uri { get; set; } = default!;
     }
