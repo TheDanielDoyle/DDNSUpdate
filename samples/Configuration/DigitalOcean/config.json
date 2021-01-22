@@ -7,6 +7,11 @@
       "Uri": "https://ipv4bot.whatismyipaddress.com/"
     }
   ],
+  "Logging": {
+    "EnableFile": true,
+    "LogstashEndpoint": "https://logstash.my-example-domain.com",
+    "SeqEndpoint": "https://seq.my-example-domain.com:5432"
+  },
   "UpdateInterval": "0.00:05:00",
   "DigitalOcean": {
     "Accounts": [

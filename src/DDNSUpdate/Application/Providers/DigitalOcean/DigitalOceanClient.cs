@@ -36,8 +36,8 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
         {
             string path = string.Format(_createDNSRecordFormat, domainName);
             IFlurlRequest httpRequest = BuildRequest(token, path);
-            HttpResponseMessage response = await httpRequest.PostJsonAsync(request, cancellation);
-            if (response.IsSuccessStatusCode)
+            IFlurlResponse response = await httpRequest.PostJsonAsync(request, cancellation);
+            if (response.ResponseMessage.IsSuccessStatusCode)
             {
                 return Result.Ok().WithSuccess(string.Format(_createDNSRecordSuccessMessageTemplate, domainName, request.Name));
             }
@@ -48,10 +48,11 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
         {
             string path = string.Format(_getDNSRecordsFormat, domain.Name);
             IFlurlRequest httpRequest = BuildRequest(token, path);
-            HttpResponseMessage response = await httpRequest.GetAsync(cancellation);
-            if (response.IsSuccessStatusCode)
+            IFlurlResponse response = await httpRequest.GetAsync(cancellation);
+            HttpResponseMessage message = response.ResponseMessage;
+            if (message.IsSuccessStatusCode)
             {
-                string content = await response.Content.ReadAsStringAsync();
+                string content = await message.Content.ReadAsStringAsync();
                 DigitalOceanGetDomainRecordsResponse records = JsonConvert.DeserializeObject<DigitalOceanGetDomainRecordsResponse>(content);
                 return Result.Ok(records).WithSuccess(string.Format(_getDNSRecordsSuccessMessageTemplate, records.DomainRecords.Count(), domain.Name));
             }
@@ -62,8 +63,9 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
         {
             string path = string.Format(_updateDNSRecordFormat, domainName, request.Id);
             IFlurlRequest httpRequest = BuildRequest(token, path);
-            HttpResponseMessage response = await httpRequest.PutJsonAsync(request, cancellation);
-            if (response.IsSuccessStatusCode)
+            IFlurlResponse response = await httpRequest.PutJsonAsync(request, cancellation);
+            HttpResponseMessage message = response.ResponseMessage;
+            if (message.IsSuccessStatusCode)
             {
                 return Result.Ok().WithSuccess(string.Format(_updateDNSRecordsSuccessMessageTemplate, domainName, request.Name));
             }
