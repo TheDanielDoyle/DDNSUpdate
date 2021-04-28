@@ -87,7 +87,7 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
                 .AppendPathSegment(path);
         }
 
-        private string GenerateAuthorizationHeader(string apiKey, string apiSecret)
+        private static string GenerateAuthorizationHeader(string apiKey, string apiSecret)
         {
             return $"{_ssoKey} {apiKey}:{apiSecret}";
         }

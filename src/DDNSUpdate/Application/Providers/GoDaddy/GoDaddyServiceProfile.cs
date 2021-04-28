@@ -12,7 +12,7 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
         public override void Configure(IHostServiceProfileContext context)
         {
             IConfigurationSection configurationSection = context.Configuration.GetSection(_goDaddyConfigurationSection);
-            
+
             context.Services.AddHttpClient<IGoDaddyClient, GoDaddyClient>();
 
             context.Services.Configure<GoDaddyConfiguration>(configurationSection);
