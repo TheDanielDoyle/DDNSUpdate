@@ -18,16 +18,16 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
         [Fact]
         public async Task ProcessAsync_AllAccountsReturnSuccessfulResult_ReturnsSuccessfulResult()
         {
-            ExternalAddress externalAddress = new ExternalAddress() { IPv4Address = IPAddress.Parse("100.100.100.100") };
+            ExternalAddress externalAddress = new() { IPv4Address = IPAddress.Parse("100.100.100.100") };
 
-            GoDaddyConfiguration config = new GoDaddyConfiguration() { Accounts = new List<GoDaddyAccount>() { new GoDaddyAccount(), new GoDaddyAccount() } };
+            GoDaddyConfiguration config = new() { Accounts = new List<GoDaddyAccount>() { new GoDaddyAccount(), new GoDaddyAccount() } };
             IOptionsSnapshot<GoDaddyConfiguration> optionsSnapshot = A.Fake<IOptionsSnapshot<GoDaddyConfiguration>>();
             IGoDaddyAccountProcessor accountProcessor = A.Fake<IGoDaddyAccountProcessor>();
 
             A.CallTo(() => optionsSnapshot.Value).Returns(config);
             A.CallTo(() => accountProcessor.ProcessAsync(A<GoDaddyAccount>.Ignored, externalAddress, A<CancellationToken>.Ignored)).Returns(Result.Ok());
 
-            GoDaddyDDNSService DOService = new GoDaddyDDNSService(accountProcessor, optionsSnapshot);
+            GoDaddyDDNSService DOService = new(accountProcessor, optionsSnapshot);
 
             Result actual = await DOService.ProcessAsync(externalAddress, new CancellationToken());
 
@@ -37,12 +37,12 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
         [Fact]
         public async Task ProcessAsync_AnyAccountsReturnFailureResult_ReturnsFailureResult()
         {
-            ExternalAddress externalAddress = new ExternalAddress() { IPv4Address = IPAddress.Parse("100.100.100.100") };
+            ExternalAddress externalAddress = new() { IPv4Address = IPAddress.Parse("100.100.100.100") };
 
-            GoDaddyAccount accountOne = new GoDaddyAccount();
-            GoDaddyAccount accountTwo = new GoDaddyAccount();
+            GoDaddyAccount accountOne = new();
+            GoDaddyAccount accountTwo = new();
 
-            GoDaddyConfiguration config = new GoDaddyConfiguration() { Accounts = new List<GoDaddyAccount>() { accountOne, accountTwo } };
+            GoDaddyConfiguration config = new() { Accounts = new List<GoDaddyAccount>() { accountOne, accountTwo } };
             IOptionsSnapshot<GoDaddyConfiguration> optionsSnapshot = A.Fake<IOptionsSnapshot<GoDaddyConfiguration>>();
             IGoDaddyAccountProcessor accountProcessor = A.Fake<IGoDaddyAccountProcessor>();
 
@@ -50,7 +50,7 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
             A.CallTo(() => accountProcessor.ProcessAsync(accountOne, externalAddress, A<CancellationToken>.Ignored)).Returns(Result.Ok());
             A.CallTo(() => accountProcessor.ProcessAsync(accountTwo, externalAddress, A<CancellationToken>.Ignored)).Returns(Result.Fail("This failed"));
 
-            GoDaddyDDNSService DOService = new GoDaddyDDNSService(accountProcessor, optionsSnapshot);
+            GoDaddyDDNSService DOService = new(accountProcessor, optionsSnapshot);
 
             Result actual = await DOService.ProcessAsync(externalAddress, new CancellationToken());
 

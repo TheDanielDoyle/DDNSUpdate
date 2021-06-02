@@ -5,7 +5,6 @@ using DDNSUpdate.Infrastructure.Configuration;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using ServiceProfiles;
-using ServiceCollectionExtensions = AutoMapper.ServiceCollectionExtensions;
 
 namespace DDNSUpdate.Infrastructure.ServiceProfiles
 {
@@ -15,7 +14,7 @@ namespace DDNSUpdate.Infrastructure.ServiceProfiles
         {
             context.Services.Configure<ApplicationConfiguration>(context.Configuration);
 
-            ServiceCollectionExtensions.AddAutoMapper(context.Services, ThisAssembly);
+            context.Services.AddAutoMapper(ThisAssembly);
 
             context.Services.AddHostedService<DDNSUpdateHostedService>();
 

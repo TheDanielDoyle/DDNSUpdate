@@ -17,16 +17,16 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
         [Fact]
         public async Task ReturnsFailureWhenAnyFail()
         {
-            DigitalOceanDomain domainOne = new DigitalOceanDomain();
-            DigitalOceanDomain domainTwo = new DigitalOceanDomain();
+            DigitalOceanDomain domainOne = new();
+            DigitalOceanDomain domainTwo = new();
 
             IDigitalOceanDomainProcessor domainProcessor = A.Fake<IDigitalOceanDomainProcessor>();
             A.CallTo(() => domainProcessor.ProcessAsync(domainOne, A<ExternalAddress>.Ignored, A<string>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Ok());
             A.CallTo(() => domainProcessor.ProcessAsync(domainTwo, A<ExternalAddress>.Ignored, A<string>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Fail("This failed"));
-            DigitalOceanAccountProcessor processor = new DigitalOceanAccountProcessor(domainProcessor);
+            DigitalOceanAccountProcessor processor = new(domainProcessor);
 
-            DigitalOceanAccount account = new DigitalOceanAccount() { Domains = new List<DigitalOceanDomain>() { domainOne, domainTwo } };
-            ExternalAddress externalAddress = new ExternalAddress() { IPv4Address = IPAddress.Parse("100.100.100.100") };
+            DigitalOceanAccount account = new() { Domains = new List<DigitalOceanDomain>() { domainOne, domainTwo } };
+            ExternalAddress externalAddress = new() { IPv4Address = IPAddress.Parse("100.100.100.100") };
 
             Result result = await processor.ProcessAsync(account, externalAddress, new CancellationToken());
 
@@ -38,10 +38,10 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
         {
             IDigitalOceanDomainProcessor domainProcessor = A.Fake<IDigitalOceanDomainProcessor>();
             A.CallTo(() => domainProcessor.ProcessAsync(A<DigitalOceanDomain>.Ignored, A<ExternalAddress>.Ignored, A<string>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Ok());
-            DigitalOceanAccountProcessor processor = new DigitalOceanAccountProcessor(domainProcessor);
+            DigitalOceanAccountProcessor processor = new(domainProcessor);
 
-            DigitalOceanAccount account = new DigitalOceanAccount() { Domains = new List<DigitalOceanDomain>() { new DigitalOceanDomain(), new DigitalOceanDomain() } };
-            ExternalAddress externalAddress = new ExternalAddress() { IPv4Address = IPAddress.Parse("100.100.100.100") };
+            DigitalOceanAccount account = new() { Domains = new List<DigitalOceanDomain>() { new DigitalOceanDomain(), new DigitalOceanDomain() } };
+            ExternalAddress externalAddress = new() { IPv4Address = IPAddress.Parse("100.100.100.100") };
 
             Result result = await processor.ProcessAsync(account, externalAddress, new CancellationToken());
 

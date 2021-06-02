@@ -2,7 +2,7 @@
 
 namespace DDNSUpdate.Infrastructure.Configuration
 {
-    public class LoggingConfiguration
+    public record LoggingConfiguration
     {
         public bool EnableFile { get; set; }
 

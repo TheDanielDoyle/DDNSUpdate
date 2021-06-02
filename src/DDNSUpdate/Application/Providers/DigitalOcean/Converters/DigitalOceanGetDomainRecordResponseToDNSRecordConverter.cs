@@ -9,16 +9,19 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean.Converters
         public DNSRecord Convert(DigitalOceanGetDomainRecordResponse response, DNSRecord? record, ResolutionContext context)
         {
             record ??= new DNSRecord();
-            record.Data = response.Data;
-            record.Flags = response.Flags;
-            record.Id = response.Id.ToString();
-            record.Name = response.Name;
-            record.Port = response.Port;
-            record.Priority = response.Priority;
-            record.Tag = response.Tag;
-            record.TTL = response.Ttl;
-            record.Type = DNSRecordType.FromValue(response.Type);
-            record.Weight = response.Weight;
+            record = record with
+            {
+                Data = response.Data,
+                Flags = response.Flags,
+                Id = response.Id.ToString(),
+                Name = response.Name,
+                Port = response.Port,
+                Priority = response.Priority,
+                Tag = response.Tag,
+                TTL = response.Ttl,
+                Type = DNSRecordType.FromValue(response.Type),
+                Weight = response.Weight
+            };
             return record;
         }
     }

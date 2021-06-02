@@ -1,7 +1,7 @@
 ﻿
 namespace DDNSUpdate.Application.Providers.GoDaddy.Domain
 {
-    public class GoDaddyAuthenticationDetails
+    public record GoDaddyAuthenticationDetails
     {
         public GoDaddyAuthenticationDetails(string apiKey, string apiSecret)
         {

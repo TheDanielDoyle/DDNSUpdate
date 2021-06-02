@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DDNSUpdate.Infrastructure.Configuration
 {
-    public class ApplicationConfiguration
+    public record ApplicationConfiguration
     {
         public static readonly TimeSpan MinimumUpdateInterval = TimeSpan.FromMinutes(1);
 

@@ -14,7 +14,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Configuration
         [Fact]
         public void InvalidDigitalOceanAccount()
         {
-            DigitalOceanAccount account = new DigitalOceanAccount
+            DigitalOceanAccount account = new()
             {
                 Domains = new[]
                 {
@@ -33,7 +33,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Configuration
         [Fact]
         public void ValidDigitalOceanAccount()
         {
-            DigitalOceanAccount account = new DigitalOceanAccount
+            DigitalOceanAccount account = new()
             {
                 Domains = new[]
                 {

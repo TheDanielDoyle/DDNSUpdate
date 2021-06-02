@@ -2,9 +2,9 @@
 
 namespace DDNSUpdate.Domain
 {
-    public class ExternalAddress
+    public record ExternalAddress
     {
-        public IPAddress? IPv4Address { get; set; }
+        public IPAddress? IPv4Address { get; init; }
 
         public string? ToIPv4String()
         {

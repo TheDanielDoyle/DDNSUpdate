@@ -9,19 +9,19 @@ namespace DDNSUpdate.Tests.Domain
         [Fact]
         public void NewRecords()
         {
-            DNSRecord record1 = new DNSRecord { Data = "192.168.10.1", Name = "record1", Type = DNSRecordType.A };
-            DNSRecord record2 = new DNSRecord { Data = "192.168.10.2", Name = "record2", Type = DNSRecordType.A };
-            DNSRecord record3 = new DNSRecord { Data = "192.168.10.1", Name = "record1", Type = DNSRecordType.A };
-            DNSRecord record4 = new DNSRecord { Data = "192.168.10.2", Name = "record2", Type = DNSRecordType.A };
-            DNSRecord record5 = new DNSRecord { Data = "192.168.10.5", Name = "record5", Type = DNSRecordType.A };
-            DNSRecord record6 = new DNSRecord { Data = "192.168.10.6", Name = "record6", Type = DNSRecordType.A };
+            DNSRecord record1 = new() { Data = "192.168.10.1", Name = "record1", Type = DNSRecordType.A };
+            DNSRecord record2 = new() { Data = "192.168.10.2", Name = "record2", Type = DNSRecordType.A };
+            DNSRecord record3 = new() { Data = "192.168.10.1", Name = "record1", Type = DNSRecordType.A };
+            DNSRecord record4 = new() { Data = "192.168.10.2", Name = "record2", Type = DNSRecordType.A };
+            DNSRecord record5 = new() { Data = "192.168.10.5", Name = "record5", Type = DNSRecordType.A };
+            DNSRecord record6 = new() { Data = "192.168.10.6", Name = "record6", Type = DNSRecordType.A };
 
-            DNSRecordCollection compareWith = new DNSRecordCollection(new[]
+            DNSRecordCollection compareWith = new(new[]
             {
                 record1, record2
             });
 
-            DNSRecordCollection compareTo = new DNSRecordCollection(new[]
+            DNSRecordCollection compareTo = new(new[]
             {
                 record3, record4, record5, record6
             });
@@ -39,16 +39,16 @@ namespace DDNSUpdate.Tests.Domain
         [Fact]
         public void UpdatedRecords()
         {
-            DNSRecord record1 = new DNSRecord { Data = "192.168.10.1", Name = "record1", Type = DNSRecordType.A };
-            DNSRecord record2 = new DNSRecord { Data = "192.168.10.2", Name = "record2", Type = DNSRecordType.A };
-            DNSRecord record3 = new DNSRecord { Data = "192.168.10.3", Name = "record1", Type = DNSRecordType.A };
-            DNSRecord record4 = new DNSRecord { Data = "192.168.10.2", Name = "record2", Type = DNSRecordType.A };
-            DNSRecord record5 = new DNSRecord { Data = "192.168.10.5", Name = "record5", Type = DNSRecordType.A };
-            DNSRecord record6 = new DNSRecord { Data = "192.168.10.6", Name = "record6", Type = DNSRecordType.A };
+            DNSRecord record1 = new() { Data = "192.168.10.1", Name = "record1", Type = DNSRecordType.A };
+            DNSRecord record2 = new() { Data = "192.168.10.2", Name = "record2", Type = DNSRecordType.A };
+            DNSRecord record3 = new() { Data = "192.168.10.3", Name = "record1", Type = DNSRecordType.A };
+            DNSRecord record4 = new() { Data = "192.168.10.2", Name = "record2", Type = DNSRecordType.A };
+            DNSRecord record5 = new() { Data = "192.168.10.5", Name = "record5", Type = DNSRecordType.A };
+            DNSRecord record6 = new() { Data = "192.168.10.6", Name = "record6", Type = DNSRecordType.A };
 
-            DNSRecordCollection compareWith = new DNSRecordCollection(record1, record2, record5);
+            DNSRecordCollection compareWith = new(record1, record2, record5);
 
-            DNSRecordCollection compareTo = new DNSRecordCollection(record3, record4, record6);
+            DNSRecordCollection compareTo = new(record3, record4, record6);
 
             DNSRecordCollection updateRecords = compareWith.WhereUpdated(compareTo);
 

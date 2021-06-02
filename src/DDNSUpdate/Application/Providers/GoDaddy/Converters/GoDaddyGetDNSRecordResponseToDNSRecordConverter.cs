@@ -9,15 +9,16 @@ namespace DDNSUpdate.Application.Providers.GoDaddy.Converters
         public DNSRecord Convert(GoDaddyGetDNSRecordResponse source, DNSRecord? dnsRecord, ResolutionContext context)
         {
             dnsRecord ??= new DNSRecord();
-
-            dnsRecord.Data = source.Data;
-            dnsRecord.Name = source.Name;
-            dnsRecord.Port = source.Port;
-            dnsRecord.Priority = source.Priority;
-            dnsRecord.TTL = source.Ttl;
-            dnsRecord.Type = DNSRecordType.FromValue(source.Type);
-            dnsRecord.Weight = source.Weight;
-
+            dnsRecord = dnsRecord with
+            {
+                Data = source.Data,
+                Name = source.Name,
+                Port = source.Port,
+                Priority = source.Priority,
+                TTL = source.Ttl,
+                Type = DNSRecordType.FromValue(source.Type),
+                Weight = source.Weight,
+            };
             return dnsRecord;
         }
     }

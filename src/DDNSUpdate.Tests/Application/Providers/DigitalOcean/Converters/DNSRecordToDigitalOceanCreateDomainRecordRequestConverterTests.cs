@@ -18,8 +18,8 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Converters
         [Fact]
         public void OverwirtesCreateDomainRecordRequestValues()
         {
-            DNSRecordToDigitalOceanCreateDomainRecordRequestConverter converter = new DNSRecordToDigitalOceanCreateDomainRecordRequestConverter();
-            DNSRecord record = new DNSRecord()
+            DNSRecordToDigitalOceanCreateDomainRecordRequestConverter converter = new();
+            DNSRecord record = new()
             {
                 Data = "DNSData",
                 Flags = 1,
@@ -32,7 +32,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Converters
                 Type = DNSRecordType.A
             };
 
-            DigitalOceanCreateDomainRecordRequest createRecord = new DigitalOceanCreateDomainRecordRequest()
+            DigitalOceanCreateDomainRecordRequest createRecord = new()
             {
                 Data = "CreatData",
                 Flags = 123,
@@ -61,8 +61,8 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Converters
         [Fact]
         public void ReturnsNewDomainRecordRequestWhenNull()
         {
-            DNSRecordToDigitalOceanCreateDomainRecordRequestConverter converter = new DNSRecordToDigitalOceanCreateDomainRecordRequestConverter();
-            DNSRecord record = new DNSRecord()
+            DNSRecordToDigitalOceanCreateDomainRecordRequestConverter converter = new();
+            DNSRecord record = new()
             {
                 Data = "DNSData",
                 Flags = 1,

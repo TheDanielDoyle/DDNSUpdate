@@ -9,7 +9,7 @@ namespace DDNSUpdate.Tests.Application.Configuration
 {
     public class ValidationResultCollectionTests : TestBase
     {
-        private readonly ValidationResult _validResult = new ValidationResult();
+        private readonly ValidationResult _validResult = new();
 
         [Theory]
         [ClassData(typeof(InvalidValidationResultCollections))]
@@ -23,7 +23,7 @@ namespace DDNSUpdate.Tests.Application.Configuration
         [Fact]
         public void ValidResult()
         {
-            ValidationResultCollection results = new ValidationResultCollection(new[] { _validResult });
+            ValidationResultCollection results = new(new[] { _validResult });
 
             Assert.True(results.IsValid);
             Assert.Empty(results.Errors);
@@ -32,8 +32,8 @@ namespace DDNSUpdate.Tests.Application.Configuration
 
         private class InvalidValidationResultCollections : IEnumerable<object[]>
         {
-            private ValidationResult _invalidResult = new ValidationResult(new[] { new ValidationFailure("Property", "Error Message") });
-            private ValidationResult _validResult = new ValidationResult();
+            private ValidationResult _invalidResult = new(new[] { new ValidationFailure("Property", "Error Message") });
+            private ValidationResult _validResult = new();
 
             public IEnumerator<object[]> GetEnumerator()
             {

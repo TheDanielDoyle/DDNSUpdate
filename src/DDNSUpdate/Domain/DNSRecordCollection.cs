@@ -26,21 +26,20 @@ namespace DDNSUpdate.Domain
 
         public DNSRecordCollection WhereNew(DNSRecordCollection compareTo)
         {
-            DNSRecordCollection newRecords = this.IntersectWith(compareTo, DNSRecordNameTypeEqualityComparer.Instance);
-            return Clone(newRecords);
+            return this.IntersectWith(compareTo, DNSRecordNameTypeEqualityComparer.Instance);
         }
 
         public DNSRecordCollection WhereUpdated(DNSRecordCollection compareTo)
         {
             DNSRecordCollection newRecords = this.WhereNew(compareTo);
             DNSRecordCollection updatedRecords = this.IntersectWith(compareTo, DNSRecordEqualityComparer.Instance);
-            DNSRecordCollection updatedRecordsWithoutNewRecords = new DNSRecordCollection(updatedRecords.Except(newRecords, DNSRecordNameTypeEqualityComparer.Instance));
-            return Clone(updatedRecordsWithoutNewRecords);
+            DNSRecordCollection updatedRecordsWithoutNewRecords = new(updatedRecords.Except(newRecords, DNSRecordNameTypeEqualityComparer.Instance));
+            return updatedRecordsWithoutNewRecords;
         }
 
         private DNSRecordCollection IntersectWith(DNSRecordCollection compareTo, IEqualityComparer<DNSRecord> equalityComparer)
         {
-            DNSRecordCollection records = new DNSRecordCollection(compareTo.Where(r => !this.Contains(r, equalityComparer)));
+            DNSRecordCollection records = new(compareTo.Where(r => !this.Contains(r, equalityComparer)));
             return records.Any() ? records : Empty();
         }
 
@@ -48,51 +47,20 @@ namespace DDNSUpdate.Domain
         {
             return new DNSRecordCollection(this.Where(r => r.Type == dnsRecordType));
         }
+
         public DNSRecordCollection WithUpdatedDataFrom(string data)
         {
-            return ApplyToRecord(r => r.Data = data);
+            return new DNSRecordCollection(this.Select(d => d with { Data = data }));
         }
 
         public DNSRecordCollection WithUpdatedIdsFrom(DNSRecordCollection dnsRecords)
         {
-            return ApplyToRecord(d => d.Id = FindId(d, dnsRecords));
-        }
-
-        private static DNSRecordCollection Clone(DNSRecordCollection from)
-        {
-            return new DNSRecordCollection(from.Select(Map));
+            return new DNSRecordCollection(this.Select(d => d with { Id = FindId(d, dnsRecords) }));
         }
 
         private static string? FindId(DNSRecord record, DNSRecordCollection dnsRecords)
         {
             return dnsRecords.FirstOrDefault(r => r.Type == record.Type && r.Name == record.Name)?.Id;
-        }
-
-        private static DNSRecord Map(DNSRecord from)
-        {
-            return new DNSRecord
-            {
-                Data = from.Data,
-                Flags = from.Flags,
-                Id = from.Id,
-                Name = from.Name,
-                Port = from.Port,
-                Priority = from.Priority,
-                Tag = from.Tag,
-                TTL = from.TTL,
-                Type = DNSRecordType.FromValue(from.Type.Value),
-                Weight = from.Weight
-            };
-        }
-
-        private DNSRecordCollection ApplyToRecord(Action<DNSRecord> action)
-        {
-            DNSRecordCollection clone = Clone(this);
-            foreach (DNSRecord dnsRecord in clone)
-            {
-                action(dnsRecord);
-            }
-            return clone;
         }
     }
 }

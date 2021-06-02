@@ -10,7 +10,7 @@ namespace DDNSUpdate.Tests.Helpers
     {
         public MappingHelper(params Assembly[] assemblies)
         {
-            MapperConfiguration config = new MapperConfiguration((cfg) =>
+            MapperConfiguration config = new((cfg) =>
             {
                 IEnumerable<Type> profileTypes = MappingProfilesFromAssemblies(assemblies);
                 foreach (Type profile in profileTypes)

@@ -28,9 +28,9 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
 
             A.CallTo(() => client.UpdateDNSRecordAsync(A<GoDaddyUpdateDNSRecordsRequest>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Fail("Error"));
 
-            GoDaddyDNSRecordUpdater updater = new GoDaddyDNSRecordUpdater(client, _mapper);
-            DNSRecordCollection records = new DNSRecordCollection(CreateValidDNSRecord(1), CreateValidDNSRecord(2));
-            GoDaddyAuthenticationDetails authicationDetails = new GoDaddyAuthenticationDetails("apiKey", "apiSecret");
+            GoDaddyDNSRecordUpdater updater = new(client, _mapper);
+            DNSRecordCollection records = new(CreateValidDNSRecord(1), CreateValidDNSRecord(2));
+            GoDaddyAuthenticationDetails authicationDetails = new("apiKey", "apiSecret");
 
             Result result = await updater.UpdateAsync("aDomain.com", records, authicationDetails, CancellationToken.None);
 
@@ -45,9 +45,9 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
 
             A.CallTo(() => client.UpdateDNSRecordAsync(A<GoDaddyUpdateDNSRecordsRequest>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Ok());
 
-            GoDaddyDNSRecordUpdater updater = new GoDaddyDNSRecordUpdater(client, _mapper);
-            DNSRecordCollection records = new DNSRecordCollection(CreateValidDNSRecord(1), CreateValidDNSRecord(2));
-            GoDaddyAuthenticationDetails authicationDetails = new GoDaddyAuthenticationDetails("apiKey", "apiSecret");
+            GoDaddyDNSRecordUpdater updater = new(client, _mapper);
+            DNSRecordCollection records = new(CreateValidDNSRecord(1), CreateValidDNSRecord(2));
+            GoDaddyAuthenticationDetails authicationDetails = new("apiKey", "apiSecret");
 
             Result result = await updater.UpdateAsync("aDomain.com", records, authicationDetails, CancellationToken.None);
 

@@ -16,7 +16,7 @@ namespace DDNSUpdate.Tests.Infrastructure.Extensions
             const string errorMessageA = "ErrorA";
             const string errorMessageB = "ErrorB";
 
-            ValidationResultCollection result = new ValidationResultCollection(new ValidationResult[]
+            ValidationResultCollection result = new(new ValidationResult[]
             {
                 new ValidationResult(),
                 new ValidationResult(new List<ValidationFailure>() { new ValidationFailure("TestA", errorMessageA)}),
@@ -32,7 +32,7 @@ namespace DDNSUpdate.Tests.Infrastructure.Extensions
         [Fact]
         public void Valid_Result_To_Result_Returns_Success()
         {
-            ValidationResultCollection result = new ValidationResultCollection(new ValidationResult[] { new ValidationResult(), new ValidationResult() });
+            ValidationResultCollection result = new(new ValidationResult[] { new ValidationResult(), new ValidationResult() });
             Assert.True(result.ToResults().IsSuccess);
         }
     }

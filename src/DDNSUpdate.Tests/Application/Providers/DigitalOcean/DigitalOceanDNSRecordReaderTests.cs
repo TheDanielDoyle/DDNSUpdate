@@ -30,8 +30,8 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
             int TTL = 1800;
             DNSRecordType type = DNSRecordType.A;
 
-            DigitalOceanDomain domain = new DigitalOceanDomain();
-            DigitalOceanGetDomainRecordsResponse clientResponse = new DigitalOceanGetDomainRecordsResponse
+            DigitalOceanDomain domain = new();
+            DigitalOceanGetDomainRecordsResponse clientResponse = new()
             {
                 DomainRecords = new List<DigitalOceanGetDomainRecordResponse>
                 {
@@ -67,7 +67,7 @@ namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean
         [Fact]
         public async Task Record_Retrieval_Failed()
         {
-            DigitalOceanDomain domain = new DigitalOceanDomain();
+            DigitalOceanDomain domain = new();
             IDigitalOceanClient client = A.Fake<IDigitalOceanClient>();
             IDigitalOceanDNSRecordReader reader = new DigitalOceanDNSRecordReader(client, _mappingHelper.Mapper);
 
