@@ -17,5 +17,6 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }} # Provide GITHUB_TOKEN to login into the GitHub Packages
           image-name: ddnsupdate # Provide Docker image name
           image-tag: latest # Provide Docker image tag
+          dockerfile: src/DDNSUpdate/Dockerfile
           build-context: src/DDNSUpdate
           custom-args:  --build-arg "APP_BUILD_RUNTIME=linux-arm64" --build-arg "DOCKER_BUILD_RUNTIME=mcr.microsoft.com/dotnet/runtime:5.0.4-focal" --build-arg "DOCKER_BUILD_SDK=mcr.microsoft.com/dotnet/sdk:5.0.201-focal"
