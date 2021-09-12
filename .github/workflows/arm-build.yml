@@ -3,7 +3,7 @@ name: DDNS Update Arm Build
 on:
   push:
     branches:
-      - main
+      - master
       - develop
 
 jobs:
@@ -16,6 +16,6 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }} # Provide GITHUB_TOKEN to login into the GitHub Packages
           image-name: ddnsupdate # Provide Docker image name
-          image-tag: latest # Provide Docker image tag
+          image-tag: latest_arm # Provide Docker image tag
           dockerfile: src/DDNSUpdate/Dockerfile_ARM
           build-context: src/DDNSUpdate
