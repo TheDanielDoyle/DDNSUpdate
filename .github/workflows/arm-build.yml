@@ -16,4 +16,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build the Docker image
-        run: docker build -t "ddnsupdate:latest" --build-arg "APP_BUILD_RUNTIME=linux-arm" --build-arg "DOCKER_BUILD_RUNTIME=mcr.microsoft.com/dotnet/runtime:6.0.3-bullseye-slim-arm64v8" --build-arg "DOCKER_BUILD_SDK=mcr.microsoft.com/dotnet/sdk:6.0.201-bullseye-slim-arm64v8" ./src/DDNSUpdate/
+        run: docker build -t "ddnsupdate:latest" --build-arg APP_BUILD_RUNTIME=linux-arm --build-arg DOCKER_BUILD_RUNTIME=mcr.microsoft.com/dotnet/runtime:6.0.3-bullseye-slim-arm64v8 --build-arg DOCKER_BUILD_SDK=mcr.microsoft.com/dotnet/sdk:6.0.201-bullseye-slim-arm64v8 ./src/DDNSUpdate/
