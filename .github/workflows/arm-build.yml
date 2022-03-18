@@ -6,17 +6,14 @@ on:
       - master
       - develop
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
 jobs:
   build-and-publish-arm64:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Build and Publish head Docker image
-        uses: VaultVulp/gp-docker-action@1.2.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }} # Provide GITHUB_TOKEN to login into the GitHub Packages
-          image-name: ddnsupdate # Provide Docker image name
-          image-tag: latest_arm # Provide Docker image tag
-          dockerfile: src/DDNSUpdate/Dockerfile
-          build-context: src/DDNSUpdate
-          custom-args: --build-arg "APP_BUILD_RUNTIME=linux-arm" --build-arg "DOCKER_BUILD_RUNTIME=mcr.microsoft.com/dotnet/runtime:6.0.3-bullseye-slim-arm64v8" --build-arg "DOCKER_BUILD_SDK=mcr.microsoft.com/dotnet/sdk:6.0.201-bullseye-slim-arm64v8"
+      - name: Build the Docker image
+      run: docker build -t "ddnsupdate:latest" --build-arg "APP_BUILD_RUNTIME=linux-arm" --build-arg "DOCKER_BUILD_RUNTIME=mcr.microsoft.com/dotnet/runtime:6.0.3-bullseye-slim-arm64v8" --build-arg "DOCKER_BUILD_SDK=mcr.microsoft.com/dotnet/sdk:6.0.201-bullseye-slim-arm64v8" ./src/DDNSUpdate/
