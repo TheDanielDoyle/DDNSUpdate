@@ -7,12 +7,12 @@ namespace DDNSUpdate.Infrastructure
 {
     public class ResultsLogger : IResultsLogger
     {
-        private readonly IDictionary<Type, Action<Reason>> _logFactory;
+        private readonly IDictionary<Type, Action<IReason>> _logFactory;
 
         public ResultsLogger(ILoggerFactory loggerFactory)
         {
             ILogger logger = loggerFactory.CreateLogger<ResultsLogger>();
-            _logFactory = new Dictionary<Type, Action<Reason>>
+            _logFactory = new Dictionary<Type, Action<IReason>>
             {
                 { typeof(Error), (r => logger.LogError(r.Message)) },
                 { typeof(Success), (r => logger.LogInformation(r.Message)) }
@@ -21,7 +21,7 @@ namespace DDNSUpdate.Infrastructure
 
         public void Log(Result result)
         {
-            foreach (Reason reason in result.Reasons)
+            foreach (IReason reason in result.Reasons)
             {
                 _logFactory[reason.GetType()]?.Invoke(reason);
             }

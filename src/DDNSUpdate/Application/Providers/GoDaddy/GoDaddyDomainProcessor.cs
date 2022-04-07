@@ -28,7 +28,7 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
             Result<DNSRecordCollection> activeDnsRecordsResult = await _dnsRecordReader.ReadAsync(domain.Name, authentication, cancellation);
             if (activeDnsRecordsResult.IsFailed)
             {
-                return activeDnsRecordsResult;
+                return activeDnsRecordsResult.ToResult();
             }
 
             IDNSRecordCollectionMutation[] mutations = GetMutations(externalAddress);
@@ -40,7 +40,7 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
 
             Result create = await _dnsRecordCreator.CreateAsync(domain.Name, newRecords, authentication, cancellation);
             Result update = await _dnsRecordUpdater.UpdateAsync(domain.Name, updatedRecords, authentication, cancellation);
-            return activeDnsRecordsResult.Merge(create, update);
+            return activeDnsRecordsResult.ToResult().Merge(create, update);
         }
 
         private IDNSRecordCollectionMutation[] GetMutations(ExternalAddress externalAddress)

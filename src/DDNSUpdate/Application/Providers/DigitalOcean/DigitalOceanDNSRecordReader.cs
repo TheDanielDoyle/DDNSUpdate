@@ -30,7 +30,7 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
             }
 
             IEnumerable<DNSRecord> records = _mapper.Map<IEnumerable<DNSRecord>>(result.Value.DomainRecords);
-            return Result.Ok(new DNSRecordCollection(records)).Merge(result);
+            return Result.Ok(new DNSRecordCollection(records)).Merge(result.ToResult());
         }
     }
 }

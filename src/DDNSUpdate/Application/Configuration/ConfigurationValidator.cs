@@ -46,7 +46,7 @@ namespace DDNSUpdate.Application.Configuration
             yield return await ValidateResultAsync<GoDaddyConfiguration>(cancellation);
         }
 
-        private async Task<ValidationResult> ValidateResultAsync<TConfiguration>(CancellationToken cancellation) 
+        private async Task<ValidationResult> ValidateResultAsync<TConfiguration>(CancellationToken cancellation)
             where TConfiguration : class, new()
         {
             IValidator<TConfiguration> validator = GetService<IValidator<TConfiguration>>();
@@ -56,7 +56,7 @@ namespace DDNSUpdate.Application.Configuration
 
         private T GetService<T>()
         {
-            return (T)_serviceFactory(typeof(T));
+            return (T)_serviceFactory(typeof(T))!;
         }
     }
 }
