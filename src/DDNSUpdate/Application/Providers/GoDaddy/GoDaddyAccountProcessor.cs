@@ -20,7 +20,7 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
         {
             Result result = Result.Ok();
             GoDaddyAuthenticationDetails authenticationDetails = new GoDaddyAuthenticationDetails(account.ApiKey, account.ApiSecret);
-            foreach(GoDaddyDomain domain in account.Domains)
+            foreach (GoDaddyDomain domain in account.Domains)
             {
                 result = result.Merge(await _domainProcessor.ProcessAsync(domain, externalAddress, authenticationDetails, cancellation));
             }

@@ -7,7 +7,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using DDNSUpdate.Infrastructure.Extensions;
 
 namespace DDNSUpdate.Application.ExternalAddresses
 {
@@ -33,7 +32,7 @@ namespace DDNSUpdate.Application.ExternalAddresses
                 if (result.IsSuccess)
                 {
                     ExternalAddress externalAddress = new ExternalAddress { IPv4Address = result.Value };
-                    return Result.Ok<IExternalAddressResponse>(new ExternalAddressResponse(externalAddress)).Merge(result);
+                    return Result.Ok<IExternalAddressResponse>(new ExternalAddressResponse(externalAddress));
                 }
             }
             return Result.Fail<IExternalAddressResponse>(_errorMessage);
@@ -46,7 +45,7 @@ namespace DDNSUpdate.Application.ExternalAddresses
                 .Request(provider.Uri)
                 .GetStringAsync(cancellation);
 
-            if (IPAddress.TryParse(response, out IPAddress ipAddress))
+            if (IPAddress.TryParse(response, out IPAddress? ipAddress))
             {
                 return Result.Ok(ipAddress).WithSuccess(string.Format(_successMessageTemplate, ipAddress));
             }

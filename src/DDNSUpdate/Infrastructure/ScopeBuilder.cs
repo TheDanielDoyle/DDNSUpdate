@@ -14,7 +14,7 @@ namespace DDNSUpdate.Infrastructure
 
         public IServiceScope Build()
         {
-            IServiceProvider serviceProvider = (IServiceProvider)_serviceFactory(typeof(IServiceProvider));
+            IServiceProvider serviceProvider = (IServiceProvider)_serviceFactory(typeof(IServiceProvider))!;
             return serviceProvider.CreateScope();
         }
     }

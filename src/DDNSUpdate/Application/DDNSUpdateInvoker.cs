@@ -21,34 +21,32 @@ namespace DDNSUpdate.Application
 
         public async Task<Result> InvokeAsync(CancellationToken cancellation)
         {
-            using (IServiceScope scope = _scopeBuilder.Build())
+            using IServiceScope scope = _scopeBuilder.Build();
+            IConfigurationValidator configurationValidator = GetService<IConfigurationValidator>(scope);
+            Result validateConfigurationResult = await configurationValidator.ValidateAsync(cancellation);
+            if (validateConfigurationResult.IsFailed)
             {
-                IConfigurationValidator configurationValidator = GetService<IConfigurationValidator>(scope);
-                Result validateConfigurationResult = await configurationValidator.ValidateAsync(cancellation);
-                if (validateConfigurationResult.IsFailed)
-                {
-                    return validateConfigurationResult;
-                }
-
-                IExternalAddressClient externalAddressClient = GetService<IExternalAddressClient>(scope);
-                Result<IExternalAddressResponse> externalAddressResult = await externalAddressClient.GetAsync(cancellation);
-                if (externalAddressResult.IsFailed)
-                {
-                    return validateConfigurationResult.Merge(externalAddressResult);
-                }
-
-                IEnumerable<IDDNSService> dnsServices = GetService<IEnumerable<IDDNSService>>(scope);
-                Result processResult = await ProcessAsync(dnsServices, externalAddressResult.Value, cancellation);
-                return validateConfigurationResult.Merge(externalAddressResult, processResult);
+                return validateConfigurationResult;
             }
+
+            IExternalAddressClient externalAddressClient = GetService<IExternalAddressClient>(scope);
+            Result<IExternalAddressResponse> externalAddressResult = await externalAddressClient.GetAsync(cancellation);
+            if (externalAddressResult.IsFailed)
+            {
+                return validateConfigurationResult.Merge(externalAddressResult.ToResult());
+            }
+
+            IEnumerable<IDDNSService> dnsServices = GetService<IEnumerable<IDDNSService>>(scope);
+            Result processResult = await ProcessAsync(dnsServices, externalAddressResult.Value, cancellation);
+            return validateConfigurationResult.Merge(externalAddressResult.ToResult(), processResult);
         }
 
         private static T GetService<T>(IServiceScope scope)
         {
-            return (T)scope.ServiceProvider.GetService(typeof(T));
+            return (T)scope.ServiceProvider.GetService(typeof(T))!;
         }
 
-        private async Task<Result> ProcessAsync(IEnumerable<IDDNSService> dnsServices, IExternalAddressResponse value, CancellationToken cancellation)
+        private static async Task<Result> ProcessAsync(IEnumerable<IDDNSService> dnsServices, IExternalAddressResponse value, CancellationToken cancellation)
         {
             Result result = Result.Ok();
             foreach (IDDNSService dnsService in dnsServices)

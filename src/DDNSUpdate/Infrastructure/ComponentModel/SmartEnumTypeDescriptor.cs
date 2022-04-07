@@ -12,12 +12,12 @@ namespace DDNSUpdate.Infrastructure.ComponentModel
             _objectType = objectType;
         }
 
-        public override TypeConverter? GetConverter()
+        public override TypeConverter GetConverter()
         {
             Type type = _objectType;
             Type converterType = typeof(SmartEnumTypeConverter<>).MakeGenericType(type);
             TypeConverter? converter = Activator.CreateInstance(converterType) as TypeConverter;
-            return converter;
+            return converter!;
         }
     }
 }

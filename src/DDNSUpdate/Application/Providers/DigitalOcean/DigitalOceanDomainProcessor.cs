@@ -28,7 +28,7 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
             Result<DNSRecordCollection> activeDnsRecordsResult = await _dnsRecordReader.ReadAsync(domain, token, cancellation);
             if (activeDnsRecordsResult.IsFailed)
             {
-                return activeDnsRecordsResult;
+                return activeDnsRecordsResult.ToResult();
             }
 
             IDNSRecordCollectionMutation[] mutations = GetMutations(externalAddress, activeDnsRecordsResult.Value);
@@ -37,13 +37,13 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
             DNSRecordCollection hydratedDnsRecords = _dnsRecordMutator.Mutate(configurationRecords, mutations);
             DNSRecordCollection newRecords = activeDnsRecordsResult.Value.WhereNew(hydratedDnsRecords);
             DNSRecordCollection updatedRecords = activeDnsRecordsResult.Value.WhereUpdated(hydratedDnsRecords);
-            
+
             Result create = await _dnsRecordCreator.CreateAsync(domain.Name, newRecords, token, cancellation);
             Result update = await _dnsRecordUpdater.UpdateAsync(domain.Name, updatedRecords, token, cancellation);
-            return activeDnsRecordsResult.Merge(create, update);
+            return activeDnsRecordsResult.ToResult().Merge(create, update);
         }
 
-        private IDNSRecordCollectionMutation[] GetMutations(ExternalAddress externalAddress, DNSRecordCollection idsFrom)
+        private static IDNSRecordCollectionMutation[] GetMutations(ExternalAddress externalAddress, DNSRecordCollection idsFrom)
         {
             return new IDNSRecordCollectionMutation[]
             {

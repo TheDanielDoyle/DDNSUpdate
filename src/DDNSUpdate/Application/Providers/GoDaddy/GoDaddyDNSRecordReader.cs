@@ -28,7 +28,7 @@ namespace DDNSUpdate.Application.Providers.GoDaddy
             if (result.IsSuccess)
             {
                 IList<DNSRecord> records = _mapper.Map<IList<DNSRecord>>(result.Value.Records);
-                return Result.Ok(new DNSRecordCollection(records)).Merge(result);
+                return Result.Ok(new DNSRecordCollection(records)).Merge(result.ToResult());
             }
             return result.ToResult();
         }

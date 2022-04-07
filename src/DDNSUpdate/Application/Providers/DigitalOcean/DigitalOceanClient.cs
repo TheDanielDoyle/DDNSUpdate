@@ -52,9 +52,9 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
             HttpResponseMessage message = response.ResponseMessage;
             if (message.IsSuccessStatusCode)
             {
-                string content = await message.Content.ReadAsStringAsync();
-                DigitalOceanGetDomainRecordsResponse records = JsonConvert.DeserializeObject<DigitalOceanGetDomainRecordsResponse>(content);
-                return Result.Ok(records).WithSuccess(string.Format(_getDNSRecordsSuccessMessageTemplate, records.DomainRecords.Count(), domain.Name));
+                string content = await message.Content.ReadAsStringAsync(cancellation);
+                DigitalOceanGetDomainRecordsResponse records = JsonConvert.DeserializeObject<DigitalOceanGetDomainRecordsResponse>(content)!;
+                return Result.Ok(records!).WithSuccess(string.Format(_getDNSRecordsSuccessMessageTemplate, records!.DomainRecords.Count(), domain.Name));
             }
             return Result.Fail(string.Format(_getDNSRecordsFailureMessageTemplate, domain.Name));
         }
