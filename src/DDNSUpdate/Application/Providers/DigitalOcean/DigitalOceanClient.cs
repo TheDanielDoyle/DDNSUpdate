@@ -21,6 +21,8 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
         private static readonly string _getDNSRecordsFormat = "domains/{0}/records";
         private static readonly string _getDNSRecordsFailureMessageTemplate = "Unable to retrieve DigitalOcean domain DNS records for {0}";
         private static readonly string _getDNSRecordsSuccessMessageTemplate = "{0} DNS records retrieved for DigitalOcean domain {1}";
+        private static readonly string _pageSizeKey = "per_page";
+        private static readonly int _pageSizeValue = 200;
         private static readonly string _updateDNSRecordFormat = "domains/{0}/records/{1}";
         private static readonly string _updateDNSRecordsFailureMessageTemplate = "Unable to update DNS record {0} for DigitalOcean domain {1}";
         private static readonly string _updateDNSRecordsSuccessMessageTemplate = "Successfully updated DigitalOcean domain {0} DNS record for {1}";
@@ -47,7 +49,7 @@ namespace DDNSUpdate.Application.Providers.DigitalOcean
         public async Task<Result<DigitalOceanGetDomainRecordsResponse>> GetDNSRecordsAsync(DigitalOceanDomain domain, string token, CancellationToken cancellation)
         {
             string path = string.Format(_getDNSRecordsFormat, domain.Name);
-            IFlurlRequest httpRequest = BuildRequest(token, path);
+            IFlurlRequest httpRequest = BuildRequest(token, path).SetQueryParam(_pageSizeKey, _pageSizeValue);
             IFlurlResponse response = await httpRequest.GetAsync(cancellation);
             HttpResponseMessage message = response.ResponseMessage;
             if (message.IsSuccessStatusCode)
