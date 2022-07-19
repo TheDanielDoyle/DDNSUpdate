@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -6,10 +6,9 @@
     <Nullable>enable</Nullable>
     <Authors>Daniel P. Doyle; Adam Parker; Michael Willis</Authors>
     <Product>DDNS Update</Product>
-    <Copyright>2021 Daniel P. Doyle</Copyright>
+    <Copyright>2022 Daniel P. Doyle</Copyright>
     <RepositoryUrl>https://github.com/TheDanielDoyle/DDNSUpdate</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <LangVersion>9</LangVersion>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 

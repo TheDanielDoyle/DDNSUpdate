@@ -5,14 +5,13 @@ using FluentResults;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DDNSUpdate.Application.Providers.DigitalOcean
+namespace DDNSUpdate.Application.Providers.DigitalOcean;
+
+public interface IDigitalOceanClient
 {
-    public interface IDigitalOceanClient
-    {
-        Task<Result> CreateDNSRecordAsync(string domainName, DigitalOceanCreateDomainRecordRequest request, string token, CancellationToken cancellation);
+    Task<Result> CreateDNSRecordAsync(string domainName, DigitalOceanCreateDomainRecordRequest request, string token, CancellationToken cancellation);
 
-        Task<Result<DigitalOceanGetDomainRecordsResponse>> GetDNSRecordsAsync(DigitalOceanDomain domain, string token, CancellationToken cancellation);
+    Task<Result<DigitalOceanGetDomainRecordsResponse>> GetDNSRecordsAsync(DigitalOceanDomain domain, string token, CancellationToken cancellation);
 
-        Task<Result> UpdateDNSRecordAsync(string domainName, DigitalOceanUpdateDomainRecordRequest request, string token, CancellationToken cancellation);
-    }
+    Task<Result> UpdateDNSRecordAsync(string domainName, DigitalOceanUpdateDomainRecordRequest request, string token, CancellationToken cancellation);
 }

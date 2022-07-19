@@ -7,72 +7,71 @@ using FluentValidation.Results;
 using System.Linq;
 using Xunit;
 
-namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Configuration
+namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Configuration;
+
+public class DigitalOceanAccountValidatorTests : TestBase
 {
-    public class DigitalOceanAccountValidatorTests : TestBase
+    [Fact]
+    public void InvalidDigitalOceanAccount()
     {
-        [Fact]
-        public void InvalidDigitalOceanAccount()
+        DigitalOceanAccount account = new()
         {
-            DigitalOceanAccount account = new()
+            Domains = new[]
             {
-                Domains = new[]
-                {
-                    ValidDigitalOceanDomain()
-                },
-                Token = string.Empty
-            };
+                ValidDigitalOceanDomain()
+            },
+            Token = string.Empty
+        };
 
-            IValidator<DigitalOceanAccount> validator = new DigitalOceanAccountValidator();
-            ValidationResult validationResult = validator.Validate(account);
+        IValidator<DigitalOceanAccount> validator = new DigitalOceanAccountValidator();
+        ValidationResult validationResult = validator.Validate(account);
 
-            Assert.False(validationResult.IsValid);
-            Assert.True(validationResult.Errors.All(m => m.ErrorMessage.Equals(DigitalOceanAccountValidator.TokenErrorMessage)));
-        }
+        Assert.False(validationResult.IsValid);
+        Assert.True(validationResult.Errors.All(m => m.ErrorMessage.Equals(DigitalOceanAccountValidator.TokenErrorMessage)));
+    }
 
-        [Fact]
-        public void ValidDigitalOceanAccount()
+    [Fact]
+    public void ValidDigitalOceanAccount()
+    {
+        DigitalOceanAccount account = new()
         {
-            DigitalOceanAccount account = new()
+            Domains = new[]
             {
-                Domains = new[]
-                {
-                    ValidDigitalOceanDomain()
-                },
-                Token = "QSA5VXQSWMH3L8MYX2XF"
-            };
+                ValidDigitalOceanDomain()
+            },
+            Token = "QSA5VXQSWMH3L8MYX2XF"
+        };
 
-            IValidator<DigitalOceanAccount> validator = new DigitalOceanAccountValidator();
-            ValidationResult validationResult = validator.Validate(account);
+        IValidator<DigitalOceanAccount> validator = new DigitalOceanAccountValidator();
+        ValidationResult validationResult = validator.Validate(account);
 
-            Assert.True(validationResult.IsValid);
-        }
+        Assert.True(validationResult.IsValid);
+    }
 
-        private DigitalOceanDomain ValidDigitalOceanDomain()
+    private DigitalOceanDomain ValidDigitalOceanDomain()
+    {
+        return new DigitalOceanDomain
         {
-            return new DigitalOceanDomain
-            {
-                Name = "test.com",
-                Records = ValidDNSRecordCollection()
-            };
-        }
+            Name = "test.com",
+            Records = ValidDNSRecordCollection()
+        };
+    }
 
-        private DNSRecord ValidDNSRecord()
+    private DNSRecord ValidDNSRecord()
+    {
+        return new DNSRecord
         {
-            return new DNSRecord
-            {
-                Name = "validate",
-                TTL = 1800,
-                Type = DNSRecordType.A
-            };
-        }
+            Name = "validate",
+            TTL = 1800,
+            Type = DNSRecordType.A
+        };
+    }
 
-        private DNSRecordCollection ValidDNSRecordCollection()
+    private DNSRecordCollection ValidDNSRecordCollection()
+    {
+        return new DNSRecordCollection(new[]
         {
-            return new DNSRecordCollection(new[]
-            {
-                ValidDNSRecord()
-            });
-        }
+            ValidDNSRecord()
+        });
     }
 }

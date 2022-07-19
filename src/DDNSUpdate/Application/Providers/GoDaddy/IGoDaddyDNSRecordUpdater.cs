@@ -4,10 +4,9 @@ using DDNSUpdate.Application.Providers.GoDaddy.Domain;
 using DDNSUpdate.Domain;
 using FluentResults;
 
-namespace DDNSUpdate.Application.Providers.GoDaddy
+namespace DDNSUpdate.Application.Providers.GoDaddy;
+
+public interface IGoDaddyDNSRecordUpdater
 {
-    public interface IGoDaddyDNSRecordUpdater
-    {
-        Task<Result> UpdateAsync(string domainName, DNSRecordCollection records, GoDaddyAuthenticationDetails authentication, CancellationToken cancellation);
-    }
+    Task<Result> UpdateAsync(string domainName, DNSRecordCollection records, GoDaddyAuthenticationDetails authentication, CancellationToken cancellation);
 }

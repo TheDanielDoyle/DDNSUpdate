@@ -1,9 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DDNSUpdate.Infrastructure
+namespace DDNSUpdate.Infrastructure;
+
+public interface IScopeBuilder
 {
-    public interface IScopeBuilder
-    {
-        IServiceScope Build();
-    }
+    IServiceScope Build();
 }

@@ -1,19 +1,18 @@
 using DDNSUpdate.Application.Providers.DigitalOcean.Domain;
 using FluentValidation;
 
-namespace DDNSUpdate.Application.Providers.DigitalOcean.Configuration
+namespace DDNSUpdate.Application.Providers.DigitalOcean.Configuration;
+
+public class DigitalOceanDomainValidator : AbstractValidator<DigitalOceanDomain>
 {
-    public class DigitalOceanDomainValidator : AbstractValidator<DigitalOceanDomain>
+    public static readonly string NameErrorMessage = "You must have a DigitalOcean Domain Name.";
+
+    public DigitalOceanDomainValidator()
     {
-        public static readonly string NameErrorMessage = "You must have a DigitalOcean Domain Name.";
+        RuleFor(p => p.Name)
+            .NotEmpty()
+            .WithMessage(NameErrorMessage);
 
-        public DigitalOceanDomainValidator()
-        {
-            RuleFor(p => p.Name)
-                .NotEmpty()
-                .WithMessage(NameErrorMessage);
-
-            RuleForEach(p => p.Records).SetValidator(new DigitalOceanDNSRecordValidator());
-        }
+        RuleForEach(p => p.Records).SetValidator(new DigitalOceanDNSRecordValidator());
     }
 }

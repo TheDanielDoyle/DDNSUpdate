@@ -1,9 +1,8 @@
 ﻿using DDNSUpdate.Domain;
 
-namespace DDNSUpdate.Application.ExternalAddresses
+namespace DDNSUpdate.Application.ExternalAddresses;
+
+public interface IExternalAddressResponse
 {
-    public interface IExternalAddressResponse
-    {
-        ExternalAddress ExternalAddress { get; }
-    }
+    ExternalAddress ExternalAddress { get; }
 }

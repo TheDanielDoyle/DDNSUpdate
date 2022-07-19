@@ -9,42 +9,41 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
+namespace DDNSUpdate.Tests.Application.Providers.GoDaddy;
+
+public class GoDaddyAccountProcessorTests
 {
-    public class GoDaddyAccountProcessorTests
+    [Fact]
+    public async Task ProcessAsync_AllSucceed_ReturnsSuccessfulResult()
     {
-        [Fact]
-        public async Task ProcessAsync_AllSucceed_ReturnsSuccessfulResult()
-        {
-            IGoDaddyDomainProcessor domainProcessor = A.Fake<IGoDaddyDomainProcessor>();
-            A.CallTo(() => domainProcessor.ProcessAsync(A<GoDaddyDomain>.Ignored, A<ExternalAddress>.Ignored, A<GoDaddyAuthenticationDetails>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Ok());
-            GoDaddyAccountProcessor processor = new(domainProcessor);
+        IGoDaddyDomainProcessor domainProcessor = A.Fake<IGoDaddyDomainProcessor>();
+        A.CallTo(() => domainProcessor.ProcessAsync(A<GoDaddyDomain>.Ignored, A<ExternalAddress>.Ignored, A<GoDaddyAuthenticationDetails>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Ok());
+        GoDaddyAccountProcessor processor = new(domainProcessor);
 
-            GoDaddyAccount account = new() { Domains = new List<GoDaddyDomain>() { new GoDaddyDomain(), new GoDaddyDomain() } };
-            ExternalAddress externalAddress = new() { IPv4Address = IPAddress.Parse("100.100.100.100") };
+        GoDaddyAccount account = new() { Domains = new List<GoDaddyDomain>() { new GoDaddyDomain(), new GoDaddyDomain() } };
+        ExternalAddress externalAddress = new() { IPv4Address = IPAddress.Parse("100.100.100.100") };
 
-            Result result = await processor.ProcessAsync(account, externalAddress, new CancellationToken());
+        Result result = await processor.ProcessAsync(account, externalAddress, new CancellationToken());
 
-            Assert.True(result.IsSuccess);
-        }
+        Assert.True(result.IsSuccess);
+    }
 
-        [Fact]
-        public async Task ProcessAsync_AnyFailReturnsFailureResult()
-        {
-            GoDaddyDomain domainOne = new();
-            GoDaddyDomain domainTwo = new();
+    [Fact]
+    public async Task ProcessAsync_AnyFailReturnsFailureResult()
+    {
+        GoDaddyDomain domainOne = new();
+        GoDaddyDomain domainTwo = new();
 
-            IGoDaddyDomainProcessor domainProcessor = A.Fake<IGoDaddyDomainProcessor>();
-            A.CallTo(() => domainProcessor.ProcessAsync(domainOne, A<ExternalAddress>.Ignored, A<GoDaddyAuthenticationDetails>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Ok());
-            A.CallTo(() => domainProcessor.ProcessAsync(domainTwo, A<ExternalAddress>.Ignored, A<GoDaddyAuthenticationDetails>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Fail("This failed"));
-            GoDaddyAccountProcessor processor = new(domainProcessor);
+        IGoDaddyDomainProcessor domainProcessor = A.Fake<IGoDaddyDomainProcessor>();
+        A.CallTo(() => domainProcessor.ProcessAsync(domainOne, A<ExternalAddress>.Ignored, A<GoDaddyAuthenticationDetails>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Ok());
+        A.CallTo(() => domainProcessor.ProcessAsync(domainTwo, A<ExternalAddress>.Ignored, A<GoDaddyAuthenticationDetails>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Fail("This failed"));
+        GoDaddyAccountProcessor processor = new(domainProcessor);
 
-            GoDaddyAccount account = new() { Domains = new List<GoDaddyDomain>() { domainOne, domainTwo } };
-            ExternalAddress externalAddress = new() { IPv4Address = IPAddress.Parse("100.100.100.100") };
+        GoDaddyAccount account = new() { Domains = new List<GoDaddyDomain>() { domainOne, domainTwo } };
+        ExternalAddress externalAddress = new() { IPv4Address = IPAddress.Parse("100.100.100.100") };
 
-            Result result = await processor.ProcessAsync(account, externalAddress, new CancellationToken());
+        Result result = await processor.ProcessAsync(account, externalAddress, new CancellationToken());
 
-            Assert.True(result.IsFailed);
-        }
+        Assert.True(result.IsFailed);
     }
 }

@@ -4,10 +4,9 @@ using FluentResults;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DDNSUpdate.Application.Providers.GoDaddy
+namespace DDNSUpdate.Application.Providers.GoDaddy;
+
+public interface IGoDaddyAccountProcessor
 {
-    public interface IGoDaddyAccountProcessor
-    {
-        Task<Result> ProcessAsync(GoDaddyAccount account, ExternalAddress externalAddress, CancellationToken cancellation);
-    }
+    Task<Result> ProcessAsync(GoDaddyAccount account, ExternalAddress externalAddress, CancellationToken cancellation);
 }
