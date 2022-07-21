@@ -4,92 +4,91 @@ using DDNSUpdate.Domain;
 using DDNSUpdate.Tests.Helpers;
 using Xunit;
 
-namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Converters
+namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Converters;
+
+public class DigitalOceanGetDomainRecordResponseToDNSRecordConverterTests : TestBase
 {
-    public class DigitalOceanGetDomainRecordResponseToDNSRecordConverterTests : TestBase
+    private readonly MappingHelper _mappingHelper;
+
+    public DigitalOceanGetDomainRecordResponseToDNSRecordConverterTests()
     {
-        private readonly MappingHelper _mappingHelper;
+        _mappingHelper = new MappingHelper(base.AssembliesUnderTest);
+    }
 
-        public DigitalOceanGetDomainRecordResponseToDNSRecordConverterTests()
+    [Fact]
+    public void OverwritesDNSRecordWhenPassedARecord()
+    {
+        DigitalOceanGetDomainRecordResponseToDNSRecordConverter converter = new();
+        DigitalOceanGetDomainRecordResponse response = new()
         {
-            _mappingHelper = new MappingHelper(base.AssembliesUnderTest);
-        }
-
-        [Fact]
-        public void OverwritesDNSRecordWhenPassedARecord()
+            Data = "data",
+            Flags = 1,
+            Id = 1,
+            Name = "name",
+            Port = 1,
+            Priority = 1,
+            Tag = "tag",
+            Ttl = 1,
+            Type = "A",
+            Weight = 1
+        };
+        DNSRecord record = new()
         {
-            DigitalOceanGetDomainRecordResponseToDNSRecordConverter converter = new();
-            DigitalOceanGetDomainRecordResponse response = new()
-            {
-                Data = "data",
-                Flags = 1,
-                Id = 1,
-                Name = "name",
-                Port = 1,
-                Priority = 1,
-                Tag = "tag",
-                Ttl = 1,
-                Type = "A",
-                Weight = 1
-            };
-            DNSRecord record = new()
-            {
-                Data = "dnsData",
-                Flags = 987,
-                Id = "aDNSRecordId",
-                Name = "aDNSRecordName",
-                Port = 852,
-                Priority = 42,
-                Tag = "aDNSTag",
-                TTL = 987,
-                Type = DNSRecordType.CERT,
-                Weight = 42
-            };
+            Data = "dnsData",
+            Flags = 987,
+            Id = "aDNSRecordId",
+            Name = "aDNSRecordName",
+            Port = 852,
+            Priority = 42,
+            Tag = "aDNSTag",
+            TTL = 987,
+            Type = DNSRecordType.CERT,
+            Weight = 42
+        };
 
-            DNSRecord actual = converter.Convert(response, record, _mappingHelper.ResolutionContext);
+        DNSRecord actual = converter.Convert(response, record, _mappingHelper.ResolutionContext);
 
-            Assert.Equal(response.Data, actual.Data);
-            Assert.Equal(response.Flags, actual.Flags);
-            Assert.Equal(response.Id.ToString(), actual.Id);
-            Assert.Equal(response.Name, actual.Name);
-            Assert.Equal(response.Port, actual.Port);
-            Assert.Equal(response.Priority, actual.Priority);
-            Assert.Equal(response.Tag, actual.Tag);
-            Assert.Equal(response.Ttl, actual.TTL);
-            Assert.Equal(DNSRecordType.A, actual.Type);
-            Assert.Equal(response.Weight, actual.Weight);
-        }
+        Assert.Equal(response.Data, actual.Data);
+        Assert.Equal(response.Flags, actual.Flags);
+        Assert.Equal(response.Id.ToString(), actual.Id);
+        Assert.Equal(response.Name, actual.Name);
+        Assert.Equal(response.Port, actual.Port);
+        Assert.Equal(response.Priority, actual.Priority);
+        Assert.Equal(response.Tag, actual.Tag);
+        Assert.Equal(response.Ttl, actual.TTL);
+        Assert.Equal(DNSRecordType.A, actual.Type);
+        Assert.Equal(response.Weight, actual.Weight);
+    }
 
-        [Fact]
-        public void ReturnsNewDNSRecordWhenPassedNull()
+    [Fact]
+    public void ReturnsNewDNSRecordWhenPassedNull()
+    {
+        DigitalOceanGetDomainRecordResponseToDNSRecordConverter converter = new();
+        DigitalOceanGetDomainRecordResponse response = new()
         {
-            DigitalOceanGetDomainRecordResponseToDNSRecordConverter converter = new();
-            DigitalOceanGetDomainRecordResponse response = new()
-            {
-                Data = "data",
-                Flags = 1,
-                Id = 1,
-                Name = "name",
-                Port = 1,
-                Priority = 1,
-                Tag = "tag",
-                Ttl = 1,
-                Type = "A",
-                Weight = 1
-            };
+            Data = "data",
+            Flags = 1,
+            Id = 1,
+            Name = "name",
+            Port = 1,
+            Priority = 1,
+            Tag = "tag",
+            Ttl = 1,
+            Type = "A",
+            Weight = 1
+        };
 
-            DNSRecord actual = converter.Convert(response, null, _mappingHelper.ResolutionContext);
+        DNSRecord actual = converter.Convert(response, null, _mappingHelper.ResolutionContext);
 
-            Assert.Equal(response.Data, actual.Data);
-            Assert.Equal(response.Flags, actual.Flags);
-            Assert.Equal(response.Id.ToString(), actual.Id);
-            Assert.Equal(response.Name, actual.Name);
-            Assert.Equal(response.Port, actual.Port);
-            Assert.Equal(response.Priority, actual.Priority);
-            Assert.Equal(response.Tag, actual.Tag);
-            Assert.Equal(response.Ttl, actual.TTL);
-            Assert.Equal(DNSRecordType.A, actual.Type);
-            Assert.Equal(response.Weight, actual.Weight);
-        }
+        Assert.Equal(response.Data, actual.Data);
+        Assert.Equal(response.Flags, actual.Flags);
+        Assert.Equal(response.Id.ToString(), actual.Id);
+        Assert.Equal(response.Name, actual.Name);
+        Assert.Equal(response.Port, actual.Port);
+        Assert.Equal(response.Priority, actual.Priority);
+        Assert.Equal(response.Tag, actual.Tag);
+        Assert.Equal(response.Ttl, actual.TTL);
+        Assert.Equal(DNSRecordType.A, actual.Type);
+        Assert.Equal(response.Weight, actual.Weight);
     }
 }

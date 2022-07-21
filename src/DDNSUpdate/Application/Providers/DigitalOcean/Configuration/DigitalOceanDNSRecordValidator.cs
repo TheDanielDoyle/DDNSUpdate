@@ -1,70 +1,69 @@
 using DDNSUpdate.Domain;
 using FluentValidation;
 
-namespace DDNSUpdate.Application.Providers.DigitalOcean.Configuration
+namespace DDNSUpdate.Application.Providers.DigitalOcean.Configuration;
+
+public class DigitalOceanDNSRecordValidator : AbstractValidator<DNSRecord>
 {
-    public class DigitalOceanDNSRecordValidator : AbstractValidator<DNSRecord>
+    private const string _propertyDisallowedMessage = "The {PropertyName} field should not be set in configuration.";
+    private const int _ttlMinimumSeconds = 30;
+
+    public static readonly string DataErrorMessage = _propertyDisallowedMessage;
+    public static readonly string FlagsErrorMessage = _propertyDisallowedMessage;
+    public static readonly string IdErrorMessage = _propertyDisallowedMessage;
+    public static readonly string NameErrorMessage = "{PropertyName} must be set.";
+    public static readonly string PortErrorMessage = _propertyDisallowedMessage;
+    public static readonly string PriorityErrorMessage = _propertyDisallowedMessage;
+    public static readonly string TagErrorMessage = _propertyDisallowedMessage;
+    public static readonly string TTLErrorMessage = $"{{PropertyName}} must be {_ttlMinimumSeconds} seconds or greater.";
+    public static readonly string TypeErrorMessage = "Use either A or AAA for the {PropertyName}.";
+    public static readonly string WeightErrorMessage = _propertyDisallowedMessage;
+
+    public DigitalOceanDNSRecordValidator()
     {
-        private const string _propertyDisallowedMessage = "The {PropertyName} field should not be set in configuration.";
-        private const int _ttlMinimumSeconds = 30;
+        RuleFor(p => p.Data)
+            .Empty()
+            .WithMessage(DataErrorMessage);
 
-        public static readonly string DataErrorMessage = _propertyDisallowedMessage;
-        public static readonly string FlagsErrorMessage = _propertyDisallowedMessage;
-        public static readonly string IdErrorMessage = _propertyDisallowedMessage;
-        public static readonly string NameErrorMessage = "{PropertyName} must be set.";
-        public static readonly string PortErrorMessage = _propertyDisallowedMessage;
-        public static readonly string PriorityErrorMessage = _propertyDisallowedMessage;
-        public static readonly string TagErrorMessage = _propertyDisallowedMessage;
-        public static readonly string TTLErrorMessage = $"{{PropertyName}} must be {_ttlMinimumSeconds} seconds or greater.";
-        public static readonly string TypeErrorMessage = "Use either A or AAA for the {PropertyName}.";
-        public static readonly string WeightErrorMessage = _propertyDisallowedMessage;
+        RuleFor(p => p.Flags)
+            .Empty()
+            .WithMessage(FlagsErrorMessage);
 
-        public DigitalOceanDNSRecordValidator()
-        {
-            RuleFor(p => p.Data)
-                .Empty()
-                .WithMessage(DataErrorMessage);
+        RuleFor(p => p.Id)
+            .Empty()
+            .WithMessage(IdErrorMessage);
 
-            RuleFor(p => p.Flags)
-                .Empty()
-                .WithMessage(FlagsErrorMessage);
+        RuleFor(p => p.Name)
+            .NotEmpty()
+            .WithMessage(NameErrorMessage);
 
-            RuleFor(p => p.Id)
-                .Empty()
-                .WithMessage(IdErrorMessage);
+        RuleFor(p => p.Port)
+            .Empty()
+            .WithMessage(PortErrorMessage);
 
-            RuleFor(p => p.Name)
-                .NotEmpty()
-                .WithMessage(NameErrorMessage);
+        RuleFor(p => p.Priority)
+            .Empty()
+            .WithMessage(PriorityErrorMessage);
 
-            RuleFor(p => p.Port)
-                .Empty()
-                .WithMessage(PortErrorMessage);
+        RuleFor(p => p.Tag)
+            .Empty()
+            .WithMessage(TagErrorMessage);
 
-            RuleFor(p => p.Priority)
-                .Empty()
-                .WithMessage(PriorityErrorMessage);
+        RuleFor(p => p.TTL)
+            .GreaterThanOrEqualTo(_ttlMinimumSeconds)
+            .WithMessage(TTLErrorMessage);
 
-            RuleFor(p => p.Tag)
-                .Empty()
-                .WithMessage(TagErrorMessage);
+        RuleFor(p => p.Type)
+            .NotEmpty()
+            .WithMessage(TypeErrorMessage)
+            .Must(recordtype =>
+            {
+                return recordtype == DNSRecordType.A || recordtype == DNSRecordType.AAAA;
+            })
+            .WithMessage(TypeErrorMessage);
 
-            RuleFor(p => p.TTL)
-                .GreaterThanOrEqualTo(_ttlMinimumSeconds)
-                .WithMessage(TTLErrorMessage);
-
-            RuleFor(p => p.Type)
-                .NotEmpty()
-                .WithMessage(TypeErrorMessage)
-                .Must(recordtype =>
-                {
-                    return recordtype == DNSRecordType.A || recordtype == DNSRecordType.AAAA;
-                })
-                .WithMessage(TypeErrorMessage);
-
-            RuleFor(p => p.Weight)
-                .Empty()
-                .WithMessage(WeightErrorMessage);
-        }
+        RuleFor(p => p.Weight)
+            .Empty()
+            .WithMessage(WeightErrorMessage);
     }
 }

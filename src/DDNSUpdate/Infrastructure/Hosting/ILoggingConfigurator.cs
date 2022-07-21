@@ -1,9 +1,8 @@
 ﻿using Microsoft.Extensions.Hosting;
 
-namespace DDNSUpdate.Infrastructure.Hosting
+namespace DDNSUpdate.Infrastructure.Hosting;
+
+public interface ILoggingConfigurator
 {
-    public interface ILoggingConfigurator
-    {
-        void Configure(IHostBuilder hostBuilder);
-    }
+    void Configure(IHostBuilder hostBuilder);
 }

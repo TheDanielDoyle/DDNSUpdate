@@ -5,25 +5,24 @@ using FluentResults;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DDNSUpdate.Application.Providers.DigitalOcean
+namespace DDNSUpdate.Application.Providers.DigitalOcean;
+
+public class DigitalOceanAccountProcessor : IDigitalOceanAccountProcessor
 {
-    public class DigitalOceanAccountProcessor : IDigitalOceanAccountProcessor
+    private readonly IDigitalOceanDomainProcessor _domainProcessor;
+
+    public DigitalOceanAccountProcessor(IDigitalOceanDomainProcessor domainProcessor)
     {
-        private readonly IDigitalOceanDomainProcessor _domainProcessor;
+        _domainProcessor = domainProcessor;
+    }
 
-        public DigitalOceanAccountProcessor(IDigitalOceanDomainProcessor domainProcessor)
+    public async Task<Result> ProcessAsync(DigitalOceanAccount account, ExternalAddress externalAddress, CancellationToken cancellation)
+    {
+        Result result = Result.Ok();
+        foreach (DigitalOceanDomain domain in account.Domains)
         {
-            _domainProcessor = domainProcessor;
+            result = result.Merge(await _domainProcessor.ProcessAsync(domain, externalAddress, account.Token, cancellation));
         }
-
-        public async Task<Result> ProcessAsync(DigitalOceanAccount account, ExternalAddress externalAddress, CancellationToken cancellation)
-        {
-            Result result = Result.Ok();
-            foreach (DigitalOceanDomain domain in account.Domains)
-            {
-                result = result.Merge(await _domainProcessor.ProcessAsync(domain, externalAddress, account.Token, cancellation));
-            }
-            return result;
-        }
+        return result;
     }
 }

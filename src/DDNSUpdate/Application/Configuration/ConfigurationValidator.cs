@@ -12,51 +12,50 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DDNSUpdate.Application.Configuration
+namespace DDNSUpdate.Application.Configuration;
+
+public class ConfigurationValidator : IConfigurationValidator
 {
-    public class ConfigurationValidator : IConfigurationValidator
+    private readonly ServiceFactory _serviceFactory;
+    private readonly string _successMessage = "Configuration Validated Successfully.";
+
+    public ConfigurationValidator(ServiceFactory serviceFactory)
     {
-        private readonly ServiceFactory _serviceFactory;
-        private readonly string _successMessage = "Configuration Validated Successfully.";
+        _serviceFactory = serviceFactory;
+    }
 
-        public ConfigurationValidator(ServiceFactory serviceFactory)
+    public async Task<Result> ValidateAsync(CancellationToken cancellation)
+    {
+        IList<ValidationResult> validationResults = new List<ValidationResult>();
+        await foreach (ValidationResult validationResult in ConfigurationsAsync(cancellation))
         {
-            _serviceFactory = serviceFactory;
+            validationResults.Add(validationResult);
         }
+        ValidationResultCollection results = new ValidationResultCollection(validationResults);
+        if (results.IsValid)
+        {
+            return Result.Ok().WithSuccess(_successMessage);
+        }
+        return results.ToResults();
+    }
 
-        public async Task<Result> ValidateAsync(CancellationToken cancellation)
-        {
-            IList<ValidationResult> validationResults = new List<ValidationResult>();
-            await foreach (ValidationResult validationResult in ConfigurationsAsync(cancellation))
-            {
-                validationResults.Add(validationResult);
-            }
-            ValidationResultCollection results = new ValidationResultCollection(validationResults);
-            if (results.IsValid)
-            {
-                return Result.Ok().WithSuccess(_successMessage);
-            }
-            return results.ToResults();
-        }
+    private async IAsyncEnumerable<ValidationResult> ConfigurationsAsync([EnumeratorCancellation] CancellationToken cancellation)
+    {
+        yield return await ValidateResultAsync<ApplicationConfiguration>(cancellation);
+        yield return await ValidateResultAsync<DigitalOceanConfiguration>(cancellation);
+        yield return await ValidateResultAsync<GoDaddyConfiguration>(cancellation);
+    }
 
-        private async IAsyncEnumerable<ValidationResult> ConfigurationsAsync([EnumeratorCancellation] CancellationToken cancellation)
-        {
-            yield return await ValidateResultAsync<ApplicationConfiguration>(cancellation);
-            yield return await ValidateResultAsync<DigitalOceanConfiguration>(cancellation);
-            yield return await ValidateResultAsync<GoDaddyConfiguration>(cancellation);
-        }
+    private async Task<ValidationResult> ValidateResultAsync<TConfiguration>(CancellationToken cancellation)
+        where TConfiguration : class, new()
+    {
+        IValidator<TConfiguration> validator = GetService<IValidator<TConfiguration>>();
+        IOptionsSnapshot<TConfiguration> configuration = GetService<IOptionsSnapshot<TConfiguration>>();
+        return await validator.ValidateAsync(configuration.Value, cancellation);
+    }
 
-        private async Task<ValidationResult> ValidateResultAsync<TConfiguration>(CancellationToken cancellation)
-            where TConfiguration : class, new()
-        {
-            IValidator<TConfiguration> validator = GetService<IValidator<TConfiguration>>();
-            IOptionsSnapshot<TConfiguration> configuration = GetService<IOptionsSnapshot<TConfiguration>>();
-            return await validator.ValidateAsync(configuration.Value, cancellation);
-        }
-
-        private T GetService<T>()
-        {
-            return (T)_serviceFactory(typeof(T))!;
-        }
+    private T GetService<T>()
+    {
+        return (T)_serviceFactory(typeof(T))!;
     }
 }

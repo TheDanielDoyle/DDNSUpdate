@@ -1,26 +1,25 @@
 ﻿using DDNSUpdate.Application.Providers.GoDaddy.Domain;
 using FluentValidation;
 
-namespace DDNSUpdate.Application.Providers.GoDaddy.Configuration
+namespace DDNSUpdate.Application.Providers.GoDaddy.Configuration;
+
+public class GoDaddyDomainValidator : AbstractValidator<GoDaddyDomain>
 {
-    public class GoDaddyDomainValidator : AbstractValidator<GoDaddyDomain>
+    private static readonly string NameErrorMessage = "You must have a GoDaddy Domain Name.";
+
+    private static readonly string RecordsErrorMessage = "You must provide some Domain Records";
+
+    public GoDaddyDomainValidator()
     {
-        private static readonly string NameErrorMessage = "You must have a GoDaddy Domain Name.";
+        RuleFor(p => p.Name)
+            .NotEmpty()
+            .WithMessage(NameErrorMessage);
 
-        private static readonly string RecordsErrorMessage = "You must provide some Domain Records";
+        RuleFor(p => p.Records)
+            .NotEmpty()
+            .WithMessage(RecordsErrorMessage);
 
-        public GoDaddyDomainValidator()
-        {
-            RuleFor(p => p.Name)
-                .NotEmpty()
-                .WithMessage(NameErrorMessage);
-
-            RuleFor(p => p.Records)
-                .NotEmpty()
-                .WithMessage(RecordsErrorMessage);
-
-            RuleForEach(p => p.Records)
-                .SetValidator(new GoDaddyDNSRecordValidator());
-        }
+        RuleForEach(p => p.Records)
+            .SetValidator(new GoDaddyDNSRecordValidator());
     }
 }

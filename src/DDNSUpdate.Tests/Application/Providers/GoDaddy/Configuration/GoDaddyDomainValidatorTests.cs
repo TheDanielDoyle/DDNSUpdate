@@ -5,72 +5,71 @@ using FluentValidation;
 using FluentValidation.Results;
 using Xunit;
 
-namespace DDNSUpdate.Tests.Application.Providers.GoDaddy.Configuration
+namespace DDNSUpdate.Tests.Application.Providers.GoDaddy.Configuration;
+
+public class GoDaddyDomainValidatorTests
 {
-    public class GoDaddyDomainValidatorTests
+    [Fact]
+    public void Validate_MissingName_ReturnIsNotValid()
     {
-        [Fact]
-        public void Validate_MissingName_ReturnIsNotValid()
+        GoDaddyDomain domain = new()
         {
-            GoDaddyDomain domain = new()
-            {
-                Records = CreateValidDNSRecordCollection()
-            };
+            Records = CreateValidDNSRecordCollection()
+        };
 
-            IValidator<GoDaddyDomain> validator = new GoDaddyDomainValidator();
+        IValidator<GoDaddyDomain> validator = new GoDaddyDomainValidator();
 
-            ValidationResult result = validator.Validate(domain);
+        ValidationResult result = validator.Validate(domain);
 
-            Assert.False(result.IsValid);
-        }
+        Assert.False(result.IsValid);
+    }
 
-        [Fact]
-        public void Validate_MissingRecords_ReturnIsNotValid()
+    [Fact]
+    public void Validate_MissingRecords_ReturnIsNotValid()
+    {
+        GoDaddyDomain domain = new()
         {
-            GoDaddyDomain domain = new()
-            {
-                Name = "GoDaddy Domain",
-            };
+            Name = "GoDaddy Domain",
+        };
 
-            IValidator<GoDaddyDomain> validator = new GoDaddyDomainValidator();
+        IValidator<GoDaddyDomain> validator = new GoDaddyDomainValidator();
 
-            ValidationResult result = validator.Validate(domain);
+        ValidationResult result = validator.Validate(domain);
 
-            Assert.False(result.IsValid);
-        }
+        Assert.False(result.IsValid);
+    }
 
-        [Fact]
-        public void Validate_ValidDomain_ReturnIsValid()
+    [Fact]
+    public void Validate_ValidDomain_ReturnIsValid()
+    {
+        GoDaddyDomain domain = new()
         {
-            GoDaddyDomain domain = new()
-            {
-                Name = "GoDaddy Domain",
-                Records = CreateValidDNSRecordCollection()
-            };
+            Name = "GoDaddy Domain",
+            Records = CreateValidDNSRecordCollection()
+        };
 
-            IValidator<GoDaddyDomain> validator = new GoDaddyDomainValidator();
+        IValidator<GoDaddyDomain> validator = new GoDaddyDomainValidator();
 
-            ValidationResult result = validator.Validate(domain);
+        ValidationResult result = validator.Validate(domain);
 
-            Assert.True(result.IsValid);
-        }
+        Assert.True(result.IsValid);
+    }
 
-        private DNSRecord CreateValidDNSRecord()
+    private DNSRecord CreateValidDNSRecord()
+    {
+        return new DNSRecord
         {
-            return new DNSRecord
-            {
-                Name = "Valid",
-                TTL = 1800,
-                Type = DNSRecordType.A
-            };
-        }
+            Name = "Valid",
+            TTL = 1800,
+            Type = DNSRecordType.A
+        };
+    }
 
-        private DNSRecordCollection CreateValidDNSRecordCollection()
+    private DNSRecordCollection CreateValidDNSRecordCollection()
+    {
+        return new DNSRecordCollection(new[]
         {
-            return new DNSRecordCollection(new[]
-            {
-                CreateValidDNSRecord()
-            });
-        }
+            CreateValidDNSRecord()
+        });
     }
 }

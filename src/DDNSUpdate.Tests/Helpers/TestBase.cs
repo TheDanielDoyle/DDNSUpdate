@@ -1,19 +1,18 @@
 ﻿using DDNSUpdate.Application;
 using System.Reflection;
 
-namespace DDNSUpdate.Tests.Helpers
+namespace DDNSUpdate.Tests.Helpers;
+
+public abstract class TestBase
 {
-    public abstract class TestBase
+    protected Assembly[] AssembliesUnderTest
     {
-        protected Assembly[] AssembliesUnderTest
+        get
         {
-            get
+            return new[]
             {
-                return new[]
-                {
-                    typeof(IDDNSService).Assembly
-                };
-            }
+                typeof(IDDNSService).Assembly
+            };
         }
     }
 }

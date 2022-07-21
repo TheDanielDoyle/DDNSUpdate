@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace DDNSUpdate.Infrastructure.Configuration
+namespace DDNSUpdate.Infrastructure.Configuration;
+
+public record ExternalAddressProvider
 {
-    public record ExternalAddressProvider
-    {
-        public Uri Uri { get; set; } = default!;
-    }
+    public Uri Uri { get; set; } = default!;
 }

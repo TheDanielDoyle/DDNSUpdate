@@ -1,14 +1,13 @@
 ﻿using DDNSUpdate.Domain;
 
-namespace DDNSUpdate.Application.ExternalAddresses
-{
-    public class ExternalAddressResponse : IExternalAddressResponse
-    {
-        public ExternalAddressResponse(ExternalAddress externalAddress)
-        {
-            ExternalAddress = externalAddress;
-        }
+namespace DDNSUpdate.Application.ExternalAddresses;
 
-        public ExternalAddress ExternalAddress { get; }
+public class ExternalAddressResponse : IExternalAddressResponse
+{
+    public ExternalAddressResponse(ExternalAddress externalAddress)
+    {
+        ExternalAddress = externalAddress;
     }
+
+    public ExternalAddress ExternalAddress { get; }
 }

@@ -2,10 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DDNSUpdate.Application.ExternalAddresses
+namespace DDNSUpdate.Application.ExternalAddresses;
+
+public interface IExternalAddressClient
 {
-    public interface IExternalAddressClient
-    {
-        Task<Result<IExternalAddressResponse>> GetAsync(CancellationToken cancellation);
-    }
+    Task<Result<IExternalAddressResponse>> GetAsync(CancellationToken cancellation);
 }

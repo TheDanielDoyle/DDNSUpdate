@@ -7,27 +7,26 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 
-namespace DDNSUpdate.Application.Providers.DigitalOcean
+namespace DDNSUpdate.Application.Providers.DigitalOcean;
+
+public class DigitalOceanDDNSService : IDDNSService
 {
-    public class DigitalOceanDDNSService : IDDNSService
+    private readonly IDigitalOceanAccountProcessor _accountProcessor;
+    private readonly DigitalOceanConfiguration _configuration;
+
+    public DigitalOceanDDNSService(IOptionsSnapshot<DigitalOceanConfiguration> configuration, IDigitalOceanAccountProcessor accountProcessor)
     {
-        private readonly IDigitalOceanAccountProcessor _accountProcessor;
-        private readonly DigitalOceanConfiguration _configuration;
+        _configuration = configuration.Value;
+        _accountProcessor = accountProcessor;
+    }
 
-        public DigitalOceanDDNSService(IOptionsSnapshot<DigitalOceanConfiguration> configuration, IDigitalOceanAccountProcessor accountProcessor)
+    public async Task<Result> ProcessAsync(ExternalAddress externalAddress, CancellationToken cancellation)
+    {
+        Result result = Result.Ok();
+        foreach (DigitalOceanAccount account in _configuration.Accounts)
         {
-            _configuration = configuration.Value;
-            _accountProcessor = accountProcessor;
+            result = result.Merge(await _accountProcessor.ProcessAsync(account, externalAddress, cancellation));
         }
-
-        public async Task<Result> ProcessAsync(ExternalAddress externalAddress, CancellationToken cancellation)
-        {
-            Result result = Result.Ok();
-            foreach (DigitalOceanAccount account in _configuration.Accounts)
-            {
-                result = result.Merge(await _accountProcessor.ProcessAsync(account, externalAddress, cancellation));
-            }
-            return result;
-        }
+        return result;
     }
 }

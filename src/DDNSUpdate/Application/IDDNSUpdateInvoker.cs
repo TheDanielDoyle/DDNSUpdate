@@ -2,10 +2,9 @@ using FluentResults;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DDNSUpdate.Application
+namespace DDNSUpdate.Application;
+
+public interface IDDNSUpdateInvoker
 {
-    public interface IDDNSUpdateInvoker
-    {
-        Task<Result> InvokeAsync(CancellationToken cancellation);
-    }
+    Task<Result> InvokeAsync(CancellationToken cancellation);
 }

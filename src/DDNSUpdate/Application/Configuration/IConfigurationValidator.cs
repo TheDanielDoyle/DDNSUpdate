@@ -2,10 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DDNSUpdate.Application.Configuration
+namespace DDNSUpdate.Application.Configuration;
+
+public interface IConfigurationValidator
 {
-    public interface IConfigurationValidator
-    {
-        Task<Result> ValidateAsync(CancellationToken cancellation);
-    }
+    Task<Result> ValidateAsync(CancellationToken cancellation);
 }

@@ -1,12 +1,11 @@
 using FluentValidation;
 
-namespace DDNSUpdate.Application.Providers.DigitalOcean.Configuration
+namespace DDNSUpdate.Application.Providers.DigitalOcean.Configuration;
+
+public class DigitalOceanConfigurationValidator : AbstractValidator<DigitalOceanConfiguration>
 {
-    public class DigitalOceanConfigurationValidator : AbstractValidator<DigitalOceanConfiguration>
+    public DigitalOceanConfigurationValidator()
     {
-        public DigitalOceanConfigurationValidator()
-        {
-            RuleForEach(p => p.Accounts).SetValidator(new DigitalOceanAccountValidator());
-        }
+        RuleForEach(p => p.Accounts).SetValidator(new DigitalOceanAccountValidator());
     }
 }

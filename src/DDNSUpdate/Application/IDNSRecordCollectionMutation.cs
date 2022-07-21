@@ -1,9 +1,8 @@
 ﻿using DDNSUpdate.Domain;
 
-namespace DDNSUpdate.Application
+namespace DDNSUpdate.Application;
+
+public interface IDNSRecordCollectionMutation
 {
-    public interface IDNSRecordCollectionMutation
-    {
-        DNSRecordCollection Mutate(DNSRecordCollection dnsRecords);
-    }
+    DNSRecordCollection Mutate(DNSRecordCollection dnsRecords);
 }

@@ -6,30 +6,29 @@ using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using ServiceProfiles;
 
-namespace DDNSUpdate.Infrastructure.ServiceProfiles
+namespace DDNSUpdate.Infrastructure.ServiceProfiles;
+
+public class ApplicationServiceProfile : HostServiceProfile
 {
-    public class ApplicationServiceProfile : HostServiceProfile
+    public override void Configure(IHostServiceProfileContext context)
     {
-        public override void Configure(IHostServiceProfileContext context)
-        {
-            context.Services.Configure<ApplicationConfiguration>(context.Configuration);
+        context.Services.Configure<ApplicationConfiguration>(context.Configuration);
 
-            context.Services.AddAutoMapper(ThisAssembly);
+        context.Services.AddAutoMapper(ThisAssembly);
 
-            context.Services.AddHostedService<DDNSUpdateHostedService>();
+        context.Services.AddHostedService<DDNSUpdateHostedService>();
 
-            context.Services.AddHttpClient<IExternalAddressClient, ExternalAddressClient>();
+        context.Services.AddHttpClient<IExternalAddressClient, ExternalAddressClient>();
 
-            context.Services.AddValidatorsFromAssembly(ThisAssembly);
+        context.Services.AddValidatorsFromAssembly(ThisAssembly);
 
-            context.Services.AddScoped<IConfigurationValidator, ConfigurationValidator>();
-            context.Services.AddScoped<IDNSRecordCollectionMutator, DNSRecordCollectionMutator>();
+        context.Services.AddScoped<IConfigurationValidator, ConfigurationValidator>();
+        context.Services.AddScoped<IDNSRecordCollectionMutator, DNSRecordCollectionMutator>();
 
-            context.Services.AddTransient<IDDNSUpdateInvoker, DDNSUpdateInvoker>();
-            context.Services.AddTransient<IScopeBuilder, ScopeBuilder>();
-            context.Services.AddTransient<ServiceFactory>(p => p.GetService);
+        context.Services.AddTransient<IDDNSUpdateInvoker, DDNSUpdateInvoker>();
+        context.Services.AddTransient<IScopeBuilder, ScopeBuilder>();
+        context.Services.AddTransient<ServiceFactory>(p => p.GetService);
 
-            context.Services.AddSingleton<IResultsLogger, ResultsLogger>();
-        }
+        context.Services.AddSingleton<IResultsLogger, ResultsLogger>();
     }
 }

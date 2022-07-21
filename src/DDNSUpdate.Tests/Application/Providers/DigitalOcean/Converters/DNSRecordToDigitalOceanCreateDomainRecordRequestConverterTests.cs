@@ -4,88 +4,87 @@ using DDNSUpdate.Domain;
 using DDNSUpdate.Tests.Helpers;
 using Xunit;
 
-namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Converters
+namespace DDNSUpdate.Tests.Application.Providers.DigitalOcean.Converters;
+
+public class DNSRecordToDigitalOceanCreateDomainRecordRequestConverterTests : TestBase
 {
-    public class DNSRecordToDigitalOceanCreateDomainRecordRequestConverterTests : TestBase
+    private readonly MappingHelper _mappingHelper;
+
+    public DNSRecordToDigitalOceanCreateDomainRecordRequestConverterTests()
     {
-        private readonly MappingHelper _mappingHelper;
+        _mappingHelper = new MappingHelper(base.AssembliesUnderTest);
+    }
 
-        public DNSRecordToDigitalOceanCreateDomainRecordRequestConverterTests()
+    [Fact]
+    public void OverwirtesCreateDomainRecordRequestValues()
+    {
+        DNSRecordToDigitalOceanCreateDomainRecordRequestConverter converter = new();
+        DNSRecord record = new()
         {
-            _mappingHelper = new MappingHelper(base.AssembliesUnderTest);
-        }
+            Data = "DNSData",
+            Flags = 1,
+            Name = "DNSName",
+            Port = 1,
+            Priority = 1,
+            Tag = "DNSTag",
+            TTL = 1,
+            Weight = 1,
+            Type = DNSRecordType.A
+        };
 
-        [Fact]
-        public void OverwirtesCreateDomainRecordRequestValues()
+        DigitalOceanCreateDomainRecordRequest createRecord = new()
         {
-            DNSRecordToDigitalOceanCreateDomainRecordRequestConverter converter = new();
-            DNSRecord record = new()
-            {
-                Data = "DNSData",
-                Flags = 1,
-                Name = "DNSName",
-                Port = 1,
-                Priority = 1,
-                Tag = "DNSTag",
-                TTL = 1,
-                Weight = 1,
-                Type = DNSRecordType.A
-            };
+            Data = "CreatData",
+            Flags = 123,
+            Name = "CreateName",
+            Port = 123,
+            Priority = 123,
+            Tag = "DNSTag",
+            Ttl = 123,
+            Weight = 123,
+            Type = "Some other type"
+        };
 
-            DigitalOceanCreateDomainRecordRequest createRecord = new()
-            {
-                Data = "CreatData",
-                Flags = 123,
-                Name = "CreateName",
-                Port = 123,
-                Priority = 123,
-                Tag = "DNSTag",
-                Ttl = 123,
-                Weight = 123,
-                Type = "Some other type"
-            };
+        DigitalOceanCreateDomainRecordRequest actual = converter.Convert(record, createRecord, _mappingHelper.ResolutionContext);
 
-            DigitalOceanCreateDomainRecordRequest actual = converter.Convert(record, createRecord, _mappingHelper.ResolutionContext);
+        Assert.Equal(record.Data, actual.Data);
+        Assert.Equal(record.Flags, actual.Flags);
+        Assert.Equal(record.Name, actual.Name);
+        Assert.Equal(record.Port, actual.Port);
+        Assert.Equal(record.Priority, actual.Priority);
+        Assert.Equal(record.Tag, actual.Tag);
+        Assert.Equal(record.TTL, actual.Ttl);
+        Assert.Equal(record.Weight, actual.Weight);
+        Assert.Equal(DNSRecordType.A.Value, actual.Type);
+    }
 
-            Assert.Equal(record.Data, actual.Data);
-            Assert.Equal(record.Flags, actual.Flags);
-            Assert.Equal(record.Name, actual.Name);
-            Assert.Equal(record.Port, actual.Port);
-            Assert.Equal(record.Priority, actual.Priority);
-            Assert.Equal(record.Tag, actual.Tag);
-            Assert.Equal(record.TTL, actual.Ttl);
-            Assert.Equal(record.Weight, actual.Weight);
-            Assert.Equal(DNSRecordType.A.Value, actual.Type);
-        }
-
-        [Fact]
-        public void ReturnsNewDomainRecordRequestWhenNull()
+    [Fact]
+    public void ReturnsNewDomainRecordRequestWhenNull()
+    {
+        DNSRecordToDigitalOceanCreateDomainRecordRequestConverter converter = new();
+        DNSRecord record = new()
         {
-            DNSRecordToDigitalOceanCreateDomainRecordRequestConverter converter = new();
-            DNSRecord record = new()
-            {
-                Data = "DNSData",
-                Flags = 1,
-                Name = "DNSName",
-                Port = 1,
-                Priority = 1,
-                Tag = "DNSTag",
-                TTL = 1,
-                Weight = 1,
-                Type = DNSRecordType.A
-            };
+            Data = "DNSData",
+            Flags = 1,
+            Name = "DNSName",
+            Port = 1,
+            Priority = 1,
+            Tag = "DNSTag",
+            TTL = 1,
+            Weight = 1,
+            Type = DNSRecordType.A
+        };
 
-            DigitalOceanCreateDomainRecordRequest actual = converter.Convert(record, null, _mappingHelper.ResolutionContext);
+        DigitalOceanCreateDomainRecordRequest actual = converter.Convert(record, null, _mappingHelper.ResolutionContext);
 
-            Assert.Equal(record.Data, actual.Data);
-            Assert.Equal(record.Flags, actual.Flags);
-            Assert.Equal(record.Name, actual.Name);
-            Assert.Equal(record.Port, actual.Port);
-            Assert.Equal(record.Priority, actual.Priority);
-            Assert.Equal(record.Tag, actual.Tag);
-            Assert.Equal(record.TTL, actual.Ttl);
-            Assert.Equal(record.Weight, actual.Weight);
-            Assert.Equal(DNSRecordType.A.Value, actual.Type);
-        }
+        Assert.Equal(record.Data, actual.Data);
+        Assert.Equal(record.Flags, actual.Flags);
+        Assert.Equal(record.Name, actual.Name);
+        Assert.Equal(record.Port, actual.Port);
+        Assert.Equal(record.Priority, actual.Priority);
+        Assert.Equal(record.Tag, actual.Tag);
+        Assert.Equal(record.TTL, actual.Ttl);
+        Assert.Equal(record.Weight, actual.Weight);
+        Assert.Equal(DNSRecordType.A.Value, actual.Type);
     }
 }

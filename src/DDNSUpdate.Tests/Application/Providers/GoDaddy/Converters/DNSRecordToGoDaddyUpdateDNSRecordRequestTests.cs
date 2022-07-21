@@ -5,81 +5,80 @@ using DDNSUpdate.Domain;
 using DDNSUpdate.Tests.Helpers;
 using Xunit;
 
-namespace DDNSUpdate.Tests.Application.Providers.GoDaddy.Converters
+namespace DDNSUpdate.Tests.Application.Providers.GoDaddy.Converters;
+
+public class DNSRecordToGoDaddyUpdateDNSRecordRequestTests : TestBase
 {
-    public class DNSRecordToGoDaddyUpdateDNSRecordRequestTests : TestBase
+
+    private readonly ResolutionContext _resolutionContext;
+
+    public DNSRecordToGoDaddyUpdateDNSRecordRequestTests()
     {
+        _resolutionContext = new MappingHelper().ResolutionContext;
+    }
 
-        private readonly ResolutionContext _resolutionContext;
-
-        public DNSRecordToGoDaddyUpdateDNSRecordRequestTests()
+    [Fact]
+    public void Returns_Non_Null_Update_Request_When_Passed_Null()
+    {
+        DNSRecordToGoDaddyUpdateDNSRecordRequestConverter converter = new();
+        DNSRecord record = new()
         {
-            _resolutionContext = new MappingHelper().ResolutionContext;
-        }
+            Data = "recordData",
+            Name = "recordName",
+            Port = 1,
+            Priority = 1,
+            TTL = 1,
+            Weight = 1,
+            Tag = "something",
+            Type = DNSRecordType.A
+        };
 
-        [Fact]
-        public void Returns_Non_Null_Update_Request_When_Passed_Null()
+        GoDaddyUpdateDNSRecord result = converter.Convert(record, null, _resolutionContext);
+        Assert.NotNull(result);
+        Assert.Equal(record.Data, result.Data);
+        Assert.Equal((int)record.Port, result.Port);
+        Assert.Equal((int)record.Priority, result.Priority);
+        Assert.Null(result.Protocol);
+        Assert.Null(result.Service);
+        Assert.Equal(record.TTL, (int)result.Ttl);
+        Assert.Equal(record.Weight, (int)result.Weight);
+    }
+
+    [Fact]
+    public void Overwrites_Values_When_Passed_Non_Null()
+    {
+        DNSRecordToGoDaddyUpdateDNSRecordRequestConverter converter = new();
+        DNSRecord record = new()
         {
-            DNSRecordToGoDaddyUpdateDNSRecordRequestConverter converter = new();
-            DNSRecord record = new()
-            {
-                Data = "recordData",
-                Name = "recordName",
-                Port = 1,
-                Priority = 1,
-                TTL = 1,
-                Weight = 1,
-                Tag = "something",
-                Type = DNSRecordType.A
-            };
+            Data = "recordData",
+            Name = "recordName",
+            Port = 1,
+            Priority = 1,
+            TTL = 1,
+            Weight = 1,
+            Tag = "something",
+            Type = DNSRecordType.A
+        };
 
-            GoDaddyUpdateDNSRecord result = converter.Convert(record, null, _resolutionContext);
-            Assert.NotNull(result);
-            Assert.Equal(record.Data, result.Data);
-            Assert.Equal((int)record.Port, result.Port);
-            Assert.Equal((int)record.Priority, result.Priority);
-            Assert.Null(result.Protocol);
-            Assert.Null(result.Service);
-            Assert.Equal(record.TTL, (int)result.Ttl);
-            Assert.Equal(record.Weight, (int)result.Weight);
-        }
-
-        [Fact]
-        public void Overwrites_Values_When_Passed_Non_Null()
+        GoDaddyUpdateDNSRecord updateRequest = new()
         {
-            DNSRecordToGoDaddyUpdateDNSRecordRequestConverter converter = new();
-            DNSRecord record = new()
-            {
-                Data = "recordData",
-                Name = "recordName",
-                Port = 1,
-                Priority = 1,
-                TTL = 1,
-                Weight = 1,
-                Tag = "something",
-                Type = DNSRecordType.A
-            };
+            Data = "updateRequestData",
+            Port = 2,
+            Priority = 2,
+            Protocol = "updateRequestProtocol",
+            Service = "updateRequestService",
+            Ttl = 2,
+            Weight = 2
+        };
 
-            GoDaddyUpdateDNSRecord updateRequest = new()
-            {
-                Data = "updateRequestData",
-                Port = 2,
-                Priority = 2,
-                Protocol = "updateRequestProtocol",
-                Service = "updateRequestService",
-                Ttl = 2,
-                Weight = 2
-            };
+        GoDaddyUpdateDNSRecord result = converter.Convert(record, updateRequest, _resolutionContext);
 
-            GoDaddyUpdateDNSRecord result = converter.Convert(record, updateRequest, _resolutionContext);
-
-            Assert.Equal(record.Data, result.Data);
-            Assert.Equal((int)record.Port, result.Port);
-            Assert.Equal((int)record.Priority, result.Priority);
-            Assert.Equal(updateRequest.Protocol, result.Protocol);
-            Assert.Equal(updateRequest.Service, result.Service);
-            Assert.Equal(record.TTL, (int)result.Ttl);
-            Assert.Equal(record.Weight, (int)result.Weight);
-        }
+        Assert.Equal(record.Data, result.Data);
+        Assert.Equal((int)record.Port, result.Port);
+        Assert.Equal((int)record.Priority, result.Priority);
+        Assert.Equal(updateRequest.Protocol, result.Protocol);
+        Assert.Equal(updateRequest.Service, result.Service);
+        Assert.Equal(record.TTL, (int)result.Ttl);
+        Assert.Equal(record.Weight, (int)result.Weight);
     }
 }

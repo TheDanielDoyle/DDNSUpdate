@@ -1,9 +1,8 @@
 ﻿using FluentResults;
 
-namespace DDNSUpdate.Infrastructure
+namespace DDNSUpdate.Infrastructure;
+
+public interface IResultsLogger
 {
-    public interface IResultsLogger
-    {
-        void Log(Result result);
-    }
+    void Log(Result result);
 }

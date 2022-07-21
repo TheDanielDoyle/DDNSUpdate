@@ -1,9 +1,8 @@
 ﻿using Microsoft.Extensions.Hosting;
 
-namespace DDNSUpdate.Infrastructure.Hosting
+namespace DDNSUpdate.Infrastructure.Hosting;
+
+public interface IApplicationHostBuilder
 {
-    public interface IApplicationHostBuilder
-    {
-        IHost Build(string[] commandlineArguments);
-    }
+    IHost Build(string[] commandlineArguments);
 }

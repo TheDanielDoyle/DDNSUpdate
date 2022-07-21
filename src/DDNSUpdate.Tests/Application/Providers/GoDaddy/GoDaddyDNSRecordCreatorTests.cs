@@ -10,50 +10,26 @@ using FakeItEasy;
 using FluentResults;
 using Xunit;
 
-namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
+namespace DDNSUpdate.Tests.Application.Providers.GoDaddy;
+
+public class GoDaddyDNSRecordCreatorTests : TestBase
 {
-    public class GoDaddyDNSRecordCreatorTests : TestBase
+    private readonly IMapper _mapper;
+
+    public GoDaddyDNSRecordCreatorTests()
     {
-        private readonly IMapper _mapper;
+        _mapper = new MappingHelper(AssembliesUnderTest).Mapper;
+    }
 
-        public GoDaddyDNSRecordCreatorTests()
-        {
-            _mapper = new MappingHelper(AssembliesUnderTest).Mapper;
-        }
+    [Fact]
+    public async Task No_Records_Are_Successfully_Created_Returns_Failure()
+    {
+        IGoDaddyClient fakeClient = A.Fake<IGoDaddyClient>();
 
-        [Fact]
-        public async Task No_Records_Are_Successfully_Created_Returns_Failure()
-        {
-            IGoDaddyClient fakeClient = A.Fake<IGoDaddyClient>();
+        A.CallTo(() => fakeClient.CreateDNSRecordsAsync(A<GoDaddyCreateDNSRecordsRequest>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Fail("oops"));
 
-            A.CallTo(() => fakeClient.CreateDNSRecordsAsync(A<GoDaddyCreateDNSRecordsRequest>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Fail("oops"));
-
-            GoDaddyDNSRecordCreator creator = new(fakeClient, _mapper);
-            DNSRecordCollection dnsRecords = new(
-                new DNSRecord
-                {
-                    Type = DNSRecordType.A
-                },
-                new DNSRecord
-                {
-                    Type = DNSRecordType.A
-                });
-            GoDaddyAuthenticationDetails authicationDetails = new(string.Empty, string.Empty);
-            
-            Result result = await creator.CreateAsync(string.Empty, dnsRecords, authicationDetails, CancellationToken.None);
-
-            Assert.True(result.IsFailed);
-        }
-
-        [Fact]
-        public async Task Records_Are_Created_And_Successful_Result_Returned()
-        {
-            IGoDaddyClient fakeClient = A.Fake<IGoDaddyClient>();
-
-            A.CallTo(() => fakeClient.CreateDNSRecordsAsync(A<GoDaddyCreateDNSRecordsRequest>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Ok());
-
-            GoDaddyDNSRecordCreator creator = new(fakeClient, _mapper);
-            DNSRecordCollection dnsRecords = new(
+        GoDaddyDNSRecordCreator creator = new(fakeClient, _mapper);
+        DNSRecordCollection dnsRecords = new(
             new DNSRecord
             {
                 Type = DNSRecordType.A
@@ -62,12 +38,35 @@ namespace DDNSUpdate.Tests.Application.Providers.GoDaddy
             {
                 Type = DNSRecordType.A
             });
-            GoDaddyAuthenticationDetails authicationDetails = new(string.Empty, string.Empty);
+        GoDaddyAuthenticationDetails authicationDetails = new(string.Empty, string.Empty);
+            
+        Result result = await creator.CreateAsync(string.Empty, dnsRecords, authicationDetails, CancellationToken.None);
 
-            Result result = await creator.CreateAsync(string.Empty, dnsRecords, authicationDetails, CancellationToken.None);
+        Assert.True(result.IsFailed);
+    }
 
-            Assert.True(result.IsSuccess);
-            A.CallTo(() => fakeClient.CreateDNSRecordsAsync(A<GoDaddyCreateDNSRecordsRequest>.Ignored, A<CancellationToken>.Ignored)).MustHaveHappenedOnceExactly();
-        }
+    [Fact]
+    public async Task Records_Are_Created_And_Successful_Result_Returned()
+    {
+        IGoDaddyClient fakeClient = A.Fake<IGoDaddyClient>();
+
+        A.CallTo(() => fakeClient.CreateDNSRecordsAsync(A<GoDaddyCreateDNSRecordsRequest>.Ignored, A<CancellationToken>.Ignored)).Returns(Result.Ok());
+
+        GoDaddyDNSRecordCreator creator = new(fakeClient, _mapper);
+        DNSRecordCollection dnsRecords = new(
+            new DNSRecord
+            {
+                Type = DNSRecordType.A
+            },
+            new DNSRecord
+            {
+                Type = DNSRecordType.A
+            });
+        GoDaddyAuthenticationDetails authicationDetails = new(string.Empty, string.Empty);
+
+        Result result = await creator.CreateAsync(string.Empty, dnsRecords, authicationDetails, CancellationToken.None);
+
+        Assert.True(result.IsSuccess);
+        A.CallTo(() => fakeClient.CreateDNSRecordsAsync(A<GoDaddyCreateDNSRecordsRequest>.Ignored, A<CancellationToken>.Ignored)).MustHaveHappenedOnceExactly();
     }
 }

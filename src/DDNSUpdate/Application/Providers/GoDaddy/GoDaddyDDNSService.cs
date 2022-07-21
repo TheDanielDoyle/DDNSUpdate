@@ -7,27 +7,26 @@ using Microsoft.Extensions.Options;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DDNSUpdate.Application.Providers.GoDaddy
+namespace DDNSUpdate.Application.Providers.GoDaddy;
+
+public class GoDaddyDDNSService : IDDNSService
 {
-    public class GoDaddyDDNSService : IDDNSService
+    private readonly IGoDaddyAccountProcessor _accountProcessor;
+    private readonly GoDaddyConfiguration _configuration;
+
+    public GoDaddyDDNSService(IGoDaddyAccountProcessor accountProcessor, IOptionsSnapshot<GoDaddyConfiguration> configuration)
     {
-        private readonly IGoDaddyAccountProcessor _accountProcessor;
-        private readonly GoDaddyConfiguration _configuration;
+        _accountProcessor = accountProcessor;
+        _configuration = configuration.Value;
+    }
 
-        public GoDaddyDDNSService(IGoDaddyAccountProcessor accountProcessor, IOptionsSnapshot<GoDaddyConfiguration> configuration)
+    public async Task<Result> ProcessAsync(ExternalAddress externalAddress, CancellationToken cancellation)
+    {
+        Result result = Result.Ok();
+        foreach (GoDaddyAccount account in _configuration.Accounts)
         {
-            _accountProcessor = accountProcessor;
-            _configuration = configuration.Value;
+            result = result.Merge(await _accountProcessor.ProcessAsync(account, externalAddress, cancellation));
         }
-
-        public async Task<Result> ProcessAsync(ExternalAddress externalAddress, CancellationToken cancellation)
-        {
-            Result result = Result.Ok();
-            foreach (GoDaddyAccount account in _configuration.Accounts)
-            {
-                result = result.Merge(await _accountProcessor.ProcessAsync(account, externalAddress, cancellation));
-            }
-            return result;
-        }
+        return result;
     }
 }

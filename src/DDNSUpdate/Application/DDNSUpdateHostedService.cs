@@ -7,51 +7,50 @@ using System.Threading;
 using System.Threading.Tasks;
 using DDNSUpdate.Infrastructure;
 
-namespace DDNSUpdate.Application
+namespace DDNSUpdate.Application;
+
+public class DDNSUpdateHostedService : BackgroundService
 {
-    public class DDNSUpdateHostedService : BackgroundService
+    private readonly IOptionsMonitor<ApplicationConfiguration> _configuration;
+    private readonly IDDNSUpdateInvoker _invoker;
+    private readonly IResultsLogger _logger;
+
+    public DDNSUpdateHostedService(IOptionsMonitor<ApplicationConfiguration> configuration, IDDNSUpdateInvoker invoker, IResultsLogger logger)
     {
-        private readonly IOptionsMonitor<ApplicationConfiguration> _configuration;
-        private readonly IDDNSUpdateInvoker _invoker;
-        private readonly IResultsLogger _logger;
+        _configuration = configuration;
+        _invoker = invoker;
+        _logger = logger;
+    }
 
-        public DDNSUpdateHostedService(IOptionsMonitor<ApplicationConfiguration> configuration, IDDNSUpdateInvoker invoker, IResultsLogger logger)
+    protected override async Task ExecuteAsync(CancellationToken cancellation)
+    {
+        while (!cancellation.IsCancellationRequested)
         {
-            _configuration = configuration;
-            _invoker = invoker;
-            _logger = logger;
-        }
-
-        protected override async Task ExecuteAsync(CancellationToken cancellation)
-        {
-            while (!cancellation.IsCancellationRequested)
+            Result result = Result.Ok();
+            try
             {
-                Result result = Result.Ok();
-                try
+                result = await _invoker.InvokeAsync(cancellation);
+            }
+            catch (TaskCanceledException)
+            {
+            }
+            catch (Exception exception)
+            {
+                result = Result.Fail(exception.Message);
+            }
+            finally
+            {
+                _logger.Log(result);
+                if (!cancellation.IsCancellationRequested)
                 {
-                    result = await _invoker.InvokeAsync(cancellation);
-                }
-                catch (TaskCanceledException)
-                {
-                }
-                catch (Exception exception)
-                {
-                    result = Result.Fail(exception.Message);
-                }
-                finally
-                {
-                    _logger.Log(result);
-                    if (!cancellation.IsCancellationRequested)
-                    {
-                        await Task.Delay(GetUpdateInterval(), cancellation);
-                    }
+                    await Task.Delay(GetUpdateInterval(), cancellation);
                 }
             }
         }
+    }
 
-        private TimeSpan GetUpdateInterval()
-        {
-            return _configuration.CurrentValue.UpdateInterval;
-        }
+    private TimeSpan GetUpdateInterval()
+    {
+        return _configuration.CurrentValue.UpdateInterval;
     }
 }

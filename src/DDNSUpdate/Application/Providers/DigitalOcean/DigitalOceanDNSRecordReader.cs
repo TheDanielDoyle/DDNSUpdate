@@ -8,29 +8,28 @@ using System.Threading;
 using System.Threading.Tasks;
 using DDNSUpdate.Infrastructure.Extensions;
 
-namespace DDNSUpdate.Application.Providers.DigitalOcean
+namespace DDNSUpdate.Application.Providers.DigitalOcean;
+
+public class DigitalOceanDNSRecordReader : IDigitalOceanDNSRecordReader
 {
-    public class DigitalOceanDNSRecordReader : IDigitalOceanDNSRecordReader
+    private readonly IDigitalOceanClient _client;
+    private readonly IMapper _mapper;
+
+    public DigitalOceanDNSRecordReader(IDigitalOceanClient client, IMapper mapper)
     {
-        private readonly IDigitalOceanClient _client;
-        private readonly IMapper _mapper;
+        _client = client;
+        _mapper = mapper;
+    }
 
-        public DigitalOceanDNSRecordReader(IDigitalOceanClient client, IMapper mapper)
+    public async Task<Result<DNSRecordCollection>> ReadAsync(DigitalOceanDomain domain, string token, CancellationToken cancellation)
+    {
+        Result<DigitalOceanGetDomainRecordsResponse> result = await _client.GetDNSRecordsAsync(domain, token, cancellation);
+        if (result.IsFailed)
         {
-            _client = client;
-            _mapper = mapper;
+            return result.ToResult();
         }
 
-        public async Task<Result<DNSRecordCollection>> ReadAsync(DigitalOceanDomain domain, string token, CancellationToken cancellation)
-        {
-            Result<DigitalOceanGetDomainRecordsResponse> result = await _client.GetDNSRecordsAsync(domain, token, cancellation);
-            if (result.IsFailed)
-            {
-                return result.ToResult();
-            }
-
-            IEnumerable<DNSRecord> records = _mapper.Map<IEnumerable<DNSRecord>>(result.Value.DomainRecords);
-            return Result.Ok(new DNSRecordCollection(records)).Merge(result.ToResult());
-        }
+        IEnumerable<DNSRecord> records = _mapper.Map<IEnumerable<DNSRecord>>(result.Value.DomainRecords);
+        return Result.Ok(new DNSRecordCollection(records)).Merge(result.ToResult());
     }
 }

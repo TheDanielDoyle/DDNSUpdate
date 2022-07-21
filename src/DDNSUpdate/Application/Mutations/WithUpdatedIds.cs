@@ -1,19 +1,18 @@
 ﻿using DDNSUpdate.Domain;
 
-namespace DDNSUpdate.Application.Mutations
+namespace DDNSUpdate.Application.Mutations;
+
+public class WithUpdatedIds : IDNSRecordCollectionMutation
 {
-    public class WithUpdatedIds : IDNSRecordCollectionMutation
+    private readonly DNSRecordCollection _idsFrom;
+
+    public WithUpdatedIds(DNSRecordCollection idsFrom)
     {
-        private readonly DNSRecordCollection _idsFrom;
+        _idsFrom = idsFrom;
+    }
 
-        public WithUpdatedIds(DNSRecordCollection idsFrom)
-        {
-            _idsFrom = idsFrom;
-        }
-
-        public DNSRecordCollection Mutate(DNSRecordCollection dnsRecords)
-        {
-            return dnsRecords.WithUpdatedIdsFrom(_idsFrom);
-        }
+    public DNSRecordCollection Mutate(DNSRecordCollection dnsRecords)
+    {
+        return dnsRecords.WithUpdatedIdsFrom(_idsFrom);
     }
 }

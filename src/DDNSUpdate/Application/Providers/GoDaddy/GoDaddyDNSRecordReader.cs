@@ -9,28 +9,27 @@ using DDNSUpdate.Domain;
 using DDNSUpdate.Infrastructure.Extensions;
 using FluentResults;
 
-namespace DDNSUpdate.Application.Providers.GoDaddy
-{
-    public class GoDaddyDNSRecordReader : IGoDaddyDNSRecordReader
-    {
-        private readonly IGoDaddyClient _client;
-        private readonly IMapper _mapper;
+namespace DDNSUpdate.Application.Providers.GoDaddy;
 
-        public GoDaddyDNSRecordReader(IGoDaddyClient client, IMapper mapper)
+public class GoDaddyDNSRecordReader : IGoDaddyDNSRecordReader
+{
+    private readonly IGoDaddyClient _client;
+    private readonly IMapper _mapper;
+
+    public GoDaddyDNSRecordReader(IGoDaddyClient client, IMapper mapper)
+    {
+        _client = client;
+        _mapper = mapper;
+    }
+    public async Task<Result<DNSRecordCollection>> ReadAsync(string domainName, GoDaddyAuthenticationDetails authentication, CancellationToken cancellation)
+    {
+        GoDaddyGetDNSRecordsRequest request = new GoDaddyGetDNSRecordsRequest(authentication.ApiKey, authentication.ApiSecret, DNSRecordType.A, domainName);
+        Result<GoDaddyGetDNSRecordsResponse> result = await _client.GetDNSRecordsAsync(request, cancellation);
+        if (result.IsSuccess)
         {
-            _client = client;
-            _mapper = mapper;
+            IList<DNSRecord> records = _mapper.Map<IList<DNSRecord>>(result.Value.Records);
+            return Result.Ok(new DNSRecordCollection(records)).Merge(result.ToResult());
         }
-        public async Task<Result<DNSRecordCollection>> ReadAsync(string domainName, GoDaddyAuthenticationDetails authentication, CancellationToken cancellation)
-        {
-            GoDaddyGetDNSRecordsRequest request = new GoDaddyGetDNSRecordsRequest(authentication.ApiKey, authentication.ApiSecret, DNSRecordType.A, domainName);
-            Result<GoDaddyGetDNSRecordsResponse> result = await _client.GetDNSRecordsAsync(request, cancellation);
-            if (result.IsSuccess)
-            {
-                IList<DNSRecord> records = _mapper.Map<IList<DNSRecord>>(result.Value.Records);
-                return Result.Ok(new DNSRecordCollection(records)).Merge(result.ToResult());
-            }
-            return result.ToResult();
-        }
+        return result.ToResult();
     }
 }

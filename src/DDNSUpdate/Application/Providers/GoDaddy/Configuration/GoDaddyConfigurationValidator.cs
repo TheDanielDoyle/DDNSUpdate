@@ -1,12 +1,11 @@
 ﻿using FluentValidation;
 
-namespace DDNSUpdate.Application.Providers.GoDaddy.Configuration
+namespace DDNSUpdate.Application.Providers.GoDaddy.Configuration;
+
+public class GoDaddyConfigurationValidator : AbstractValidator<GoDaddyConfiguration>
 {
-    public class GoDaddyConfigurationValidator : AbstractValidator<GoDaddyConfiguration>
+    public GoDaddyConfigurationValidator()
     {
-        public GoDaddyConfigurationValidator()
-        {
-            RuleForEach(p => p.Accounts).SetValidator(new GoDaddyAccountValidator());
-        }
+        RuleForEach(p => p.Accounts).SetValidator(new GoDaddyAccountValidator());
     }
 }
