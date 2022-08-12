@@ -16,7 +16,7 @@ public class DNSRecordToDigitalOceanUpdateDomainRecordRequestConverterTests : Te
     }
 
     [Fact]
-    public void OverwirtesUpdateDomainRecordRequestValues()
+    public void OverwritesUpdateDomainRecordRequestValues()
     {
         DNSRecordToDigitalOceanUpdateDomainRecordRequestConverter converter = new();
         DNSRecord record = new()
