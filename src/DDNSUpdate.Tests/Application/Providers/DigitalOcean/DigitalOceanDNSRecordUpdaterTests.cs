@@ -27,15 +27,17 @@ public class DigitalOceanDNSRecordUpdaterTests : TestBase
             new DNSRecord
             {
                 Data = "100.100.100.100",
+                Id = "12345",
                 TTL = 1800,
                 Type = DNSRecordType.A
             },
             new DNSRecord
             {
                 Data = "100.100.100.101",
+                Id = "67890",
                 TTL = 1800,
                 Type = DNSRecordType.A
-            },
+            }
         });
 
         IDigitalOceanClient client = A.Fake<IDigitalOceanClient>();
@@ -58,15 +60,17 @@ public class DigitalOceanDNSRecordUpdaterTests : TestBase
             new DNSRecord
             {
                 Data = "100.100.100.100",
+                Id = "12345",
                 TTL = 1800,
                 Type = DNSRecordType.A
             },
             new DNSRecord
             {
                 Data = "100.100.100.101",
+                Id = "67890",
                 TTL = 1800,
                 Type = DNSRecordType.A
-            },
+            }
         });
 
         IDigitalOceanClient client = A.Fake<IDigitalOceanClient>();

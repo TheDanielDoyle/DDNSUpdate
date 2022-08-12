@@ -23,6 +23,7 @@ public class DNSRecordToDigitalOceanUpdateDomainRecordRequestConverterTests : Te
         {
             Data = "DNSData",
             Flags = 1,
+            Id = "12345",
             Name = "DNSName",
             Port = 1,
             Priority = 1,
@@ -36,6 +37,7 @@ public class DNSRecordToDigitalOceanUpdateDomainRecordRequestConverterTests : Te
         {
             Data = "CreatData",
             Flags = 123,
+            Id = 12345,
             Name = "CreateName",
             Port = 123,
             Priority = 123,
@@ -49,6 +51,7 @@ public class DNSRecordToDigitalOceanUpdateDomainRecordRequestConverterTests : Te
 
         Assert.Equal(record.Data, actual.Data);
         Assert.Equal(record.Flags, actual.Flags);
+        Assert.Equal(record.Id, actual.Id.ToString());
         Assert.Equal(record.Name, actual.Name);
         Assert.Equal(record.Port, actual.Port);
         Assert.Equal(record.Priority, actual.Priority);
@@ -67,6 +70,7 @@ public class DNSRecordToDigitalOceanUpdateDomainRecordRequestConverterTests : Te
         {
             Data = "DNSData",
             Flags = 1,
+            Id = "12345",
             Name = "DNSName",
             Port = 1,
             Priority = 1,
