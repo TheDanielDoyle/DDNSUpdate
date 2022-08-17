@@ -11,7 +11,7 @@ public class DigitalOceanUpdateDomainRecordRequest
     public int? Flags { get; set; }
 
     [JsonProperty("id")]
-    public string Id { get; set; } = default!;
+    public int Id { get; set; }
 
     [JsonProperty("name")]
     public string Name { get; set; } = default!;

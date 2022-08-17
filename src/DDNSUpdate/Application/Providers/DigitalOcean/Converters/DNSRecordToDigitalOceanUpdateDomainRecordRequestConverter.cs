@@ -11,7 +11,7 @@ public class DNSRecordToDigitalOceanUpdateDomainRecordRequestConverter : ITypeCo
         request ??= new DigitalOceanUpdateDomainRecordRequest();
         request.Data = record.Data;
         request.Flags = record.Flags;
-        request.Id = record.Id!;
+        request.Id = int.Parse(record.Id!);
         request.Name = record.Name;
         request.Port = record.Port;
         request.Priority = record.Priority;

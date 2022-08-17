@@ -176,7 +176,7 @@ public class DigitalOceanClientTests : TestBase, IDisposable
         DigitalOceanUpdateDomainRecordRequest request = new()
         {
             Data = "",
-            Id = "3352896",
+            Id = 3352896,
             Name = "test",
             Ttl = 1800,
             Type = DNSRecordType.A
@@ -195,7 +195,7 @@ public class DigitalOceanClientTests : TestBase, IDisposable
         DigitalOceanUpdateDomainRecordRequest request = new()
         {
             Data = "",
-            Id = "3352896",
+            Id = 3352896,
             Name = "test",
             Ttl = 1800,
             Type = DNSRecordType.A
