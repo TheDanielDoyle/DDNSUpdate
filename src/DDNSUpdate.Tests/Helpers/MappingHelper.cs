@@ -32,8 +32,8 @@ internal class MappingHelper
         Type type = typeof(ResolutionContext);
         ConstructorInfo constructor = type
             .GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic)
-            .Single(c => c.GetParameters().Length == 1);
-        ResolutionContext resolutionContext = (ResolutionContext)constructor.Invoke(new object[] { (Mapper)mapper });
+            .Single(c => c.GetParameters().Length == 2);
+        ResolutionContext resolutionContext = (ResolutionContext)constructor.Invoke(new object[] { (Mapper)mapper, null });
         return resolutionContext;
     }
 

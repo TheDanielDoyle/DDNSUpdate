@@ -1,7 +1,7 @@
 ARG APP_BUILD_RUNTIME=linux-x64
 ARG APP_BUILD_VERSION=1.0.0.0
-ARG DOCKER_BUILD_RUNTIME=mcr.microsoft.com/dotnet/runtime:6.0
-ARG DOCKER_BUILD_SDK=mcr.microsoft.com/dotnet/sdk:6.0
+ARG DOCKER_BUILD_RUNTIME=mcr.microsoft.com/dotnet/runtime:7.0
+ARG DOCKER_BUILD_SDK=mcr.microsoft.com/dotnet/sdk:7.0
 
 FROM $DOCKER_BUILD_RUNTIME AS base
 WORKDIR /app
