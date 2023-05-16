@@ -83,11 +83,11 @@ DDNSUpdate supports multi-platform builds with [buildx](https://docs.docker.com/
 
 ### Example build for Linux AM64 and ARM64
 
-_docker_registry_address_ could be `dandoyle.com` for example
+> Replace **REGISTRY** with your own if you are pushing to a Docker registry.
 
 ```shell
 export DOCKERFILE=DDNSUpdate/Dockerfile;
-export REGISTRY=docker_registry_address;
+export REGISTRY=ghcr.io/thedanieldoyle;
 export SERVICE=ddnsupdate;
 export VERSION=1.0.0;
 docker buildx build --platform linux/amd64,linux/arm64 --tag "${REGISTRY}/$SERVICE:$VERSION" --build-arg VERSION --file $DOCKERFILE --push .
