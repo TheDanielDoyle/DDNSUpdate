@@ -58,8 +58,8 @@ public class LoggingConfigurator : ILoggingConfigurator
 
     private static void ConfigureLogstash(HostBuilderContext context, LoggerConfiguration configuration)
     {
-        Uri logstashEndpoint = context.Configuration.GetValue<Uri>(_logstashEndpointKey);
-        if (logstashEndpoint != null)
+        Uri? logstashEndpoint = context.Configuration.GetValue<Uri?>(_logstashEndpointKey);
+        if (logstashEndpoint is not null)
         {
             configuration.WriteTo.DurableHttpUsingFileSizeRolledBuffers(
                 batchFormatter: new ArrayBatchFormatter(),
@@ -70,8 +70,8 @@ public class LoggingConfigurator : ILoggingConfigurator
 
     private static void ConfigureSeq(HostBuilderContext context, LoggerConfiguration configuration)
     {
-        Uri seqEndpoint = context.Configuration.GetValue<Uri>(_seqEndpointKey);
-        if (seqEndpoint != null)
+        Uri? seqEndpoint = context.Configuration.GetValue<Uri?>(_seqEndpointKey);
+        if (seqEndpoint is not null)
         {
             configuration.WriteTo.Seq(seqEndpoint.ToString());
         }

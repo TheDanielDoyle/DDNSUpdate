@@ -77,6 +77,31 @@ The easiest to set up and use is the configuration file. It is possible however 
 
 * See [ASP.NET Core Key-per-file configuration](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-3.1#key-per-file-configuration-provider) for instructions on how to structure the Docker Secret names.
 
+## Build docker image
+
+DDNSUpdate supports multi-platform builds with [buildx](https://docs.docker.com/engine/reference/commandline/buildx/), post dotnet SDK verison **7.0.300**.
+
+### Example build for Linux AM64 and ARM64
+
+_docker_registry_address_ could be `dandoyle.com` for example
+
+```shell
+export DOCKERFILE=DDNSUpdate/Dockerfile;
+export REGISTRY=docker_registry_address;
+export SERVICE=ddnsupdate;
+export VERSION=1.0.0;
+docker buildx build --platform linux/amd64,linux/arm64 --tag "${REGISTRY}/$SERVICE:$VERSION" --build-arg VERSION --file $DOCKERFILE .
+```
+To support multi-platform builds, changes were required to the dotnet SDK from Microsoft, and also use of some automatic ARGs from Docker. Namely **BUILDPLATFORM** and **TARGETARCH**. See [Docker documentation](https://docs.docker.com/engine/reference/builder/#automatic-platform-args-in-the-global-scope). 
+
+#### Fun fact
+
+You may notice on the **docker buildx build** command, the **--build-arg VERSION** is not using the variable with **$** symbol, as set above. This is by design. The [Docker documentation](https://docs.docker.com/engine/reference/commandline/build/#build-arg) explains.
+
+> You may also use the --build-arg flag without a value, in which case the value from the local environment will be propagated into the Docker container
+
+As the variable in the shell scope and inside the Dockerfile are the same name, you don't need to specify it in **VERSION=$VERSION** syntax when building. Neat!
+
 ## Authors
 
 * **Daniel P. Doyle** - [TheDanielDoyle](https://github.com/TheDanielDoyle/)
