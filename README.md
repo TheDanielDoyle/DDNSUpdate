@@ -90,9 +90,13 @@ export DOCKERFILE=DDNSUpdate/Dockerfile;
 export REGISTRY=docker_registry_address;
 export SERVICE=ddnsupdate;
 export VERSION=1.0.0;
-docker buildx build --platform linux/amd64,linux/arm64 --tag "${REGISTRY}/$SERVICE:$VERSION" --build-arg VERSION --file $DOCKERFILE .
+docker buildx build --platform linux/amd64,linux/arm64 --tag "${REGISTRY}/$SERVICE:$VERSION" --build-arg VERSION --file $DOCKERFILE --push .
 ```
 To support multi-platform builds, changes were required to the dotnet SDK from Microsoft, and also use of some automatic ARGs from Docker. Namely **BUILDPLATFORM** and **TARGETARCH**. See [Docker documentation](https://docs.docker.com/engine/reference/builder/#automatic-platform-args-in-the-global-scope). 
+
+Also, the build command above will attempt to push to your docker registry using **--push**, therefore be sure to log in first.
+
+If you just want to build an image for local developemnt, change **--push** to **--load**.
 
 #### Fun fact
 
