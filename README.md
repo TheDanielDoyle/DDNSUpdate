@@ -96,7 +96,7 @@ To support multi-platform builds, changes were required to the dotnet SDK from M
 
 Also, the build command above will attempt to push to your docker registry using **--push**, therefore be sure to log in first.
 
-If you just want to build an image for local developemnt, change **--push** to **--load**.
+If you just want to build an image for local development, change **--push** to **--load**.
 
 #### Fun fact
 
