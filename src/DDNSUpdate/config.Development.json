@@ -1,2 +1,10 @@
 {
+  "Serilog": {
+    "Enrich": [ "FromLogContext", "WithDemystifiedStackTraces", "WithExceptionDetails", "WithThreadId" ],
+    "MinimumLevel": {
+      "Default": "Debug"
+    },
+    "Using":  [ "Serilog.Sinks.Console" ],
+    "WriteTo": [ "Console" ]
+  }
 }

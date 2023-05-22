@@ -1,15 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <Authors>Daniel P. Doyle; Adam Parker; Michael Willis</Authors>
-    <Product>DDNS Update</Product>
     <Copyright>2023 Daniel P. Doyle</Copyright>
-    <RepositoryUrl>https://github.com/TheDanielDoyle/DDNSUpdate</RepositoryUrl>
+    <Nullable>enable</Nullable>
+    <OutputType>Exe</OutputType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <Product>DDNS Update</Product>
+    <RepositoryUrl>https://github.com/TheDanielDoyle/DDNSUpdate</RepositoryUrl>
+    <TargetFramework>net7.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +18,23 @@
     <None Update="config.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.5.2" />
+    <PackageReference Include="Humanizer" Version="2.14.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.KeyPerFile" Version="7.0.5" />
+    <PackageReference Include="NetEscapades.Configuration.Yaml" Version="3.1.0" />
+    <PackageReference Include="OneOf" Version="3.0.243" />
+    <PackageReference Include="OneOf.SourceGenerator" Version="3.0.243" />
+    <PackageReference Include="Scrutor" Version="4.2.2" />
+    <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
+    <PackageReference Include="Serilog.Enrichers.Demystifier" Version="1.0.2" />
+    <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
+    <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="7.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
+    <PackageReference Include="YamlDotNet" Version="13.1.0" />
   </ItemGroup>
 
 </Project>
