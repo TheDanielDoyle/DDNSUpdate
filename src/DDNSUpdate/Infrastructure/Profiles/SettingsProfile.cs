@@ -5,14 +5,13 @@ using Microsoft.Extensions.Hosting;
 
 namespace DDNSUpdate.Infrastructure.Profiles;
 
-internal sealed class SettingsProfile : IHostBuilderProfile
+internal sealed class SettingsProfile : HostApplicationBuilderProfile
 {
-    public HostApplicationBuilder Add(HostApplicationBuilder builder)
+    protected override void Add(HostApplicationBuilder builder)
     {
         builder
             .AddSettings<AppSettings>()
             .Services
             .AddTransient<ISettingsValidator, SettingsValidator>();
-        return builder;
     }
 }

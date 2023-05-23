@@ -15,20 +15,14 @@ internal static class HostApplicationBuilderExtensions
     public static HostApplicationBuilder AddConfiguration(this HostApplicationBuilder builder, string[] args)
     {
         builder.Configuration
-            .AddJsonFile($"{_configName}.json", optional: true, reloadOnChange: true)
-            .AddJsonFile($"{_configName}.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
-            .AddYamlFile($"{_configName}.yml", optional: true, reloadOnChange: true)
-            .AddYamlFile($"{_configName}.{builder.Environment.EnvironmentName}.yml", optional: true, reloadOnChange: true)
-            .AddYamlFile($"{_configName}.yaml", optional: true, reloadOnChange: true)
-            .AddYamlFile($"{_configName}.{builder.Environment.EnvironmentName}.yaml", optional: true, reloadOnChange: true)
-            .AddEnvironmentVariables()
             .AddKeyPerFile("/run/secrets", optional: true)
+            .AddJsonFromFiles()
             .AddCommandLine(args);
         return builder;
     }
     
     public static HostApplicationBuilder AddProfile<TProfile>(this HostApplicationBuilder builder)
-        where TProfile : IHostBuilderProfile
+        where TProfile : IHostApplicationBuilderProfile
     {
         return Activator
             .CreateInstance<TProfile>()

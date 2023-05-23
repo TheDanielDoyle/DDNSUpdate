@@ -3,15 +3,14 @@ using Serilog;
 
 namespace DDNSUpdate.Infrastructure.Profiles;
 
-internal sealed class LoggingProfile : IHostBuilderProfile
+internal sealed class LoggingProfile : HostApplicationBuilderProfile
 {
-    public HostApplicationBuilder Add(HostApplicationBuilder builder)
+    protected override void Add(HostApplicationBuilder builder)
     {
         builder.Services
             .AddSerilog(configuration =>
             {
                 configuration.ReadFrom.Configuration(builder.Configuration);
             });
-        return builder;
     }
 }

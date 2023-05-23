@@ -4,15 +4,14 @@ using Microsoft.Extensions.Hosting;
 
 namespace DDNSUpdate.Infrastructure.Profiles;
 
-internal sealed class ValidationProfile : IHostBuilderProfile
+internal sealed class ValidationProfile : HostApplicationBuilderProfile
 {
-    public HostApplicationBuilder Add(HostApplicationBuilder builder)
+    protected override void Add(HostApplicationBuilder builder)
     {
         builder.Services
             .Scan(scan => scan.FromAssemblyOf<Program>()
                 .AddClasses(classes => classes.AssignableTo<IValidator>())
                 .AsSelfWithInterfaces()
                 .WithTransientLifetime());
-        return builder;
     }
 }

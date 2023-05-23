@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using DDNSUpdate.Application;
-using DDNSUpdate.Application.Providers.Cloudflare;
-using DDNSUpdate.Application.Providers.DigitalOcean;
-using DDNSUpdate.Application.Providers.GoDaddy;
 using DDNSUpdate.Infrastructure;
 using DDNSUpdate.Infrastructure.Extensions;
 using DDNSUpdate.Infrastructure.Profiles;
@@ -24,17 +21,11 @@ internal sealed class Program
         {
             Log.Logger.Information("Starting DDNSUpdate");
 
-            await Host.CreateApplicationBuilder(args)
+            await Host
+                .CreateApplicationBuilder(args)
                 .AddConfiguration(args)
-                .AddHostedService<UpdateService>()
-                
-                .AddProfile<CloudflareProfile>()
-                .AddProfile<DigitalOceanProfile>()
-                .AddProfile<GoDaddyProfile>()
-                .AddProfile<LoggingProfile>()
-                .AddProfile<SettingsProfile>()
-                .AddProfile<ValidationProfile>()
-                
+                .AddHostedService<UpdateHostedService>()
+                .AddProfile<ApplicationProfile>()
                 .Build()
                 .RunAsync();
             return ReturnCode.OK;
@@ -46,6 +37,7 @@ internal sealed class Program
         }
         finally
         {
+            Log.Logger.Information("Stopping DDNSUpdate");
             await Log.CloseAndFlushAsync();
         }
     }
