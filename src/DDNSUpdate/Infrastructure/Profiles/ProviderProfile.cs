@@ -1,4 +1,3 @@
-using DDNSUpdate.Application.Providers.Cloudflare;
 using DDNSUpdate.Application.Providers.DigitalOcean;
 using DDNSUpdate.Application.Providers.GoDaddy;
 using DDNSUpdate.Infrastructure.Extensions;
@@ -11,7 +10,6 @@ internal sealed class ProviderProfile : HostApplicationBuilderProfile
     protected override void Add(HostApplicationBuilder builder)
     {
         builder
-            .AddProfile<CloudflareProfile>()
             .AddProfile<DigitalOceanProfile>()
             .AddProfile<GoDaddyProfile>();
     }
