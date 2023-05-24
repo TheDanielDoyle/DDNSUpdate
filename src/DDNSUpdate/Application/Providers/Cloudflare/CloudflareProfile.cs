@@ -1,12 +1,21 @@
+using DDNSUpdate.Application.Records;
+using DDNSUpdate.Infrastructure.Extensions;
 using DDNSUpdate.Infrastructure.Profiles;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace DDNSUpdate.Application.Providers.Cloudflare;
 
-internal sealed class CloudflareProfile : IHostApplicationBuilderProfile
+internal sealed class CloudflareProfile : HostApplicationBuilderProfile
 {
-    public HostApplicationBuilder Add(HostApplicationBuilder builder)
+    protected override void Add(HostApplicationBuilder builder)
     {
-        return builder;
+        builder
+            .AddSettings<CloudflareSettings>("Cloudflare")
+            .Services
+            .AddTransient<IUpdateService, CloudflareUpdateService>()
+            .AddTransient<IRecordFilter<CloudflareRecord>, CloudflareRecordFilter>()
+            .AddTransient<IRecordReader<CloudflareRecord>, CloudflareRecordReader>()
+            .AddTransient<IRecordWriter<CloudflareRecord>, CloudflareRecordWriter>();
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using DDNSUpdate.Infrastructure.Extensions;
@@ -37,7 +38,7 @@ internal sealed class UpdateHostedService : BackgroundService
                 {
                     TimeSpan? updateInterval = scope.GetRequiredService<AppSettings>().UpdateInterval;
                     _logger.LogInformation("Waiting {Minutes}", updateInterval!.Value.Humanize());
-                    await Task.Delay(updateInterval!.Value, cancellationToken);
+                    await Task.Delay(updateInterval.Value, cancellationToken);
                 }
             }
         }
@@ -45,22 +46,30 @@ internal sealed class UpdateHostedService : BackgroundService
 
     private async Task UpdateAsync(IServiceScope scope, CancellationToken cancellationToken)
     {
-        IUpdateService updateService = scope.GetRequiredService<IUpdateService>();
-        UpdateResult update = await updateService.UpdateAsync(cancellationToken);
-        update.Switch(
-            success =>
+        IEnumerable<IUpdateService> updateServices = scope.GetRequiredService<IEnumerable<IUpdateService>>();
+        bool cancel = false;
+        foreach (IUpdateService updateService in updateServices)
+        {
+            if (cancel)
             {
-                _logger.LogInformation("Update successful. {RecordsCreated} records updated, {RecordsUpdated} records updated",
-                    success.RecordsCreated, success.RecordsUpdated);
-            },
-            failed =>
-            {
-                _logger.LogUpdateFailed(failed);
-            },
-            cancelled =>
-            {
-                _logger.LogInformation("Update cancelled");
-            });
+                return;
+            }
+            UpdateResult update = await updateService.UpdateAsync(cancellationToken);
+            update.Switch(
+                success =>
+                {
+                    _logger.LogInformation("{Message}", success.Message);
+                },
+                failed =>
+                {
+                    _logger.LogUpdateFailed(failed);
+                },
+                cancelled =>
+                {
+                    _logger.LogInformation("{Message}", cancelled.Message);
+                    cancel = true;
+                });
+        }
     }
     
     private async Task ValidateAndUpdateAsync(IServiceScope scope, CancellationToken cancellationToken)
@@ -69,17 +78,17 @@ internal sealed class UpdateHostedService : BackgroundService
             .GetRequiredService<ISettingsValidator>()
             .Validate()
             .Match(
-                async valid =>
+                async _ =>
                 {
                     _logger.LogInformation("Settings validation successful");
                     _logger.LogInformation("Updating DNS entries");
                     await UpdateAsync(scope, cancellationToken);
                 },
-                async invalid =>
+                invalid =>
                 {
                     _logger.LogError("Settings validation failed");
                     _logger.LogValidationErrors(invalid.Results);
-                    await Task.CompletedTask;
+                    return Task.CompletedTask;
                 }
             );
     }

@@ -10,11 +10,10 @@ namespace DDNSUpdate.Infrastructure.Extensions;
 
 internal static class HostApplicationBuilderExtensions
 {
-    private const string _configName = "config";
-    
     public static HostApplicationBuilder AddConfiguration(this HostApplicationBuilder builder, string[] args)
     {
         builder.Configuration
+            .AddJsonFile("config", optional: true)
             .AddKeyPerFile("/run/secrets", optional: true)
             .AddJsonFromFiles()
             .AddCommandLine(args);

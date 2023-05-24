@@ -11,7 +11,7 @@ internal sealed class ValidationResults : ReadOnlyCollection<ValidationResult>
     {
     }
     
-    public ValidationResults(IList<ValidationResult> validationResults) : base(validationResults)
+    private ValidationResults(IList<ValidationResult> validationResults) : base(validationResults)
     {
     }
 

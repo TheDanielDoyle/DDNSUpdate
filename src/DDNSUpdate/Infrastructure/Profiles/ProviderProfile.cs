@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace DDNSUpdate.Infrastructure.Profiles;
 
-internal sealed class ServiceProfile : HostApplicationBuilderProfile
+internal sealed class ProviderProfile : HostApplicationBuilderProfile
 {
     protected override void Add(HostApplicationBuilder builder)
     {

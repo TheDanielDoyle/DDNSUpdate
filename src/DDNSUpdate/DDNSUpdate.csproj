@@ -37,13 +37,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="test.json" />
-    <None Remove="test.yaml" />
-    <None Remove="test2.json" />
-    <None Remove="test2.yaml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="appsettings.json" />
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

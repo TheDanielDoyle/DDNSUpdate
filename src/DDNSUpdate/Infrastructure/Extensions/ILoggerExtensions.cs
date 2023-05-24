@@ -1,3 +1,4 @@
+using System.Linq;
 using DDNSUpdate.Application;
 using DDNSUpdate.Infrastructure.Settings;
 using FluentValidation.Results;
@@ -9,7 +10,7 @@ internal static class ILoggerExtensions
 {
     public static void LogUpdateFailed(this ILogger logger, UpdateFailed updateFailed)
     {
-        foreach (string errorMessage in updateFailed.ErrorMessages)
+        foreach (string errorMessage in updateFailed.ErrorMessages.ToList())
         {
             logger.LogError("Update error {ErrorMessage}", errorMessage);
         }
@@ -17,7 +18,7 @@ internal static class ILoggerExtensions
     
     public static void LogValidationErrors(this ILogger logger, ValidationResults validationResults)
     {
-        foreach (ValidationFailure error in validationResults.Errors())
+        foreach (ValidationFailure error in validationResults.Errors().ToList())
         {
             logger.LogError("Setting {ErrorMessage}", error.ErrorMessage);
         }

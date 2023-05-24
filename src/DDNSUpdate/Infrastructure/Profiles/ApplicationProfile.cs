@@ -9,7 +9,7 @@ internal sealed class ApplicationProfile : HostApplicationBuilderProfile
     {
         builder
             .AddProfile<LoggingProfile>()
-            .AddProfile<ServiceProfile>()
+            .AddProfile<ProviderProfile>()
             .AddProfile<SettingsProfile>()
             .AddProfile<ValidationProfile>();
     }
