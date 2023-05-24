@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DDNSUpdate.Infrastructure.Extensions;
@@ -32,6 +33,10 @@ internal sealed class UpdateHostedService : BackgroundService
             {
                 await ValidateAndUpdateAsync(scope, cancellationToken);
             }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, "Unhandled error in {ValidateAndUpdate}", nameof(ValidateAndUpdateAsync));
+            }
             finally
             {
                 if (!cancellationToken.IsCancellationRequested)
@@ -46,15 +51,12 @@ internal sealed class UpdateHostedService : BackgroundService
 
     private async Task UpdateAsync(IServiceScope scope, CancellationToken cancellationToken)
     {
-        IEnumerable<IUpdateService> updateServices = scope.GetRequiredService<IEnumerable<IUpdateService>>();
-        bool cancel = false;
-        foreach (IUpdateService updateService in updateServices)
+        IList<IUpdateService> updateServices = scope
+            .GetRequiredService<IEnumerable<IUpdateService>>().ToList();
+
+        await Parallel.ForEachAsync(updateServices, cancellationToken, async (updateService, cancel) =>
         {
-            if (cancel)
-            {
-                return;
-            }
-            UpdateResult update = await updateService.UpdateAsync(cancellationToken);
+            UpdateResult update = await updateService.UpdateAsync(cancel);
             update.Switch(
                 success =>
                 {
@@ -67,9 +69,8 @@ internal sealed class UpdateHostedService : BackgroundService
                 cancelled =>
                 {
                     _logger.LogInformation("{Message}", cancelled.Message);
-                    cancel = true;
                 });
-        }
+        });
     }
     
     private async Task ValidateAndUpdateAsync(IServiceScope scope, CancellationToken cancellationToken)
