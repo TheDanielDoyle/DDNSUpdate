@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using DDNSUpdate.Application.Results;
 using DDNSUpdate.Infrastructure.Extensions;
 using DDNSUpdate.Infrastructure.Settings;
 using Humanizer;
@@ -31,11 +31,11 @@ internal sealed class UpdateHostedService : BackgroundService
             using IServiceScope scope = _serviceScopeFactory.CreateScope();
             try
             {
-                await ValidateAndUpdateAsync(scope, cancellationToken);
+                await ValidateAndUpdateProvidersAsync(scope, cancellationToken);
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, "Unhandled error in {ValidateAndUpdate}", nameof(ValidateAndUpdateAsync));
+                _logger.LogError(exception, "Unhandled error in {ValidateAndUpdate}", nameof(ValidateAndUpdateProvidersAsync));
             }
             finally
             {
@@ -48,32 +48,8 @@ internal sealed class UpdateHostedService : BackgroundService
             }
         }
     }
-
-    private async Task UpdateAsync(IServiceScope scope, CancellationToken cancellationToken)
-    {
-        IList<IUpdateService> updateServices = scope
-            .GetRequiredService<IEnumerable<IUpdateService>>().ToList();
-
-        await Parallel.ForEachAsync(updateServices, cancellationToken, async (updateService, cancel) =>
-        {
-            UpdateResult update = await updateService.UpdateAsync(cancel);
-            update.Switch(
-                success =>
-                {
-                    _logger.LogInformation("{Message}", success.Message);
-                },
-                failed =>
-                {
-                    _logger.LogUpdateFailed(failed);
-                },
-                cancelled =>
-                {
-                    _logger.LogInformation("{Message}", cancelled.Message);
-                });
-        });
-    }
     
-    private async Task ValidateAndUpdateAsync(IServiceScope scope, CancellationToken cancellationToken)
+    private async Task ValidateAndUpdateProvidersAsync(IServiceScope scope, CancellationToken cancellationToken)
     {
         await scope
             .GetRequiredService<ISettingsValidator>()
@@ -83,7 +59,7 @@ internal sealed class UpdateHostedService : BackgroundService
                 {
                     _logger.LogInformation("Settings validation successful");
                     _logger.LogInformation("Updating DNS entries");
-                    await UpdateAsync(scope, cancellationToken);
+                    await UpdateProvidersAsync(scope, cancellationToken);
                 },
                 invalid =>
                 {
@@ -92,5 +68,55 @@ internal sealed class UpdateHostedService : BackgroundService
                     return Task.CompletedTask;
                 }
             );
+    }
+
+    //TODO: Need a dynamic solution to these update methods. Maybe a provider classes with abstract providing the meat
+    private async Task UpdateProvidersAsync(IServiceScope scope, CancellationToken cancellationToken)
+    {
+        AppSettings appSettings = scope
+            .GetRequiredService<AppSettings>();
+
+        if (appSettings.HasGoDaddyAccounts())
+        {
+            await UpdateAccountsAsync(scope, appSettings.GoDaddy!.Accounts!, cancellationToken);
+        }
+
+        if (appSettings.HasDigitalOceanAccounts())
+        {
+            await UpdateAccountsAsync(scope, appSettings.DigitalOcean!.Accounts!, cancellationToken);
+        }
+    }
+
+    private async Task UpdateAccountsAsync<TAccount>(
+        IServiceScope scope,
+        IList<TAccount> accounts,
+        CancellationToken cancellationToken)
+    {
+        await Parallel.ForEachAsync(accounts, cancellationToken, async (account, token) =>
+        {
+            await UpdateAccountAsync(account, scope, cancellationToken);
+        });
+    }
+
+    private async Task UpdateAccountAsync<TAccount>(
+        TAccount account, 
+        IServiceScope scope, 
+        CancellationToken cancellationToken)
+    {
+        IUpdateService<TAccount> service = scope.GetRequiredService<IUpdateService<TAccount>>();
+        UpdateResult update = await service.UpdateAsync(account, cancellationToken);
+        update.Switch(
+            success =>
+            {
+                _logger.LogInformation("{Message}", success.Message);
+            },
+            failed =>
+            {
+                _logger.LogUpdateFailed(failed);
+            },
+            cancelled =>
+            {
+                _logger.LogInformation("{Message}", cancelled.Message);
+            });
     }
 }

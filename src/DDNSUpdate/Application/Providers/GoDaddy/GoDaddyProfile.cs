@@ -1,4 +1,3 @@
-using DDNSUpdate.Application.Records;
 using DDNSUpdate.Infrastructure.Extensions;
 using DDNSUpdate.Infrastructure.Profiles;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,9 +12,9 @@ internal sealed class GoDaddyProfile : HostApplicationBuilderProfile
         builder
             .AddSettings<GoDaddySettings>("GoDaddy")
             .Services
-            .AddTransient<IUpdateService, GoDaddyUpdateService>()
-            .AddTransient<IRecordFilter<GoDaddyRecord>, GoDaddyRecordFilter>()
-            .AddTransient<IRecordReader<GoDaddyRecord>, GoDaddyRecordReader>()
-            .AddTransient<IRecordWriter<GoDaddyRecord>, GoDaddyRecordWriter>();
+            .AddScoped<IRecordFilter<GoDaddyRecord, GoDaddyAccount>, GoDaddyRecordFilter>()
+            .AddScoped<IRecordReader<GoDaddyRecord, GoDaddyAccount>, GoDaddyRecordReader>()
+            .AddScoped<IRecordWriter<GoDaddyRecord, GoDaddyAccount>, GoDaddyRecordWriter>()
+            .AddScoped<IUpdateService<GoDaddyAccount>, GoDaddyUpdateService>();
     }
 }

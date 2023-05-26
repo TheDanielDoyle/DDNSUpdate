@@ -1,17 +1,20 @@
 using System.Collections.Generic;
-using DDNSUpdate.Application.Records;
 
 namespace DDNSUpdate.Application.Providers.DigitalOcean;
 
-internal class DigitalOceanRecordFilter : IRecordFilter<DigitalOceanRecord>
+internal class DigitalOceanRecordFilter : IRecordFilter<DigitalOceanRecord, DigitalOceanAccount>
 {
-    public IReadOnlyCollection<DigitalOceanRecord> FilterNew(IReadOnlyCollection<DigitalOceanRecord> records)
+    public IReadOnlyCollection<DigitalOceanRecord> FilterNew(
+        DigitalOceanAccount account, 
+        IReadOnlyCollection<DigitalOceanRecord> records)
     {
         //TODO: Implement
         return records;
     }
 
-    public IReadOnlyCollection<DigitalOceanRecord> FilterUpdated(IReadOnlyCollection<DigitalOceanRecord> records)
+    public IReadOnlyCollection<DigitalOceanRecord> FilterUpdated(
+        DigitalOceanAccount account, 
+        IReadOnlyCollection<DigitalOceanRecord> records)
     {
         //TODO: Implement
         return records;

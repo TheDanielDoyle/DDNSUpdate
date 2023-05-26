@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace DDNSUpdate.Application;
+namespace DDNSUpdate.Application.Results;
 
 internal sealed record UpdateFailed(IEnumerable<string> ErrorMessages)
 {

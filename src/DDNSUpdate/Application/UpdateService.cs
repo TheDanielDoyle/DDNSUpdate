@@ -1,19 +1,23 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using DDNSUpdate.Application.Records;
+using DDNSUpdate.Application.Results;
 using Microsoft.Extensions.Logging;
 
 namespace DDNSUpdate.Application;
 
-internal abstract class UpdateService<TRecord> : IUpdateService
+internal abstract class UpdateService<TRecord, TAccount> : IUpdateService<TAccount>
 {
     private readonly ILogger _logger;
-    private readonly IRecordFilter<TRecord> _filter;
-    private readonly IRecordReader<TRecord> _reader;
-    private readonly IRecordWriter<TRecord> _writer;
+    private readonly IRecordFilter<TRecord, TAccount> _filter;
+    private readonly IRecordReader<TRecord, TAccount> _reader;
+    private readonly IRecordWriter<TRecord, TAccount> _writer;
 
-    protected UpdateService(ILogger logger, IRecordFilter<TRecord> filter, IRecordReader<TRecord> reader, IRecordWriter<TRecord> writer)
+    protected UpdateService(
+        ILogger logger, 
+        IRecordFilter<TRecord, TAccount> filter, 
+        IRecordReader<TRecord, TAccount> reader, 
+        IRecordWriter<TRecord, TAccount> writer)
     {
         _logger = logger;
         _filter = filter;
@@ -21,18 +25,18 @@ internal abstract class UpdateService<TRecord> : IUpdateService
         _writer = writer;
     }
 
-    public async Task<UpdateResult> UpdateAsync(CancellationToken cancellationToken)
+    public async Task<UpdateResult> UpdateAsync(TAccount account, CancellationToken cancellationToken)
     {
-        ReadRecordsResult<TRecord> read = await _reader.ReadAsync(cancellationToken);
+        ReadRecordsResult<TRecord> read = await _reader.ReadAsync(account, cancellationToken);
         return await read
             .Match<Task<UpdateResult>>(
                 async readSuccess =>
                 {
                     _logger.LogInformation("{Message}", readSuccess.Message);
-                    IReadOnlyCollection<TRecord> newRecords = _filter.FilterNew(readSuccess.Records);
-                    IReadOnlyCollection<TRecord> updatedRecords = _filter.FilterUpdated(readSuccess.Records);
+                    IReadOnlyCollection<TRecord> newRecords = _filter.FilterNew(account, readSuccess.Records);
+                    IReadOnlyCollection<TRecord> updatedRecords = _filter.FilterUpdated(account, readSuccess.Records);
 
-                    WriteRecordsResult writes = await _writer.WriteAsync(newRecords, updatedRecords, cancellationToken);
+                    WriteRecordsResult writes = await _writer.WriteAsync(account, newRecords, updatedRecords, cancellationToken);
                     return writes
                         .Match<UpdateResult>(
                             writeSuccess => new UpdateSuccess(writeSuccess.RecordsCreated, writeSuccess.RecordsUpdated, writeSuccess.Message),

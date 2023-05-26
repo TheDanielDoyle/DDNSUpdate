@@ -1,13 +1,21 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using DDNSUpdate.Application.Records;
+using DDNSUpdate.Application.Results;
 
 namespace DDNSUpdate.Application.Providers.DigitalOcean;
 
-internal class DigitalOceanRecordWriter : IRecordWriter<DigitalOceanRecord>
+internal class DigitalOceanRecordWriter : IRecordWriter<DigitalOceanRecord, DigitalOceanAccount>
 {
+    private readonly IDigitalOceanClient _client;
+
+    public DigitalOceanRecordWriter(IDigitalOceanClient client)
+    {
+        _client = client;
+    }
+
     public async Task<WriteRecordsResult> WriteAsync(
+        DigitalOceanAccount account,
         IReadOnlyCollection<DigitalOceanRecord> newRecords, 
         IReadOnlyCollection<DigitalOceanRecord> updatedRecords,
         CancellationToken cancellationToken)

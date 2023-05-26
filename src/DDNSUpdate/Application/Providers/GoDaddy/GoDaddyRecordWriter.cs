@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using DDNSUpdate.Application.Records;
+using DDNSUpdate.Application.Results;
 
 namespace DDNSUpdate.Application.Providers.GoDaddy;
 
-internal sealed class GoDaddyRecordWriter : IRecordWriter<GoDaddyRecord>
+internal sealed class GoDaddyRecordWriter : IRecordWriter<GoDaddyRecord, GoDaddyAccount>
 {
     public async Task<WriteRecordsResult> WriteAsync(
+        GoDaddyAccount account,
         IReadOnlyCollection<GoDaddyRecord> newRecords,
         IReadOnlyCollection<GoDaddyRecord> updatedRecords,
         CancellationToken cancellationToken)

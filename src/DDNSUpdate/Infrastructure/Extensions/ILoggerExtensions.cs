@@ -1,5 +1,5 @@
 using System.Linq;
-using DDNSUpdate.Application;
+using DDNSUpdate.Application.Results;
 using DDNSUpdate.Infrastructure.Settings;
 using FluentValidation.Results;
 using Microsoft.Extensions.Logging;

@@ -1,15 +1,14 @@
-using DDNSUpdate.Application.Records;
 using Microsoft.Extensions.Logging;
 
 namespace DDNSUpdate.Application.Providers.DigitalOcean;
 
-internal class DigitalOceanUpdateService : UpdateService<DigitalOceanRecord>
+internal class DigitalOceanUpdateService : UpdateService<DigitalOceanRecord, DigitalOceanAccount>
 {
     public DigitalOceanUpdateService(
         ILogger<DigitalOceanUpdateService> logger,
-        IRecordFilter<DigitalOceanRecord> filter, 
-        IRecordReader<DigitalOceanRecord> reader, 
-        IRecordWriter<DigitalOceanRecord> writer) : base(logger, filter, reader, writer)
+        IRecordFilter<DigitalOceanRecord, DigitalOceanAccount> filter, 
+        IRecordReader<DigitalOceanRecord, DigitalOceanAccount> reader, 
+        IRecordWriter<DigitalOceanRecord, DigitalOceanAccount> writer) : base(logger, filter, reader, writer)
     {
     }
 }

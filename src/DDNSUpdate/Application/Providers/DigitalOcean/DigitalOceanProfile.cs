@@ -1,4 +1,3 @@
-using DDNSUpdate.Application.Records;
 using DDNSUpdate.Infrastructure.Extensions;
 using DDNSUpdate.Infrastructure.Profiles;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,9 +12,13 @@ internal sealed class DigitalOceanProfile : HostApplicationBuilderProfile
         builder
             .AddSettings<DigitalOceanSettings>("DigitalOcean")
             .Services
-            .AddTransient<IUpdateService, DigitalOceanUpdateService>()
-            .AddTransient<IRecordFilter<DigitalOceanRecord>, DigitalOceanRecordFilter>()
-            .AddTransient<IRecordReader<DigitalOceanRecord>, DigitalOceanRecordReader>()
-            .AddTransient<IRecordWriter<DigitalOceanRecord>, DigitalOceanRecordWriter>();
+            .AddScoped<IRecordFilter<DigitalOceanRecord, DigitalOceanAccount>, DigitalOceanRecordFilter>()
+            .AddScoped<IRecordReader<DigitalOceanRecord, DigitalOceanAccount>, DigitalOceanRecordReader>()
+            .AddScoped<IRecordWriter<DigitalOceanRecord, DigitalOceanAccount>, DigitalOceanRecordWriter>()
+            .AddScoped<IUpdateService<DigitalOceanAccount>, DigitalOceanUpdateService>();
+
+        builder
+            .Services
+            .AddHttpClient<IDigitalOceanClient, DigitalOceanClient>();
     }
 }
