@@ -15,7 +15,7 @@ internal sealed class DigitalOceanProfile : HostApplicationBuilderProfile
             .AddScoped<IRecordFilter<DigitalOceanRecord, DigitalOceanAccount>, DigitalOceanRecordFilter>()
             .AddScoped<IRecordReader<DigitalOceanRecord, DigitalOceanAccount>, DigitalOceanRecordReader>()
             .AddScoped<IRecordWriter<DigitalOceanRecord, DigitalOceanAccount>, DigitalOceanRecordWriter>()
-            .AddScoped<IUpdateService<DigitalOceanAccount>, DigitalOceanUpdateService>();
+            .AddScoped<IUpdateService, DigitalOceanUpdateService>();
 
         builder
             .Services

@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using DDNSUpdate.Application.Results;
 using DDNSUpdate.Infrastructure.Extensions;
 using DDNSUpdate.Infrastructure.Settings;
 using Humanizer;
@@ -16,7 +16,7 @@ internal sealed class UpdateHostedService : BackgroundService
 {
     private readonly ILogger<UpdateHostedService> _logger;
     private readonly IServiceScopeFactory _serviceScopeFactory;
-    
+
     public UpdateHostedService(ILogger<UpdateHostedService> logger, IServiceScopeFactory serviceScopeFactory)
     {
         _logger = logger;
@@ -31,11 +31,11 @@ internal sealed class UpdateHostedService : BackgroundService
             using IServiceScope scope = _serviceScopeFactory.CreateScope();
             try
             {
-                await ValidateAndUpdateProvidersAsync(scope, cancellationToken);
+                await ValidateAndUpdateAsync(scope, cancellationToken);
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, "Unhandled error in {ValidateAndUpdate}", nameof(ValidateAndUpdateProvidersAsync));
+                _logger.LogError(exception, "Unhandled error in {ValidateAndUpdate}", nameof(ValidateAndUpdateAsync));
             }
             finally
             {
@@ -49,7 +49,7 @@ internal sealed class UpdateHostedService : BackgroundService
         }
     }
     
-    private async Task ValidateAndUpdateProvidersAsync(IServiceScope scope, CancellationToken cancellationToken)
+    private async Task ValidateAndUpdateAsync(IServiceScope scope, CancellationToken cancellationToken)
     {
         await scope
             .GetRequiredService<ISettingsValidator>()
@@ -59,7 +59,13 @@ internal sealed class UpdateHostedService : BackgroundService
                 {
                     _logger.LogInformation("Settings validation successful");
                     _logger.LogInformation("Updating DNS entries");
-                    await UpdateProvidersAsync(scope, cancellationToken);
+
+                    IEnumerable<IUpdateService> updateServices =
+                        scope.GetRequiredService<IEnumerable<IUpdateService>>();
+                    await Parallel.ForEachAsync(updateServices.ToList(), cancellationToken, async (s, c) =>
+                    {
+                        await s.UpdateAsync(c);
+                    });
                 },
                 invalid =>
                 {
@@ -68,55 +74,5 @@ internal sealed class UpdateHostedService : BackgroundService
                     return Task.CompletedTask;
                 }
             );
-    }
-
-    //TODO: Need a dynamic solution to these update methods. Maybe a provider classes with abstract providing the meat
-    private async Task UpdateProvidersAsync(IServiceScope scope, CancellationToken cancellationToken)
-    {
-        AppSettings appSettings = scope
-            .GetRequiredService<AppSettings>();
-
-        if (appSettings.HasGoDaddyAccounts())
-        {
-            await UpdateAccountsAsync(scope, appSettings.GoDaddy!.Accounts!, cancellationToken);
-        }
-
-        if (appSettings.HasDigitalOceanAccounts())
-        {
-            await UpdateAccountsAsync(scope, appSettings.DigitalOcean!.Accounts!, cancellationToken);
-        }
-    }
-
-    private async Task UpdateAccountsAsync<TAccount>(
-        IServiceScope scope,
-        IList<TAccount> accounts,
-        CancellationToken cancellationToken)
-    {
-        await Parallel.ForEachAsync(accounts, cancellationToken, async (account, token) =>
-        {
-            await UpdateAccountAsync(account, scope, cancellationToken);
-        });
-    }
-
-    private async Task UpdateAccountAsync<TAccount>(
-        TAccount account, 
-        IServiceScope scope, 
-        CancellationToken cancellationToken)
-    {
-        IUpdateService<TAccount> service = scope.GetRequiredService<IUpdateService<TAccount>>();
-        UpdateResult update = await service.UpdateAsync(account, cancellationToken);
-        update.Switch(
-            success =>
-            {
-                _logger.LogInformation("{Message}", success.Message);
-            },
-            failed =>
-            {
-                _logger.LogUpdateFailed(failed);
-            },
-            cancelled =>
-            {
-                _logger.LogInformation("{Message}", cancelled.Message);
-            });
     }
 }

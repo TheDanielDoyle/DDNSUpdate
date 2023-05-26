@@ -15,6 +15,6 @@ internal sealed class GoDaddyProfile : HostApplicationBuilderProfile
             .AddScoped<IRecordFilter<GoDaddyRecord, GoDaddyAccount>, GoDaddyRecordFilter>()
             .AddScoped<IRecordReader<GoDaddyRecord, GoDaddyAccount>, GoDaddyRecordReader>()
             .AddScoped<IRecordWriter<GoDaddyRecord, GoDaddyAccount>, GoDaddyRecordWriter>()
-            .AddScoped<IUpdateService<GoDaddyAccount>, GoDaddyUpdateService>();
+            .AddScoped<IUpdateService, GoDaddyUpdateService>();
     }
 }
