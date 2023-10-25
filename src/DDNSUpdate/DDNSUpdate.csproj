@@ -21,18 +21,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="11.5.2" />
+    <PackageReference Include="FluentValidation" Version="11.8.0" />
     <PackageReference Include="Flurl.Http" Version="3.2.4" />
     <PackageReference Include="Humanizer" Version="2.14.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.KeyPerFile" Version="7.0.5" />
-    <PackageReference Include="OneOf" Version="3.0.243" />
-    <PackageReference Include="OneOf.SourceGenerator" Version="3.0.243" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.KeyPerFile" Version="7.0.13" />
+    <PackageReference Include="OneOf" Version="3.0.263" />
+    <PackageReference Include="OneOf.SourceGenerator" Version="3.0.263" />
     <PackageReference Include="Scrutor" Version="4.2.2" />
     <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
     <PackageReference Include="Serilog.Enrichers.Demystifier" Version="1.0.2" />
     <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
     <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
-    <PackageReference Include="Serilog.Settings.Configuration" Version="7.0.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="7.0.1" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
     <PackageReference Include="TheDanielDoyle.Extensions.Configuration" Version="7.0.4" />
   </ItemGroup>
