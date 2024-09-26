@@ -1,5 +1,5 @@
-ARG RUNTIMEIMAGE=mcr.microsoft.com/dotnet/runtime:7.0
-ARG SDKIMAGE=mcr.microsoft.com/dotnet/sdk:7.0.302
+ARG RUNTIMEIMAGE=mcr.microsoft.com/dotnet/runtime:8.0
+ARG SDKIMAGE=mcr.microsoft.com/dotnet/sdk:8.0
 ARG VERSION=1.0.0
 
 FROM $RUNTIMEIMAGE AS base

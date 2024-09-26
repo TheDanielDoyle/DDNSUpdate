@@ -15,10 +15,8 @@ internal sealed class DigitalOceanClient : IDigitalOceanClient
 
     public DigitalOceanClient(HttpClient client, DigitalOceanSettings settings)
     {
-        _client = new FlurlClient(client).Configure(s =>
-        {
-            s.JsonSerializer = new SystemJsonSerializer();
-        });
+        _client = new FlurlClient(client);
+        _client.Settings.JsonSerializer = new SystemJsonSerializer();
         _settings = settings;
     }
 
@@ -28,7 +26,7 @@ internal sealed class DigitalOceanClient : IDigitalOceanClient
         IFlurlResponse response = await BuildRequest(bearerToken)
             .AppendPathSegments("domain", domain, "records")
             .SetQueryParam("per_page", 200.ToString())
-            .GetAsync(cancellation);
+            .GetAsync(cancellationToken: cancellation);
 
         return response.StatusCode switch
         {
