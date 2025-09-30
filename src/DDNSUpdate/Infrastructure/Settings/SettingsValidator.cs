@@ -23,15 +23,15 @@ internal class SettingsValidator : ISettingsValidator
         _validators = validators;
     }
 
-    public SettingsValidationResult Validate()
+    public ValidateSettingsResult Validate()
     {
         ValidationResults validationResults = new(
             _settings.SelectMany(Validate)
         );
         
         return validationResults.IsValid() 
-            ? new SettingsValid(validationResults) 
-            : new SettingsInvalid(validationResults);
+            ? new ValidateSettingsResult.Valid(validationResults) 
+            : new ValidateSettingsResult.Invalid(validationResults);
     }
 
     private IEnumerable<ValidationResult> Validate(ISettings settings)

@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DDNSUpdate.Application;
+namespace DDNSUpdate.Application.Core;
 
 internal interface IUpdateService
 {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using DDNSUpdate.Application;
+using DDNSUpdate.Application.Core;
 using DDNSUpdate.Infrastructure;
 using DDNSUpdate.Infrastructure.Extensions;
 using DDNSUpdate.Infrastructure.Profiles;

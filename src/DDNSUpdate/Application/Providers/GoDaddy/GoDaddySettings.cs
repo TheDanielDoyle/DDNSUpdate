@@ -1,15 +1,13 @@
 using System.Collections.Generic;
-using System.Linq;
-using DDNSUpdate.Infrastructure.Settings;
 
 namespace DDNSUpdate.Application.Providers.GoDaddy;
 
-internal sealed record GoDaddySettings : ISettings, IAccounts<GoDaddyAccount>
+internal sealed record GoDaddySettings
 {
-    public IList<GoDaddyAccount>? Accounts { get; set; }
+    public List<GoDaddyAccount>? Accounts { get; set; } = [];
 
     public bool HasAccounts()
     {
-        return Accounts is not null && Accounts.Any();
+        return Accounts is not null && Accounts.Count != 0;
     }
 }
