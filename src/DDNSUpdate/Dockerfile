@@ -1,5 +1,5 @@
-ARG RUNTIMEIMAGE=mcr.microsoft.com/dotnet/runtime:9.0
-ARG SDKIMAGE=mcr.microsoft.com/dotnet/sdk:9.0
+ARG RUNTIMEIMAGE=mcr.microsoft.com/dotnet/runtime:10.0
+ARG SDKIMAGE=mcr.microsoft.com/dotnet/sdk:10.0
 ARG VERSION=1.0.0
 
 USER $APP_UID
